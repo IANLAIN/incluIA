@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iclusion | Inclusion laboral neurodivergente</title>
+  <meta name="description" content="Plataforma de inclusion laboral para talento neurodivergente con enfoque accesible y modular." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="prefetch" href="pages/landing.html" />
+  <link rel="prefetch" href="pages/login.html" />
+  <link rel="prefetch" href="pages/dashboard-candidate.html" />
+  <link rel="prefetch" href="pages/dashboard-company.html" />
+</head>
+<body>
+  <a class="skip-link" href="#app">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">Iclusion</span>
+      <span class="brand-tag">Talento neurodivergente, impacto real</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="pages/landing.html" data-nav>Inicio</a></li>
+        <li><a href="pages/login.html" data-nav>Login y registro</a></li>
+        <li><a href="pages/dashboard-candidate.html" data-nav>Dashboard candidato</a></li>
+        <li><a href="pages/dashboard-company.html" data-nav>Dashboard empresa</a></li>
+        <li><a href="pages/mentoring.html" data-nav>Mentoria</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="pages/login.html" data-nav>Entrar</a>
+      <a class="btn btn-primary" href="pages/dashboard-company.html" data-nav>Solicitar demo</a>
+    </div>
+  </header>
+
+  <main id="app" class="app-shell" tabindex="-1" aria-live="polite">
+    <section class="loading">
+      <div class="card loading-card">
+        <p class="eyebrow">Plataforma de inclusion laboral</p>
+        <h1>Construyendo una experiencia accesible y humana</h1>
+        <p>
+          Este prototipo muestra la ruta completa para talento neurodivergente y empresas aliadas,
+          con flujos claros, lenguaje simple y visuales calmados.
+        </p>
+        <div class="button-row">
+          <a class="btn btn-primary" href="pages/landing.html" data-nav>Ver landing</a>
+          <a class="btn btn-ghost" href="pages/login.html" data-nav>Ir a login</a>
+        </div>
+        <p class="hint">Si la vista no carga, usa los accesos directos de arriba.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Iclusion by Design</p>
+      <p class="footer-text">Accesible, modular y listo para escalar sobre infraestructura Azure.</p>
+      <div class="footer-meta">
+        <span>(c) 2026 Iclusion</span>
+        <span>|</span>
+        <span class="ms-badge">
+          <img class="ms-logo" src="assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+          Supported by Microsoft
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="pages/landing.html" data-nav>Producto</a>
+      <a href="pages/login.html" data-nav>Acceso</a>
+      <a href="pages/mentoring.html" data-nav>Mentoria</a>
+      <a href="pages/dashboard-company.html" data-nav>ESG</a>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

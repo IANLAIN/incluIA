@@ -1,0 +1,120 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.feature-card {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+.feature-card img {
+  width: 36px;
+  height: 36px;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.stat-label {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.match-card {
+  display: grid;
+  gap: 12px;
+}
+
+.match-score {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.skill-card {
+  display: grid;
+  gap: 12px;
+}
+
+.skill-note {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.loading-card {
+  text-align: left;
+}
+
+.auth-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.auth-aside {
+  display: grid;
+  gap: 16px;
+}
+
+.role-card {
+  display: grid;
+  gap: 6px;
+  background: var(--color-surface-alt);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  cursor: pointer;
+}
+
+.role-card input {
+  margin-right: 8px;
+}
+
+.role-card:has(input:checked) {
+  border-color: rgba(0, 120, 212, 0.4);
+  background: #fff;
+}
+
+.onboarding-card {
+  display: grid;
+  gap: 20px;
+}
+
+.instruction-text {
+  color: var(--color-muted);
+}
+
+.chart-card {
+  display: grid;
+  gap: 16px;
+}
+
+.mentor-list {
+  display: grid;
+  gap: 16px;
+}
+
+.mentor-item {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+}
+
+.mentor-item.is-active {
+  background: rgba(0, 120, 212, 0.12);
+  color: var(--color-primary);
+  font-weight: 600;
+}

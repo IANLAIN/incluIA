@@ -1,0 +1,36 @@
+.chart {
+  display: grid;
+  gap: 12px;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.chart-bar {
+  position: relative;
+  height: 10px;
+  background: #e9eff6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.chart-bar span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--value) * 1%);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 999px;
+}
+
+.chart-value {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}

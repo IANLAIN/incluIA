@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iclusion | Dashboard candidato</title>
+  <meta name="description" content="Panel de candidato con onboarding, tareas y habilidades." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">Iclusion</span>
+      <span class="brand-tag">Panel del candidato</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="landing.html">Inicio</a></li>
+        <li><a href="login.html">Login y registro</a></li>
+        <li><a href="dashboard-candidate.html">Dashboard candidato</a></li>
+        <li><a href="dashboard-company.html">Dashboard empresa</a></li>
+        <li><a href="mentoring.html">Mentoria</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <span class="ms-badge">
+        <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+        Supported by Microsoft
+      </span>
+      <a class="btn btn-ghost" href="mentoring.html">Ir a mentoria</a>
+      <a class="btn btn-primary" href="dashboard-company.html">Ver impacto ESG</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="page-content">
+      <section class="dashboard-hero card">
+        <span class="azure-pill badge-corner">Powered by Azure AI</span>
+        <div>
+          <p class="eyebrow">Tu progreso hoy</p>
+          <h1>Hola, Alex. Tu ruta esta clara y guiada.</h1>
+          <p>Recuerda: puedes activar lenguaje simple en cualquier instruccion.</p>
+          <p class="hint">Infraestructura Azure para rendimiento y seguridad.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" data-simplify data-target="instruction-text">
+            Simplificar instrucciones
+          </button>
+          <a class="btn btn-ghost" href="mentoring.html">Hablar con mentor</a>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="onboarding-title">
+        <div class="section-header">
+          <h2 id="onboarding-title">Onboarding paso a paso</h2>
+          <p>Avance visual para reducir ansiedad y dar claridad.</p>
+        </div>
+        <div class="card onboarding-card">
+          <p id="instruction-text" data-original="1. Completa tu perfil sensorial. 2. Elige horarios preferidos. 3. Revisa tu primer reto." data-simplified="Paso 1: Completa tu perfil. Paso 2: Elige horarios. Paso 3: Revisa tu reto." class="instruction-text">
+            1. Completa tu perfil sensorial. 2. Elige horarios preferidos. 3. Revisa tu primer reto.
+          </p>
+          <ol class="stepper">
+            <li class="step is-complete">Perfil sensorial</li>
+            <li class="step is-active">Rutina diaria</li>
+            <li class="step">Primer reto</li>
+            <li class="step">Feedback inicial</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="tasks-title">
+        <div class="section-header">
+          <h2 id="tasks-title">Panel de tareas gamificado</h2>
+          <p>Objetivos cortos con recompensas claras.</p>
+        </div>
+        <div class="task-board">
+          <article class="task-card card">
+            <div>
+              <h3>Check-in de energia</h3>
+              <p>Registro rapido de tu nivel de energia.</p>
+              <progress value="60" max="100"></progress>
+            </div>
+            <button class="btn btn-soft" type="button" data-task-toggle>Completar</button>
+          </article>
+          <article class="task-card card">
+            <div>
+              <h3>Micro aprendizaje</h3>
+              <p>Video de 3 minutos sobre comunicacion efectiva.</p>
+              <progress value="30" max="100"></progress>
+            </div>
+            <button class="btn btn-soft" type="button" data-task-toggle>Completar</button>
+          </article>
+          <article class="task-card card">
+            <div>
+              <h3>Reto practico</h3>
+              <p>Organiza tu espacio digital con una lista simple.</p>
+              <progress value="10" max="100"></progress>
+            </div>
+            <button class="btn btn-soft" type="button" data-task-toggle>Completar</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="skills-title">
+        <div class="section-header">
+          <h2 id="skills-title">Perfil de habilidades</h2>
+          <p>Visual, breve y accionable.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="skill-card card">
+            <h3>Analisis de datos</h3>
+            <div class="skill-meter" style="--level: 0.82"></div>
+            <p class="skill-note">Fuerte en patrones y detalle.</p>
+          </article>
+          <article class="skill-card card">
+            <h3>Comunicacion escrita</h3>
+            <div class="skill-meter" style="--level: 0.68"></div>
+            <p class="skill-note">Mejora con plantillas breves.</p>
+          </article>
+          <article class="skill-card card">
+            <h3>Trabajo en foco</h3>
+            <div class="skill-meter" style="--level: 0.9"></div>
+            <p class="skill-note">Alta concentracion en tareas secuenciales.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Iclusion by Design</p>
+      <p class="footer-text">Bienestar, claridad y progreso visible.</p>
+      <div class="footer-meta">
+        <span>(c) 2026 Iclusion</span>
+        <span>|</span>
+        <span class="ms-badge">
+          <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+          Supported by Microsoft
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="landing.html">Producto</a>
+      <a href="mentoring.html">Mentoria</a>
+      <a href="dashboard-company.html">ESG</a>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

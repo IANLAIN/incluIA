@@ -1,0 +1,80 @@
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input,
+textarea {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  background: #fff;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.15);
+}
+
+.role-selector {
+  display: grid;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.role-output {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-provider {
+  display: grid;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.ms-status {
+  font-size: 13px;
+  color: var(--color-primary-dark);
+}
+
+.guide-output {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+  min-height: 80px;
+}

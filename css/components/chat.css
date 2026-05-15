@@ -1,0 +1,47 @@
+.chat-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.chat-thread {
+  display: grid;
+  gap: 12px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: 16px;
+  max-width: 70%;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.message-in {
+  background: var(--color-surface-alt);
+  justify-self: start;
+}
+
+.message-out {
+  background: rgba(0, 120, 212, 0.15);
+  justify-self: end;
+}
+
+.message-time {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.chat-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.chat-form input {
+  width: 100%;
+}

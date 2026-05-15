@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iclusion | Mentoria</title>
+  <meta name="description" content="Centro de mentoria con chat simulado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">Iclusion</span>
+      <span class="brand-tag">Centro de mentoria</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="landing.html">Inicio</a></li>
+        <li><a href="login.html">Login y registro</a></li>
+        <li><a href="dashboard-candidate.html">Dashboard candidato</a></li>
+        <li><a href="dashboard-company.html">Dashboard empresa</a></li>
+        <li><a href="mentoring.html">Mentoria</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="dashboard-candidate.html">Panel candidato</a>
+      <a class="btn btn-primary" href="dashboard-company.html">Panel empresa</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="page-content">
+      <section class="section" aria-labelledby="mentor-title">
+        <div class="section-header">
+          <h1 id="mentor-title">Mentoria activa</h1>
+          <p>Chat simulado para seguimiento diario.</p>
+        </div>
+        <div class="mentor-layout">
+          <aside class="mentor-list card" aria-label="Lista de mentores">
+            <h2>Mentores</h2>
+            <ul class="clean-list">
+              <li class="mentor-item is-active">Carla M. - Bienestar</li>
+              <li class="mentor-item">Raul T. - Productividad</li>
+              <li class="mentor-item">Luz P. - Comunicacion</li>
+            </ul>
+          </aside>
+
+          <section class="chat-panel card" aria-label="Chat con mentor">
+            <div class="chat-thread" data-chat-thread aria-live="polite">
+              <div class="message message-in">
+                <p>Hola Alex, como estuvo tu energia hoy?</p>
+                <span class="message-time">09:40</span>
+              </div>
+              <div class="message message-out">
+                <p>Bien. Me ayudo tener la lista de tareas clara.</p>
+                <span class="message-time">09:42</span>
+              </div>
+              <div class="message message-in">
+                <p>Perfecto. Recuerda que puedes pedir pausas cortas cuando lo necesites.</p>
+                <span class="message-time">09:43</span>
+              </div>
+            </div>
+            <form class="chat-form" data-chat-form>
+              <label class="visually-hidden" for="chat-input">Escribe un mensaje</label>
+              <input id="chat-input" type="text" placeholder="Escribe un mensaje" data-chat-input />
+              <button class="btn btn-primary" type="submit">Enviar</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Iclusion by Design</p>
+      <p class="footer-text">Mentoria empatica y comunicacion clara.</p>
+      <div class="footer-meta">
+        <span>(c) 2026 Iclusion</span>
+        <span>|</span>
+        <span class="ms-badge">
+          <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+          Supported by Microsoft
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="landing.html">Producto</a>
+      <a href="dashboard-company.html">ESG</a>
+      <a href="login.html">Acceso</a>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

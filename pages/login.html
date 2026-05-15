@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iclusion | Login y registro</title>
+  <meta name="description" content="Acceso seguro para candidatos y empresas aliadas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">Iclusion</span>
+      <span class="brand-tag">Acceso accesible y seguro</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="landing.html">Inicio</a></li>
+        <li><a href="login.html">Login y registro</a></li>
+        <li><a href="dashboard-candidate.html">Dashboard candidato</a></li>
+        <li><a href="dashboard-company.html">Dashboard empresa</a></li>
+        <li><a href="mentoring.html">Mentoria</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="landing.html">Volver</a>
+      <a class="btn btn-primary" href="dashboard-candidate.html">Entrar a demo</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="page-content">
+      <section class="auth-layout" data-auth-root>
+        <div class="auth-panel">
+          <p class="eyebrow">Acceso seguro</p>
+          <h1>Ingresa a tu espacio</h1>
+          <p>Elige tu rol para personalizar el flujo.</p>
+
+          <div class="support-row">
+            <span class="ms-badge">
+              <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+              Supported by Microsoft
+            </span>
+          </div>
+
+          <fieldset class="role-selector">
+            <legend>Selecciona tu rol</legend>
+            <label class="role-card">
+              <input type="radio" name="role" value="candidato" checked />
+              <span>Candidato</span>
+              <small>Apoyo visual, lenguaje simple y pasos guiados.</small>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="empresa" />
+              <span>Empresa aliada</span>
+              <small>Panel ESG, match y guia de adaptacion.</small>
+            </label>
+          </fieldset>
+
+          <p class="role-output" data-role-output></p>
+
+          <div class="auth-provider">
+            <button class="btn btn-microsoft btn-full" type="button" data-ms-login>
+              <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+              Sign in with Microsoft
+            </button>
+            <div class="auth-divider">o continuar con correo</div>
+            <p class="ms-status" data-ms-status role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="toggle-group" role="tablist" aria-label="Tipo de acceso">
+            <button type="button" class="toggle-btn" data-auth-mode="login" aria-pressed="true">Login</button>
+            <button type="button" class="toggle-btn" data-auth-mode="register" aria-pressed="false">Registro</button>
+          </div>
+
+          <div class="auth-panels">
+            <form class="auth-form" data-auth-panel="login">
+              <div class="field">
+                <label for="login-email">Correo</label>
+                <input id="login-email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="login-password">Contrasena</label>
+                <input id="login-password" name="password" type="password" placeholder="Minimo 8 caracteres" required />
+              </div>
+              <button class="btn btn-primary" type="submit">Entrar</button>
+            </form>
+
+            <form class="auth-form" data-auth-panel="register" hidden>
+              <div class="field">
+                <label for="register-name">Nombre completo</label>
+                <input id="register-name" name="name" type="text" placeholder="Nombre y apellido" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="register-email">Correo</label>
+                <input id="register-email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="register-password">Contrasena</label>
+                <input id="register-password" name="password" type="password" placeholder="Minimo 8 caracteres" required />
+              </div>
+              <button class="btn btn-primary" type="submit">Crear cuenta</button>
+            </form>
+          </div>
+        </div>
+
+        <aside class="auth-aside card">
+          <h2>Por que es diferente</h2>
+          <p>
+            Se prioriza la claridad: menos pantallas, mas guias visuales y soporte de mentoria.
+            El texto puede simplificarse con IA responsable para reducir carga cognitiva.
+          </p>
+          <ul class="clean-list">
+            <li>Lenguaje simple y pasos concretos.</li>
+            <li>Preferencias sensoriales configurables.</li>
+            <li>Seguimiento de bienestar en tiempo real.</li>
+          </ul>
+          <a class="btn btn-ghost" href="dashboard-candidate.html">Ver flujo candidato</a>
+        </aside>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Iclusion by Design</p>
+      <p class="footer-text">Acceso inclusivo para candidatos y empresas.</p>
+      <div class="footer-meta">
+        <span>(c) 2026 Iclusion</span>
+        <span>|</span>
+        <span class="ms-badge">
+          <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+          Supported by Microsoft
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="landing.html">Producto</a>
+      <a href="dashboard-company.html">ESG</a>
+      <a href="mentoring.html">Mentoria</a>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

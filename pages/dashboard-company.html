@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iclusion | Dashboard empresa</title>
+  <meta name="description" content="Portal corporativo con match, guias y metricas ESG." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">Iclusion</span>
+      <span class="brand-tag">Portal corporativo</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="landing.html">Inicio</a></li>
+        <li><a href="login.html">Login y registro</a></li>
+        <li><a href="dashboard-candidate.html">Dashboard candidato</a></li>
+        <li><a href="dashboard-company.html">Dashboard empresa</a></li>
+        <li><a href="mentoring.html">Mentoria</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <span class="ms-badge">
+        <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+        Supported by Microsoft
+      </span>
+      <a class="btn btn-ghost" href="mentoring.html">Centro de mentoria</a>
+      <a class="btn btn-primary" href="dashboard-candidate.html">Ver candidato</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="page-content">
+      <section class="dashboard-hero card">
+        <span class="azure-pill badge-corner">Powered by Azure AI</span>
+        <div>
+          <p class="eyebrow">Panel ESG y talento</p>
+          <h1>Empresa aliada: Nube Verde</h1>
+          <p>Resumen de candidatos, guias de adaptacion y metricas de impacto.</p>
+          <p class="hint">Operando sobre infraestructura Azure con seguridad empresarial.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button">Programar entrevista</button>
+          <button class="btn btn-ghost" type="button">Descargar reporte</button>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="match-title">
+        <div class="section-header">
+          <h2 id="match-title">Match de perfil sugerido</h2>
+          <p>Seleccionados por habilidades y contexto de apoyo.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="match-card card">
+            <p class="match-score">92% match</p>
+            <h3>Sara M.</h3>
+            <p>Analista QA, foco alto, requiere espacio silencioso.</p>
+            <div class="tag-row">
+              <span class="chip">QA</span>
+              <span class="chip">Remoto</span>
+            </div>
+          </article>
+          <article class="match-card card">
+            <p class="match-score">88% match</p>
+            <h3>Diego R.</h3>
+            <p>Soporte TI, buen manejo de procesos y checklists.</p>
+            <div class="tag-row">
+              <span class="chip">IT</span>
+              <span class="chip">Hibrido</span>
+            </div>
+          </article>
+          <article class="match-card card">
+            <p class="match-score">85% match</p>
+            <h3>Lina P.</h3>
+            <p>Analista datos, alto detalle, prefiere tareas secuenciales.</p>
+            <div class="tag-row">
+              <span class="chip">Data</span>
+              <span class="chip">Flexible</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="guide-title">
+        <div class="section-header">
+          <h2 id="guide-title">Generador de guia de adaptacion del puesto</h2>
+          <p>Simulacion de IA responsable para sugerir ajustes.</p>
+        </div>
+        <div class="card" data-guide-generator>
+          <div class="field">
+            <label for="role-input">Rol a adaptar</label>
+            <input id="role-input" type="text" value="Analista QA" />
+          </div>
+          <div class="field">
+            <label for="context-input">Contexto</label>
+            <textarea id="context-input" rows="3">Equipo remoto con reuniones semanales.</textarea>
+          </div>
+          <button class="btn btn-primary" type="button" data-guide-action>Generar guia</button>
+          <div class="guide-output" data-guide-output aria-live="polite">
+            Las recomendaciones apareceran aqui.
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="esg-title">
+        <div class="section-header">
+          <h2 id="esg-title">Metricas de impacto social</h2>
+          <p>Real-time analytics Supported by Microsoft Power BI.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card chart-card">
+            <h3>Retencion</h3>
+            <div class="chart" data-chart data-values="72,84,91" data-labels="Q1,Q2,Q3" aria-label="Retencion trimestral en porcentaje"></div>
+          </div>
+          <div class="card chart-card">
+            <h3>Bienestar</h3>
+            <div class="chart" data-chart data-values="68,74,82" data-labels="Q1,Q2,Q3" aria-label="Bienestar trimestral en porcentaje"></div>
+          </div>
+          <div class="card chart-card">
+            <h3>Capacitacion</h3>
+            <div class="chart" data-chart data-values="55,69,88" data-labels="Q1,Q2,Q3" aria-label="Capacitacion trimestral en porcentaje"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Iclusion by Design</p>
+      <p class="footer-text">Impacto social con evidencia medible.</p>
+      <div class="footer-meta">
+        <span>(c) 2026 Iclusion</span>
+        <span>|</span>
+        <span class="ms-badge">
+          <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
+          Supported by Microsoft
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="landing.html">Producto</a>
+      <a href="mentoring.html">Mentoria</a>
+      <a href="login.html">Acceso</a>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

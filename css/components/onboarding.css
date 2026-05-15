@@ -1,0 +1,59 @@
+.stepper {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.step {
+  position: relative;
+  padding-left: 28px;
+  color: var(--color-muted);
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: #fff;
+}
+
+.step.is-complete::before {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.step.is-active {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.step.is-active::before {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
+}
+
+.skill-meter {
+  height: 10px;
+  background: #e9eff6;
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-meter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--level) * 100%);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 999px;
+}
