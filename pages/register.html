@@ -42,7 +42,34 @@
 <body>
   <main class="page">
     <div id="page-content">
-      <div class="split-layout" data-auth-root>
+      <div id="role-modal" class="language-gate is-visible role-modal" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
+        <div class="language-gate-card card">
+          <p class="eyebrow">Registro / Sign up</p>
+          <h2 id="role-modal-title">Antes de continuar, elige tu tipo de acceso</h2>
+          <p>Selecciona la opción que mejor te representa para personalizar el formulario.</p>
+          <div class="role-cards role-cards--modal">
+            <button type="button" id="modal-candidato" class="role-card" data-role="candidato">
+              <span class="emoji">🧠</span>
+              <div class="role-card-content">
+                <span class="role-card-title">Candidato / Aliado</span>
+                <span class="role-card-desc">Busco oportunidades laborales o apoyo a personas neurodivergentes.</span>
+              </div>
+            </button>
+            <button type="button" id="modal-empresa" class="role-card" data-role="empresa">
+              <span class="emoji">🏢</span>
+              <div class="role-card-content">
+                <span class="role-card-title">Empresa aliada</span>
+                <span class="role-card-desc">Quiero contratar talento de forma inclusiva y clara.</span>
+              </div>
+            </button>
+          </div>
+          <div class="language-gate-actions">
+            <button type="button" class="btn btn-ghost" data-close-role-modal>Ver formulario</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="split-layout" data-auth-root id="register-shell">
         
         <!-- Panel Izquierdo (Info) -->
         <div class="split-left">
@@ -318,6 +345,11 @@
 
     // ─── PASO 1: SELECCIÓN DE ROL ────────────────────────────────────────────
 
+    function cerrarModalRol() {
+      const modal = document.getElementById('role-modal');
+      if (modal) modal.classList.remove('is-visible');
+    }
+
     function seleccionarRol(rol) {
       rolSeleccionado = rol;
 
@@ -328,6 +360,8 @@
       btn.disabled = false;
       btn.style.opacity = '1';
       btn.style.cursor  = 'pointer';
+
+      cerrarModalRol();
     }
 
     function irAPaso2() {
@@ -336,6 +370,20 @@
       mostrarPaso('step1', destino);
       actualizarProgreso(2);
     }
+
+    document.querySelectorAll('[data-close-role-modal]').forEach(btn => {
+      btn.addEventListener('click', cerrarModalRol);
+    });
+
+    document.getElementById('modal-candidato')?.addEventListener('click', () => {
+      seleccionarRol('candidato');
+      irAPaso2();
+    });
+
+    document.getElementById('modal-empresa')?.addEventListener('click', () => {
+      seleccionarRol('empresa');
+      irAPaso2();
+    });
 
     // ─── BOTÓN VOLVER ────────────────────────────────────────────────────────
 

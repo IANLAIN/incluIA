@@ -1,7 +1,7 @@
 # IncluIA | Documentación Técnica Completa 🧩
 ### Plataforma de Inclusión Laboral Neuro-Accesible
 
-Esta documentación detalla la arquitectura, el funcionamiento y la estructura de archivos del proyecto **IncluIA**. Diseñado específicamente para usuarios con Autismo, TDAH, Síndrome de Down y otras neurodivergencias, priorizando la baja carga cognitiva y la accesibilidad técnica (WCAG 2.1).
+Esta documentación detalla la arquitectura, el funcionamiento y la estructura de archivos del proyecto **IncluIA**. Diseñado específicamente para usuarios con autismo, síndrome de Down y otras condiciones intelectuales y psicosociales, priorizando la baja carga cognitiva y la accesibilidad técnica (WCAG 2.1).
 
 ---
 

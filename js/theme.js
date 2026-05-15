@@ -10,8 +10,10 @@ export function initTheme() {
   document.documentElement.setAttribute("data-theme", savedTheme);
 
   document.querySelectorAll("#theme-toggle").forEach(btn => {
-    btn.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+    btn.textContent = savedTheme === "dark" ? "☀" : "☾";
     btn.setAttribute("aria-pressed", savedTheme === "dark");
+    btn.setAttribute("aria-label", savedTheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+    btn.title = savedTheme === "dark" ? "Modo claro" : "Modo oscuro";
 
     btn.addEventListener("click", () => {
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -21,8 +23,10 @@ export function initTheme() {
       localStorage.setItem("app-theme", newTheme);
 
       document.querySelectorAll("#theme-toggle").forEach(b => {
-        b.textContent = newTheme === "dark" ? "☀️" : "🌙";
+        b.textContent = newTheme === "dark" ? "☀" : "☾";
         b.setAttribute("aria-pressed", newTheme === "dark");
+        b.setAttribute("aria-label", newTheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+        b.title = newTheme === "dark" ? "Modo claro" : "Modo oscuro";
       });
     });
   });
@@ -39,7 +43,9 @@ export function initTheme() {
   document.querySelectorAll("#dyslexic-toggle").forEach(btn => {
     const isActive = savedFont === "dyslexic";
     btn.setAttribute("aria-pressed", isActive);
-    btn.textContent = isActive ? "Aa (normal)" : "Aa (dislexia)";
+    btn.textContent = "Aa";
+    btn.setAttribute("aria-label", isActive ? "Desactivar fuente para dislexia" : "Activar fuente para dislexia");
+    btn.title = isActive ? "Fuente normal" : "Fuente para dislexia";
 
     btn.addEventListener("click", () => {
       const current = document.documentElement.getAttribute("data-font");
@@ -55,7 +61,9 @@ export function initTheme() {
 
       document.querySelectorAll("#dyslexic-toggle").forEach(b => {
         b.setAttribute("aria-pressed", next === "dyslexic");
-        b.textContent = next === "dyslexic" ? "Aa (normal)" : "Aa (dislexia)";
+        b.textContent = "Aa";
+        b.setAttribute("aria-label", next === "dyslexic" ? "Desactivar fuente para dislexia" : "Activar fuente para dislexia");
+        b.title = next === "dyslexic" ? "Fuente normal" : "Fuente para dislexia";
       });
     });
   });

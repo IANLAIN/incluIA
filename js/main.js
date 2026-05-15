@@ -1,7 +1,7 @@
 import { setupNavigation, setActiveNav } from "./navigation.js";
 import { initAuth } from "./auth.js";
 import { initAiSim } from "./ai-sim.js";
-import { initI18nSelect, applyTranslations } from "./i18n.js";
+import { initI18nSelect, initLanguageGate, applyTranslations } from "./i18n.js";
 import { initTheme } from "./theme.js";
 import { initOnboarding } from "./onboarding.js";
 
@@ -9,6 +9,13 @@ const app = document.getElementById("app");
 const defaultRoute = "index.html";
 const routes = new Map([
   ["index.html", defaultRoute],
+  ["login.html", "pages/login.html"],
+  ["register.html", "pages/register.html"],
+  ["dashboard-candidate.html", "pages/dashboard-candidate.html"],
+  ["dashboard-company.html", "pages/dashboard-company.html"],
+  ["donate.html", "pages/donate.html"],
+  ["mentoring.html", "pages/mentoring.html"],
+  ["onboarding.html", "pages/onboarding.html"],
   ["pages/login.html", "pages/login.html"],
   ["pages/register.html", "pages/register.html"],
   ["pages/dashboard-candidate.html", "pages/dashboard-candidate.html"],
@@ -19,6 +26,21 @@ const routes = new Map([
   ["pages/candidate-dashboard.html", "pages/dashboard-candidate.html"],
   ["pages/company-dashboard.html", "pages/dashboard-company.html"],
 ]);
+
+function resolveRoutePath(path) {
+  if (!path) return defaultRoute;
+  const clean = path.split("?")[0].replace(/^\//, "");
+  if (routes.has(clean)) return routes.get(clean);
+  if (clean.startsWith("pages/")) {
+    const fileName = clean.slice(clean.lastIndexOf("/") + 1);
+    if (routes.has(fileName)) return routes.get(fileName);
+    return clean;
+  }
+  const asPagePath = `pages/${clean}`;
+  if (routes.has(asPagePath)) return routes.get(asPagePath);
+  if (clean.endsWith(".html") && !clean.includes("/")) return `pages/${clean}`;
+  return clean;
+}
 
 // Resolve the current location to a known route.
 function resolveRouteFromLocation() {
@@ -33,18 +55,19 @@ function resolveRouteFromLocation() {
 // Fetch a page and inject its main content into the shell.
 async function loadPage(path, { pushState = true, initialLoad = false } = {}) {
   if (!app) return;
+  const resolvedPath = resolveRoutePath(path);
   try {
     if (initialLoad) {
       upgradeInternalLinks(app);
       initPageInteractions(app);
-      setActiveNav(path);
+      setActiveNav(resolvedPath);
       applyTranslations();
-      if (pushState) history.pushState({ path }, "", path);
+      if (pushState) history.pushState({ path: resolvedPath }, "", resolvedPath);
       initScrollAnimations(app);
       return;
     }
 
-    const response = await fetch(path, { cache: "no-store" });
+    const response = await fetch(resolvedPath, { cache: "no-store" });
     if (!response.ok) throw new Error("Fetch failed");
     const html = await response.text();
     const parsed = new DOMParser().parseFromString(html, "text/html");
@@ -60,9 +83,9 @@ async function loadPage(path, { pushState = true, initialLoad = false } = {}) {
     upgradeInternalLinks(app);
     if (parsed.title) document.title = parsed.title;
     initPageInteractions(app);
-    setActiveNav(path);
+    setActiveNav(resolvedPath);
     applyTranslations();
-    if (pushState) history.pushState({ path }, "", path);
+    if (pushState) history.pushState({ path: resolvedPath }, "", resolvedPath);
 
     // Fade in
     requestAnimationFrame(() => {
@@ -137,6 +160,7 @@ if (app) {
 
   initTheme();
   initI18nSelect();
+  initLanguageGate();
   setupNavigation({ onNavigate: loadPage, useSpa: true });
   window.addEventListener("popstate", () => {
     const path = resolveRouteFromLocation();
@@ -183,6 +207,7 @@ if (app) {
 } else {
   initTheme();
   initI18nSelect();
+  initLanguageGate();
   setupNavigation({ useSpa: false });
   initPageInteractions(document);
   applyTranslations();

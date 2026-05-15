@@ -1,10 +1,10 @@
 const translations = {
   es: {
-    "nav.home": "Inicio", "nav.mentoring": "Mentoria", "nav.donate": "Cómo apoyarnos",
+    "nav.home": "Inicio", "nav.mentoring": "Mentoría", "nav.donate": "Cómo apoyarnos",
     "brand.tag": "Talento neurodivergente, impacto real",
     "landing.hero.eyebrow": "Plataforma de inclusión laboral",
     "landing.hero.title": "Conecta talento neurodivergente con empresas listas para incluir",
-    "landing.hero.text": "Diseñada para Autismo, Down y TDAH. Flujos claros, lenguaje simple y acompañamiento continuo para candidatos y empresas aliadas.",
+    "landing.hero.text": "Diseñada para autismo, síndrome de Down y otras condiciones intelectuales y psicosociales. Flujos claros, lenguaje simple y acompañamiento continuo para candidatos y empresas aliadas.",
     "landing.hero.btn.login": "Iniciar sesión", "landing.hero.btn.register": "Registrarse",
     "landing.hero.chip.wcag": "WCAG 2.1", "landing.hero.chip.ia": "IA empática", "landing.hero.chip.esg": "ESG medible",
     "landing.stat.1.val": "94%", "landing.stat.1.label": "Satisfacción en onboarding",
@@ -20,11 +20,16 @@ const translations = {
     "landing.impact.2.title": "Resultados visibles", "landing.impact.2.desc": "Panel ESG con retención, bienestar y progreso de habilidades por cohorte.",
     "landing.impact.chip1": "+28% retención", "landing.impact.chip2": "-42% rotación", "landing.impact.chip3": "+36% clima",
     "landing.btn.back": "Volver al inicio",
-    "footer.title": "IncluIA by Design", "footer.text": "Accesible, modular y listo para escalar sobre infraestructura Supabase.", "footer.meta": "(c) 2026 IncluIA", "footer.badge": "Autenticación segura por Supabase",
+    "footer.title": "IncluIA by Design", "footer.text": "Accesible, modular y listo para escalar sobre infraestructura Supabase.", "footer.meta": "© 2026 IncluIA", "footer.badge": "Autenticación segura por Supabase",
     "footer.links.login": "Acceso", "footer.links.esg": "ESG", "footer.links.mentoring": "Mentoría",
     "auth.login.title": "Ingresa a tu espacio", "auth.register.title": "Crea tu espacio",
     "auth.login.eyebrow": "Acceso seguro", "auth.login.desc": "Nos alegra tenerte de vuelta. Por favor, ingresa tus credenciales.",
     "auth.register.eyebrow": "Únete a IncluIA", "auth.register.desc": "Elige tu rol para personalizar el flujo.",
+    "lang.gate.title": "Elige tu idioma / Choose your language",
+    "lang.gate.desc": "La experiencia se mostrará en español o en inglés estadounidense.",
+    "lang.gate.note": "Puedes cambiarlo en cualquier momento desde la barra superior.",
+    "lang.gate.es": "Español / Spanish",
+    "lang.gate.en": "English / Inglés",
     "auth.badge.supabase": "Autenticación segura por Supabase",
     "auth.btn.google.login": "Continuar con Google", "auth.btn.google.register": "Registrarse con Google",
     "auth.divider.login": "o continuar con correo", "auth.divider.register": "o registrarte con correo",
@@ -49,7 +54,7 @@ const translations = {
     "brand.tag": "Neurodivergent talent, real impact",
     "landing.hero.eyebrow": "Workplace inclusion platform",
     "landing.hero.title": "Connect neurodivergent talent with inclusive companies",
-    "landing.hero.text": "Designed for Autism, Down syndrome, and ADHD. Clear workflows, simple language, and continuous support.",
+    "landing.hero.text": "Designed for autism, Down syndrome, and other intellectual and psychosocial conditions. Clear workflows, simple language, and continuous support for candidates and partner companies.",
     "landing.hero.btn.login": "Log in", "landing.hero.btn.register": "Register",
     "landing.hero.chip.wcag": "WCAG 2.1", "landing.hero.chip.ia": "Empathetic AI", "landing.hero.chip.esg": "Measurable ESG",
     "landing.stat.1.val": "94%", "landing.stat.1.label": "Onboarding satisfaction",
@@ -65,11 +70,16 @@ const translations = {
     "landing.impact.2.title": "Visible results", "landing.impact.2.desc": "ESG dashboard with retention, well-being, and skill progress by cohort.",
     "landing.impact.chip1": "+28% retention", "landing.impact.chip2": "-42% turnover", "landing.impact.chip3": "+36% climate",
     "landing.btn.back": "Back to top",
-    "footer.title": "IncluIA by Design", "footer.text": "Accessible, modular, and ready to scale on Supabase infrastructure.", "footer.meta": "(c) 2026 IncluIA", "footer.badge": "Secure authentication by Supabase",
+    "footer.title": "IncluIA by Design", "footer.text": "Accessible, modular, and ready to scale on Supabase infrastructure.", "footer.meta": "© 2026 IncluIA", "footer.badge": "Secure authentication by Supabase",
     "footer.links.login": "Login", "footer.links.esg": "ESG", "footer.links.mentoring": "Mentoring",
     "auth.login.title": "Log into your space", "auth.register.title": "Create your space",
     "auth.login.eyebrow": "Secure access", "auth.login.desc": "We're glad to have you back. Please enter your credentials.",
     "auth.register.eyebrow": "Join IncluIA", "auth.register.desc": "Choose your role to customize the flow.",
+    "lang.gate.title": "Choose your language / Elige tu idioma",
+    "lang.gate.desc": "The experience will be shown in English or Spanish.",
+    "lang.gate.note": "You can change it any time from the top bar.",
+    "lang.gate.es": "Español / Spanish",
+    "lang.gate.en": "English / Inglés",
     "auth.badge.supabase": "Secure authentication by Supabase",
     "auth.btn.google.login": "Continue with Google", "auth.btn.google.register": "Register with Google",
     "auth.divider.login": "or continue with email", "auth.divider.register": "or register with email",
@@ -94,7 +104,7 @@ const translations = {
     "brand.tag": "Talent neurodivergent, impact réel",
     "landing.hero.eyebrow": "Plateforme d'inclusion professionnelle",
     "landing.hero.title": "Connectez les talents neurodivergents aux entreprises inclusives",
-    "landing.hero.text": "Conçu pour l'autisme, la trisomie et le TDAH. Flux clairs, langage simple et accompagnement continu.",
+    "landing.hero.text": "Conçu pour l'autisme, la trisomie et d'autres conditions intellectuelles et psychosociales. Flux clairs, langage simple et accompagnement continu.",
     "landing.hero.btn.login": "Se connecter", "landing.hero.btn.register": "S'inscrire",
     "landing.hero.chip.wcag": "WCAG 2.1", "landing.hero.chip.ia": "IA empathique", "landing.hero.chip.esg": "ESG mesurable",
     "landing.stat.1.val": "94%", "landing.stat.1.label": "Satisfaction d'intégration",
@@ -139,7 +149,7 @@ const translations = {
     "brand.tag": "Talento neurodivergente, impacto real",
     "landing.hero.eyebrow": "Plataforma de inclusão no trabalho",
     "landing.hero.title": "Conecte talentos neurodivergentes a empresas inclusivas",
-    "landing.hero.text": "Projetado para Autismo, Síndrome de Down e TDAH. Fluxos claros, linguagem simples e suporte contínuo.",
+    "landing.hero.text": "Projetado para autismo, síndrome de Down e outras condições intelectuais e psicossociais. Fluxos claros, linguagem simples e suporte contínuo.",
     "landing.hero.btn.login": "Entrar", "landing.hero.btn.register": "Cadastrar",
     "landing.hero.chip.wcag": "WCAG 2.1", "landing.hero.chip.ia": "IA empática", "landing.hero.chip.esg": "ESG mensurável",
     "landing.stat.1.val": "94%", "landing.stat.1.label": "Satisfação na integração",
@@ -183,6 +193,11 @@ const translations = {
 
 export let currentLang = localStorage.getItem("app-lang") || "es";
 
+export function t(key, fallback = "") {
+  const dict = translations[currentLang] || translations.es;
+  return dict[key] ?? translations.es[key] ?? fallback ?? key;
+}
+
 export function applyTranslations() {
   const dict = translations[currentLang] || translations["es"];
   const elements = document.querySelectorAll("[data-i18n]");
@@ -193,23 +208,99 @@ export function applyTranslations() {
       el.textContent = dict[key];
     }
   });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const value = dict[key] || translations.es[key];
+    if (value) el.setAttribute("placeholder", value);
+  });
+
+  document.querySelectorAll("[data-i18n-aria-label]").forEach(el => {
+    const key = el.getAttribute("data-i18n-aria-label");
+    const value = dict[key] || translations.es[key];
+    if (value) el.setAttribute("aria-label", value);
+  });
+
+  const langMap = {
+    es: "es-ES",
+    en: "en-US",
+    pt: "pt-BR",
+    fr: "fr-FR",
+  };
+  document.documentElement.lang = langMap[currentLang] || "es-ES";
+}
+
+function syncLanguageSelects() {
+  document.querySelectorAll("#lang-select").forEach(select => {
+    select.innerHTML = `
+      <option value="es">Español / Spanish</option>
+      <option value="en">English (US) / Inglés</option>
+      <option value="pt">Português / Portuguese</option>
+      <option value="fr">Français / French</option>
+    `;
+    if (!["es", "en", "pt", "fr"].includes(currentLang)) {
+      currentLang = "es";
+      localStorage.setItem("app-lang", currentLang);
+    }
+    select.value = currentLang;
+  });
+}
+
+function setLanguage(lang) {
+  const allowed = new Set(["es", "en", "pt", "fr"]);
+  currentLang = allowed.has(lang) ? lang : "es";
+  localStorage.setItem("app-lang", currentLang);
+  syncLanguageSelects();
+  applyTranslations();
+}
+
+export function initLanguageGate() {
+  if (document.getElementById("language-gate")) return;
+
+  const gate = document.createElement("div");
+  gate.id = "language-gate";
+  gate.className = "language-gate";
+  gate.setAttribute("role", "dialog");
+  gate.setAttribute("aria-modal", "true");
+  gate.setAttribute("aria-labelledby", "language-gate-title");
+  gate.innerHTML = `
+    <div class="language-gate-card card">
+      <p class="eyebrow">Idioma / Language</p>
+      <h2 id="language-gate-title">Elige tu idioma / Choose your language</h2>
+      <p>Elige tu idioma: Español, English (US), Português o Français.</p>
+      <div class="language-gate-actions">
+        <button type="button" class="btn btn-primary" data-gate-lang="es">Español / Spanish</button>
+        <button type="button" class="btn btn-ghost" data-gate-lang="en">English (US) / Inglés</button>
+        <button type="button" class="btn btn-ghost" data-gate-lang="pt">Português / Portuguese</button>
+        <button type="button" class="btn btn-ghost" data-gate-lang="fr">Français / French</button>
+      </div>
+      <p class="language-gate-note">Puedes cambiarlo en cualquier momento desde la barra superior.</p>
+    </div>
+  `;
+  document.body.appendChild(gate);
+
+  gate.querySelectorAll("[data-gate-lang]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setLanguage(btn.getAttribute("data-gate-lang"));
+      gate.remove();
+      document.getElementById("app")?.focus?.();
+    });
+  });
+
+  requestAnimationFrame(() => gate.classList.add("is-visible"));
 }
 
 export function initI18nSelect() {
+  syncLanguageSelects();
+
   const langSelects = document.querySelectorAll("#lang-select");
-  
   langSelects.forEach(select => {
-    select.value = currentLang;
     select.addEventListener("change", (e) => {
-      currentLang = e.target.value;
-      localStorage.setItem("app-lang", currentLang);
-      applyTranslations();
-      
-      // Update all selects if there are multiple in DOM
-      document.querySelectorAll("#lang-select").forEach(sel => sel.value = currentLang);
+      setLanguage(e.target.value);
     });
   });
 
   // Apply immediately
   applyTranslations();
+  syncLanguageSelects();
 }
