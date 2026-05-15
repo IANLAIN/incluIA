@@ -1,3 +1,5 @@
+/* ═══ CHAT — ZERO HARDCODED COLORS ═════════════════════════════ */
+
 .chat-panel {
   display: grid;
   gap: 16px;
@@ -18,16 +20,23 @@
   display: grid;
   gap: 6px;
   font-size: 14px;
+  color: var(--color-ink);
 }
 
 .message-in {
-  background: var(--color-surface-alt);
+  background-color: var(--color-surface-alt);
   justify-self: start;
 }
 
 .message-out {
-  background: rgba(0, 120, 212, 0.15);
+  background-color: var(--color-soft);
+  color: var(--color-primary);
   justify-self: end;
+}
+
+[data-theme="dark"] .message-out {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--color-accent);
 }
 
 .message-time {

@@ -3,78 +3,157 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iclusion | Inclusion laboral neurodivergente</title>
+  <title>IncluIA | Inclusión laboral neurodivergente</title>
   <meta name="description" content="Plataforma de inclusion laboral para talento neurodivergente con enfoque accesible y modular." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="prefetch" href="pages/landing.html" />
+  <link rel="prefetch" href="index.html" />
   <link rel="prefetch" href="pages/login.html" />
   <link rel="prefetch" href="pages/dashboard-candidate.html" />
   <link rel="prefetch" href="pages/dashboard-company.html" />
+  <link rel="prefetch" href="pages/donate.html" />
 </head>
 <body>
-  <a class="skip-link" href="#app">Saltar al contenido principal</a>
   <header class="site-header">
     <div class="brand">
-      <span class="brand-mark">Iclusion</span>
-      <span class="brand-tag">Talento neurodivergente, impacto real</span>
+      <span class="brand-mark">IncluIA</span>
+      <span class="brand-tag" data-i18n="brand.tag">Talento neurodivergente, impacto real</span>
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
       Menu
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
       <ul class="nav-list">
-        <li><a href="pages/landing.html" data-nav>Inicio</a></li>
-        <li><a href="pages/login.html" data-nav>Login y registro</a></li>
-        <li><a href="pages/dashboard-candidate.html" data-nav>Dashboard candidato</a></li>
-        <li><a href="pages/dashboard-company.html" data-nav>Dashboard empresa</a></li>
-        <li><a href="pages/mentoring.html" data-nav>Mentoria</a></li>
+        <li><a href="index.html" data-nav data-i18n="nav.home">Inicio</a></li>
+        <li><a href="pages/mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
+        <li><a href="pages/donate.html" data-nav data-i18n="nav.donate">Cómo apoyarnos</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="pages/login.html" data-nav>Entrar</a>
-      <a class="btn btn-primary" href="pages/dashboard-company.html" data-nav>Solicitar demo</a>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema" aria-pressed="false">🌙</button>
+      <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
+      <div class="lang-selector">
+        <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
     </div>
   </header>
 
   <main id="app" class="app-shell" tabindex="-1" aria-live="polite">
-    <section class="loading">
-      <div class="card loading-card">
-        <p class="eyebrow">Plataforma de inclusion laboral</p>
-        <h1>Construyendo una experiencia accesible y humana</h1>
-        <p>
-          Este prototipo muestra la ruta completa para talento neurodivergente y empresas aliadas,
-          con flujos claros, lenguaje simple y visuales calmados.
-        </p>
-        <div class="button-row">
-          <a class="btn btn-primary" href="pages/landing.html" data-nav>Ver landing</a>
-          <a class="btn btn-ghost" href="pages/login.html" data-nav>Ir a login</a>
+    <div id="page-content">
+      <section id="hero" class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow" data-i18n="landing.hero.eyebrow">Plataforma de inclusion laboral</p>
+          <h1 id="hero-title" data-i18n="landing.hero.title">Conecta talento neurodivergente con empresas listas para incluir</h1>
+          <p class="hero-text" data-i18n="landing.hero.text">
+            Diseñada para Autismo, Down y TDAH. Flujos claros, lenguaje simple y acompanamiento
+            continuo para candidatos y empresas aliadas.
+          </p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="pages/login.html" data-nav data-i18n="landing.hero.btn.login">Iniciar sesión</a>
+            <a class="btn btn-ghost" href="pages/register.html" data-nav data-i18n="landing.hero.btn.register">Registrarse</a>
+          </div>
+          <div class="hero-badges">
+            <span class="chip" data-i18n="landing.hero.chip.wcag">WCAG 2.1</span>
+            <span class="chip" data-i18n="landing.hero.chip.ia">IA empatica</span>
+            <span class="chip" data-i18n="landing.hero.chip.esg">ESG medible</span>
+          </div>
         </div>
-        <p class="hint">Si la vista no carga, usa los accesos directos de arriba.</p>
-      </div>
-    </section>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/images/hero-illustration.svg" alt="" />
+          <div class="stat-grid">
+            <article class="stat-card">
+              <p class="stat-value" data-i18n="landing.stat.1.val">94%</p>
+              <p class="stat-label" data-i18n="landing.stat.1.label">Satisfaccion en onboarding</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-value" data-i18n="landing.stat.2.val">3.2x</p>
+              <p class="stat-label" data-i18n="landing.stat.2.label">Velocidad de adaptacion</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-value" data-i18n="landing.stat.3.val">+48</p>
+              <p class="stat-label" data-i18n="landing.stat.3.label">Empresas aliadas</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="how-title">
+        <div class="section-header">
+          <h2 id="how-title" data-i18n="landing.how.title">Como funciona</h2>
+          <p data-i18n="landing.how.desc">Un recorrido en tres pasos con foco en autonomia, claridad y acompanamiento.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="feature-card">
+            <img src="assets/icons/icon-brain.svg" alt="" aria-hidden="true" />
+            <h3 data-i18n="landing.how.1.title">Perfil sensorial</h3>
+            <p data-i18n="landing.how.1.desc">Mapa visual de preferencias, ritmos y apoyos que guian todo el proceso.</p>
+          </article>
+          <article class="feature-card">
+            <img src="assets/icons/icon-briefcase.svg" alt="" aria-hidden="true" />
+            <h3 data-i18n="landing.how.2.title">Match de rol</h3>
+            <p data-i18n="landing.how.2.desc">IA responsable que sugiere roles basados en habilidades y contexto real.</p>
+          </article>
+          <article class="feature-card">
+            <img src="assets/icons/icon-heart.svg" alt="" aria-hidden="true" />
+            <h3 data-i18n="landing.how.3.title">Mentoria activa</h3>
+            <p data-i18n="landing.how.3.desc">Canales de apoyo entre mentor y colaborador con guias simples.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="impact-title">
+        <div class="section-header">
+          <h2 id="impact-title" data-i18n="landing.impact.title">Impacto y confianza</h2>
+          <p data-i18n="landing.impact.desc">Indicadores claros para equipos ESG y comites de inclusion.</p>
+        </div>
+        <div class="grid grid-2">
+          <article class="card">
+            <h3 data-i18n="landing.impact.1.title">Diseno accesible por defecto</h3>
+            <ul class="clean-list">
+              <li data-i18n="landing.impact.1.li1">Contraste alto y tipografia clara.</li>
+              <li data-i18n="landing.impact.1.li2">Contenido por bloques para reducir carga cognitiva.</li>
+              <li data-i18n="landing.impact.1.li3">Ritmos visuales calmados y feedback inmediato.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3 data-i18n="landing.impact.2.title">Resultados visibles</h3>
+            <p data-i18n="landing.impact.2.desc">Panel ESG con retencion, bienestar y progreso de habilidades por cohorte.</p>
+            <div class="impact-row">
+              <span class="chip chip-success" data-i18n="landing.impact.chip1">+28% retencion</span>
+              <span class="chip chip-soft" data-i18n="landing.impact.chip2">-42% rotacion</span>
+              <span class="chip chip-soft" data-i18n="landing.impact.chip3">+36% clima</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <!-- Toast notification container -->
+  <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
 
   <footer class="site-footer">
     <div>
-      <p class="footer-title">Iclusion by Design</p>
-      <p class="footer-text">Accesible, modular y listo para escalar sobre infraestructura Azure.</p>
+      <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
+      <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
       <div class="footer-meta">
-        <span>(c) 2026 Iclusion</span>
+        <span data-i18n="footer.meta">&copy; 2026 IncluIA</span>
         <span>|</span>
-        <span class="ms-badge">
-          <img class="ms-logo" src="assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
-          Supported by Microsoft
-        </span>
+        <span class="ms-badge" data-i18n="footer.badge">Autenticación segura por Supabase</span>
       </div>
     </div>
     <div class="footer-links">
-      <a href="pages/landing.html" data-nav>Producto</a>
-      <a href="pages/login.html" data-nav>Acceso</a>
-      <a href="pages/mentoring.html" data-nav>Mentoria</a>
-      <a href="pages/dashboard-company.html" data-nav>ESG</a>
+      <a href="index.html" data-nav data-i18n="footer.links.login">Producto</a>
+      <a href="pages/donate.html" data-nav data-i18n="footer.links.esg">Apoyo</a>
+      <a href="pages/mentoring.html" data-nav data-i18n="footer.links.mentoring">Mentoría</a>
     </div>
   </footer>
 

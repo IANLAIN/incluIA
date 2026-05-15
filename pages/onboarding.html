@@ -1,0 +1,166 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>IncluIA | Onboarding</title>
+</head>
+<body>
+  <div id="page-content">
+    <section class="onboarding-layout" id="onboarding-flow">
+      
+      <div class="onboarding-header">
+        <h1 data-i18n="onboarding.title">Conozcámonos mejor</h1>
+        <p data-i18n="onboarding.desc">Queremos personalizar tu experiencia. No hay respuestas incorrectas.</p>
+      </div>
+
+      <div class="onboarding-step-indicator">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="barra-progreso" style="width: 20%;"></div>
+        </div>
+        <div class="step-text" id="texto-paso">Paso 1 de 5</div>
+      </div>
+
+      <!-- Paso 1 -->
+      <div class="step-container active" id="paso_1" data-multi="false">
+        <h2 class="step-title">¿Cómo te describes?</h2>
+        <div class="options-grid">
+          <div class="opcion-card" data-value="autismo">
+            <span class="emoji" aria-hidden="true">🧩</span>
+            <span>Tengo autismo</span>
+          </div>
+          <div class="opcion-card" data-value="tdah">
+            <span class="emoji" aria-hidden="true">⚡</span>
+            <span>Tengo TDAH</span>
+          </div>
+          <div class="opcion-card" data-value="down">
+            <span class="emoji" aria-hidden="true">💙</span>
+            <span>Tengo Down</span>
+          </div>
+          <div class="opcion-card" data-value="otra">
+            <span class="emoji" aria-hidden="true">🌈</span>
+            <span>Otra neurodivergencia</span>
+          </div>
+          <div class="opcion-card" data-value="prefiero_no_decirlo">
+            <span class="emoji" aria-hidden="true">🤔</span>
+            <span>Prefiero no decirlo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="step-container" id="paso_2" data-multi="false">
+        <h2 class="step-title">¿Qué tipo de trabajo te interesa?</h2>
+        <div class="options-grid">
+          <div class="opcion-card" data-value="tecnologia">
+            <span class="emoji" aria-hidden="true">💻</span>
+            <span>Tecnología</span>
+          </div>
+          <div class="opcion-card" data-value="arte">
+            <span class="emoji" aria-hidden="true">🎨</span>
+            <span>Arte y diseño</span>
+          </div>
+          <div class="opcion-card" data-value="logistica">
+            <span class="emoji" aria-hidden="true">📦</span>
+            <span>Logística</span>
+          </div>
+          <div class="opcion-card" data-value="ambiente">
+            <span class="emoji" aria-hidden="true">🌱</span>
+            <span>Medio ambiente</span>
+          </div>
+          <div class="opcion-card" data-value="atencion">
+            <span class="emoji" aria-hidden="true">📞</span>
+            <span>Atención</span>
+          </div>
+          <div class="opcion-card" data-value="manufactura">
+            <span class="emoji" aria-hidden="true">🔧</span>
+            <span>Manufactura</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="step-container" id="paso_3" data-multi="false">
+        <h2 class="step-title">¿Cómo prefieres trabajar?</h2>
+        <div class="options-grid">
+          <div class="opcion-card" data-value="casa">
+            <span class="emoji" aria-hidden="true">🏠</span>
+            <span>Desde casa</span>
+          </div>
+          <div class="opcion-card" data-value="oficina">
+            <span class="emoji" aria-hidden="true">🏢</span>
+            <span>En oficina</span>
+          </div>
+          <div class="opcion-card" data-value="mixto">
+            <span class="emoji" aria-hidden="true">🔀</span>
+            <span>Mixto</span>
+          </div>
+          <div class="opcion-card" data-value="nose">
+            <span class="emoji" aria-hidden="true">🤷</span>
+            <span>No sé aún</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 4 -->
+      <div class="step-container" id="paso_4" data-multi="false">
+        <h2 class="step-title">¿Qué ambiente de trabajo te hace sentir mejor?</h2>
+        <div class="options-grid">
+          <div class="opcion-card" data-value="silencioso">
+            <span class="emoji" aria-hidden="true">🤫</span>
+            <span>Silencioso</span>
+          </div>
+          <div class="opcion-card" data-value="musica">
+            <span class="emoji" aria-hidden="true">🎵</span>
+            <span>Con música</span>
+          </div>
+          <div class="opcion-card" data-value="equipo">
+            <span class="emoji" aria-hidden="true">👥</span>
+            <span>En equipo</span>
+          </div>
+          <div class="opcion-card" data-value="solo">
+            <span class="emoji" aria-hidden="true">👤</span>
+            <span>Solo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 5 -->
+      <div class="step-container" id="paso_5" data-multi="true">
+        <h2 class="step-title">¿Qué habilidades tienes o quieres desarrollar? <br><small style="font-size:14px; font-weight:normal;">(selecciona hasta 3)</small></h2>
+        <div class="options-grid">
+          <div class="opcion-card" data-value="computadores">
+            <span class="emoji" aria-hidden="true">🖥️</span>
+            <span>Computadores</span>
+          </div>
+          <div class="opcion-card" data-value="datos">
+            <span class="emoji" aria-hidden="true">📊</span>
+            <span>Datos</span>
+          </div>
+          <div class="opcion-card" data-value="dibujo">
+            <span class="emoji" aria-hidden="true">✏️</span>
+            <span>Dibujo</span>
+          </div>
+          <div class="opcion-card" data-value="comunicacion">
+            <span class="emoji" aria-hidden="true">🗣️</span>
+            <span>Comunicación</span>
+          </div>
+          <div class="opcion-card" data-value="orden">
+            <span class="emoji" aria-hidden="true">📦</span>
+            <span>Orden</span>
+          </div>
+          <div class="opcion-card" data-value="detalle">
+            <span class="emoji" aria-hidden="true">🔍</span>
+            <span>Detalle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="onboarding-actions">
+        <button id="btn-prev" class="btn btn-outline" style="display:none;">Atrás</button>
+        <button id="btn-next" class="btn btn-primary" style="margin-left:auto;">Siguiente</button>
+      </div>
+
+    </section>
+  </div>
+</body>
+</html>

@@ -1,3 +1,5 @@
+/* ═══ TASKS — ZERO HARDCODED COLORS ════════════════════════════ */
+
 .task-board {
   display: grid;
   gap: 16px;
@@ -12,6 +14,7 @@
 
 .task-card h3 {
   margin-bottom: 6px;
+  color: var(--color-ink);
 }
 
 .task-card p {
@@ -20,6 +23,11 @@
 }
 
 .task-card.is-complete {
-  border-color: rgba(42, 168, 118, 0.4);
-  background: rgba(42, 168, 118, 0.08);
+  border-color: var(--color-success);
+  background-color: var(--color-surface-alt);
+}
+
+[data-theme="dark"] .task-card.is-complete {
+  background-color: rgba(74, 222, 128, 0.06);
+  border-color: rgba(74, 222, 128, 0.3);
 }

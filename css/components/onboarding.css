@@ -1,59 +1,103 @@
-.stepper {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 12px;
+/* ═══ ONBOARDING — NEURO-ACCESSIBLE STYLES ════════════════════════════ */
+
+.onboarding-layout {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.step {
-  position: relative;
-  padding-left: 28px;
-  color: var(--color-muted);
+.onboarding-header {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
-.step::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 4px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid var(--color-border);
-  background: #fff;
+.onboarding-step-indicator {
+  margin-bottom: 24px;
 }
 
-.step.is-complete::before {
-  background: var(--color-success);
-  border-color: var(--color-success);
-}
-
-.step.is-active {
-  color: var(--color-primary-dark);
-  font-weight: 600;
-}
-
-.step.is-active::before {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
-}
-
-.skill-meter {
-  height: 10px;
-  background: #e9eff6;
-  border-radius: 999px;
-  position: relative;
+.progress-bar-wrap {
+  height: 8px;
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
   overflow: hidden;
+  margin-bottom: 8px;
 }
 
-.skill-meter::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+.progress-bar {
   height: 100%;
-  width: calc(var(--level) * 100%);
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-  border-radius: 999px;
+  background: var(--color-primary);
+  width: 20%;
+  transition: width 0.4s ease;
+  border-radius: var(--radius-pill);
+}
+
+.step-text {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.step-container {
+  display: none;
+  animation: fadeInUp var(--duration-base) var(--easing-enter);
+}
+
+.step-container.active {
+  display: block;
+}
+
+.step-title {
+  font-size: var(--text-lg);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.opcion-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  cursor: pointer;
+  text-align: center;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  font-size: var(--text-base);
+  font-family: var(--font-primary);
+}
+
+.opcion-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.opcion-card.seleccionada {
+  border-color: var(--btn-primary-bg);
+  background: var(--color-surface-alt);
+  box-shadow: var(--shadow-md);
+}
+
+.opcion-card .emoji {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
 }

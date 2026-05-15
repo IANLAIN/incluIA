@@ -1,0 +1,204 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IncluIA | Cómo apoyarnos</title>
+  <meta name="description" content="Apoya nuestra misión de inclusion laboral neurodivergente con donaciones y otras formas de ayudar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .payment-expand {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      margin-top: 0;
+    }
+    .payment-expand.open {
+      max-height: 400px;
+      opacity: 1;
+      margin-top: 16px;
+    }
+    .amount-grid {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .amount-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      color: var(--color-ink);
+    }
+    .amount-btn:hover, .amount-btn.selected {
+      border-color: var(--color-primary);
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .custom-amount {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .custom-amount input {
+      padding: 8px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      width: 100px;
+      background: var(--color-surface);
+      color: var(--color-ink);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">IncluIA</span>
+      <span class="brand-tag">Apoya nuestra misión</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      Menu
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+      <ul class="nav-list">
+        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-i18n="nav.mentoring">Mentoria</a></li>
+        <li><a href="donate.html" data-i18n="nav.donate">Cómo apoyarnos</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">🌙</button>
+      <div class="lang-selector">
+        <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+      </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div id="page-content">
+      <section class="section" aria-labelledby="donate-title">
+        <div class="section-header">
+          <h2 id="donate-title" data-i18n="donate.title">Cómo apoyarnos</h2>
+          <p data-i18n="donate.desc">Tu donación ayuda a expandir el acceso a oportunidades laborales inclusivas a nivel mundial.</p>
+        </div>
+        <div class="grid grid-2">
+          <article class="card">
+            <h3 data-i18n="donate.1.title">Donar con tarjeta</h3>
+            <p data-i18n="donate.1.desc">Contribuye de forma segura con Visa, Mastercard o American Express.</p>
+            <button class="btn btn-primary" data-i18n="donate.1.btn" onclick="togglePago('expand-stripe')">Donar con tarjeta</button>
+            <div id="expand-stripe" class="payment-expand">
+              <div class="amount-grid">
+                <button class="amount-btn">$5</button>
+                <button class="amount-btn selected">$10</button>
+                <button class="amount-btn">$25</button>
+                <button class="amount-btn">$50</button>
+                <button class="amount-btn">$100</button>
+              </div>
+              <div class="custom-amount">
+                <span>$</span>
+                <input type="number" placeholder="Otro monto" min="1" />
+                <span>USD</span>
+              </div>
+              <button class="btn btn-primary btn-full">Continuar al pago</button>
+            </div>
+          </article>
+          <article class="card">
+            <h3 data-i18n="donate.2.title">Donar con PayPal</h3>
+            <p data-i18n="donate.2.desc">Usa tu cuenta PayPal para apoyar nuestro proyecto global.</p>
+            <button class="btn btn-primary" data-i18n="donate.2.btn" onclick="togglePago('expand-paypal')">Donar con PayPal</button>
+            <div id="expand-paypal" class="payment-expand">
+              <div class="amount-grid">
+                <button class="amount-btn">$5</button>
+                <button class="amount-btn selected">$10</button>
+                <button class="amount-btn">$25</button>
+                <button class="amount-btn">$50</button>
+                <button class="amount-btn">$100</button>
+              </div>
+              <div class="custom-amount">
+                <span>$</span>
+                <input type="number" placeholder="Otro monto" min="1" />
+                <span>USD</span>
+              </div>
+              <div id="paypal-button-container" style="min-height: 40px; background: #ffc439; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; cursor: pointer;">
+                Pagar con PayPal
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3 data-i18n="donate.4.title">Otras formas de ayudar</h3>
+            <ul class="clean-list">
+              <li data-i18n="donate.4.li1">Comparte nuestra plataforma</li>
+              <li data-i18n="donate.4.li2">Únete como mentor</li>
+              <li data-i18n="donate.4.li3">Recomienda empresas aliadas</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module">
+    function togglePago(cardId) {
+      const tarjetas = ['expand-stripe', 'expand-paypal'];
+      tarjetas.forEach(id => {
+        if (id !== cardId) {
+          const el = document.getElementById(id);
+          if (el) el.classList.remove('open');
+        }
+      });
+      const target = document.getElementById(cardId);
+      if (target) target.classList.toggle('open');
+    }
+    
+    // Amount selection visual toggle logic
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('amount-btn')) {
+        const parent = e.target.closest('.amount-grid');
+        parent.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+        e.target.classList.add('selected');
+        const customInput = parent.nextElementSibling.querySelector('input');
+        if (customInput) customInput.value = '';
+      }
+    });
+
+    window.togglePago = togglePago;
+  </script>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
+      <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
+      <div class="footer-meta">
+        <span data-i18n="footer.meta">(c) 2026 IncluIA</span>
+        <span>|</span>
+        <span class="ms-badge" style="background-color: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-ink);" data-i18n="footer.badge">
+          Autenticación segura por Supabase
+        </span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html" data-i18n="footer.links.login">Acceso</a>
+      <a href="mentoring.html" data-i18n="footer.links.mentoring">Mentoria</a>
+      <a href="dashboard-company.html" data-i18n="footer.links.esg">ESG</a>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

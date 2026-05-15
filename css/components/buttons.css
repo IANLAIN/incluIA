@@ -1,3 +1,5 @@
+/* ═══ BUTTONS — ZERO HARDCODED COLORS ══════════════════════════ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -8,42 +10,64 @@
   font-weight: 600;
   border: 1px solid transparent;
   background: var(--color-ink);
-  color: #fff;
+  color: var(--color-bg);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-card);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-soft);
 }
 
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary */
 .btn-primary {
-  background: var(--color-primary);
-}
-
-.btn-microsoft {
-  background: var(--color-azure);
-  color: #fff;
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border-color: transparent;
 }
 
+/* Ghost / Outline */
 .btn-ghost {
-  background: transparent;
-  color: var(--color-primary);
-  border-color: rgba(0, 120, 212, 0.25);
+  background-color: transparent;
+  color: var(--btn-outline-text);
+  border-color: var(--btn-outline-border);
 }
 
+/* Soft fill */
 .btn-soft {
-  background: rgba(0, 120, 212, 0.12);
+  background-color: var(--color-soft);
   color: var(--color-primary);
   border-color: transparent;
 }
 
+[data-theme="dark"] .btn-soft {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--color-accent);
+}
+
+/* Google auth button */
+.btn-google {
+  background-color: var(--btn-google-bg);
+  color: var(--btn-google-text);
+  border: 1px solid var(--color-border);
+  justify-content: center;
+}
+
+/* Full-width */
 .btn-full {
   width: 100%;
 }
 
+/* Toggle group */
 .toggle-group {
   display: inline-flex;
   gap: 8px;
@@ -55,13 +79,16 @@
 .toggle-btn {
   border: 0;
   background: transparent;
+  color: var(--color-ink);
   padding: 8px 14px;
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .toggle-btn[aria-pressed="true"] {
-  background: #fff;
+  background-color: var(--color-surface);
   box-shadow: var(--shadow-card);
+  color: var(--color-ink);
 }

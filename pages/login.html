@@ -1,20 +1,22 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iclusion | Login y registro</title>
+  <title>IncluIA | Iniciar sesión</title>
   <meta name="description" content="Acceso seguro para candidatos y empresas aliadas." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <a class="skip-link" href="#page-content">Saltar al contenido principal</a>
+
   <header class="site-header">
     <div class="brand">
-      <span class="brand-mark">Iclusion</span>
+      <span class="brand-mark">IncluIA</span>
       <span class="brand-tag">Acceso accesible y seguro</span>
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
@@ -22,16 +24,21 @@
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
       <ul class="nav-list">
-        <li><a href="landing.html">Inicio</a></li>
-        <li><a href="login.html">Login y registro</a></li>
-        <li><a href="dashboard-candidate.html">Dashboard candidato</a></li>
-        <li><a href="dashboard-company.html">Dashboard empresa</a></li>
-        <li><a href="mentoring.html">Mentoria</a></li>
+        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-i18n="nav.mentoring">Mentoria</a></li>
+        <li><a href="donate.html" data-i18n="nav.donate">Cómo apoyarnos</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="landing.html">Volver</a>
-      <a class="btn btn-primary" href="dashboard-candidate.html">Entrar a demo</a>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">🌙</button>
+      <div class="lang-selector">
+        <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+      </select>
+      </div>
     </div>
   </header>
 
@@ -39,74 +46,55 @@
     <div id="page-content">
       <section class="auth-layout" data-auth-root>
         <div class="auth-panel">
-          <p class="eyebrow">Acceso seguro</p>
-          <h1>Ingresa a tu espacio</h1>
-          <p>Elige tu rol para personalizar el flujo.</p>
+          <div class="auth-header">
+            <p class="eyebrow" data-i18n="auth.login.eyebrow">Acceso seguro</p>
+            <h1 data-i18n="auth.login.title">Ingresa a tu espacio</h1>
+            <p data-i18n="auth.login.desc">Nos alegra tenerte de vuelta. Por favor, ingresa tus credenciales.</p>
+          </div>
 
           <div class="support-row">
-            <span class="ms-badge">
-              <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
-              Supported by Microsoft
+            <span class="ms-badge" data-i18n="auth.support.supabase">
+              Autenticación segura por Supabase
             </span>
           </div>
 
-          <fieldset class="role-selector">
-            <legend>Selecciona tu rol</legend>
-            <label class="role-card">
-              <input type="radio" name="role" value="candidato" checked />
-              <span>Candidato</span>
-              <small>Apoyo visual, lenguaje simple y pasos guiados.</small>
-            </label>
-            <label class="role-card">
-              <input type="radio" name="role" value="empresa" />
-              <span>Empresa aliada</span>
-              <small>Panel ESG, match y guia de adaptacion.</small>
-            </label>
-          </fieldset>
-
-          <p class="role-output" data-role-output></p>
-
           <div class="auth-provider">
-            <button class="btn btn-microsoft btn-full" type="button" data-ms-login>
-              <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
-              Sign in with Microsoft
+            <button class="btn btn-google btn-full" type="button" data-google-login>
+              <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
+              <span data-i18n="auth.btn.google.login">Continuar con Google</span>
             </button>
-            <div class="auth-divider">o continuar con correo</div>
+            <div class="auth-divider" data-i18n="auth.divider">o continuar con correo</div>
             <p class="ms-status" data-ms-status role="status" aria-live="polite"></p>
           </div>
 
-          <div class="toggle-group" role="tablist" aria-label="Tipo de acceso">
-            <button type="button" class="toggle-btn" data-auth-mode="login" aria-pressed="true">Login</button>
-            <button type="button" class="toggle-btn" data-auth-mode="register" aria-pressed="false">Registro</button>
-          </div>
-
           <div class="auth-panels">
-            <form class="auth-form" data-auth-panel="login">
+            <form id="login-form" class="auth-form">
               <div class="field">
-                <label for="login-email">Correo</label>
+                <label for="login-email" data-i18n="auth.label.email">Correo electrónico</label>
                 <input id="login-email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" required />
               </div>
               <div class="field">
-                <label for="login-password">Contrasena</label>
-                <input id="login-password" name="password" type="password" placeholder="Minimo 8 caracteres" required />
+                <label class="field-label" for="login-password" data-i18n="auth.label.password">Contraseña</label>
+                <div class="input-wrap">
+                  <input class="pass-input" type="password" id="login-password" name="password" placeholder="Mínimo 8 caracteres" required />
+                  <button class="eye-btn" id="loginEyeBtn" type="button" aria-label="Mostrar contraseña">
+                    <svg class="eye-svg" id="iconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    <svg class="eye-svg" id="iconClosed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <button class="btn btn-primary" type="submit">Entrar</button>
-            </form>
-
-            <form class="auth-form" data-auth-panel="register" hidden>
-              <div class="field">
-                <label for="register-name">Nombre completo</label>
-                <input id="register-name" name="name" type="text" placeholder="Nombre y apellido" autocomplete="name" required />
-              </div>
-              <div class="field">
-                <label for="register-email">Correo</label>
-                <input id="register-email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" required />
-              </div>
-              <div class="field">
-                <label for="register-password">Contrasena</label>
-                <input id="register-password" name="password" type="password" placeholder="Minimo 8 caracteres" required />
-              </div>
-              <button class="btn btn-primary" type="submit">Crear cuenta</button>
+              <button class="btn btn-primary" type="submit" data-i18n="auth.btn.submit.login">Entrar</button>
+              <p class="auth-hint">
+                <span data-i18n="auth.hint.login">¿No tienes una cuenta?</span>
+                <a href="register.html" data-i18n="auth.hint.login.link">Regístrate aquí</a>
+              </p>
             </form>
           </div>
         </div>
@@ -130,21 +118,20 @@
 
   <footer class="site-footer">
     <div>
-      <p class="footer-title">Iclusion by Design</p>
-      <p class="footer-text">Acceso inclusivo para candidatos y empresas.</p>
+      <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
+      <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
       <div class="footer-meta">
-        <span>(c) 2026 Iclusion</span>
+        <span data-i18n="footer.meta">(c) 2026 IncluIA</span>
         <span>|</span>
-        <span class="ms-badge">
-          <img class="ms-logo" src="../assets/icons/icon-microsoft.svg" alt="" aria-hidden="true" />
-          Supported by Microsoft
+        <span class="ms-badge" data-i18n="footer.badge">
+          Autenticación segura por Supabase
         </span>
       </div>
     </div>
     <div class="footer-links">
-      <a href="landing.html">Producto</a>
-      <a href="dashboard-company.html">ESG</a>
-      <a href="mentoring.html">Mentoria</a>
+      <a href="login.html" data-i18n="footer.links.login">Acceso</a>
+      <a href="dashboard-company.html" data-i18n="footer.links.esg">ESG</a>
+      <a href="mentoring.html" data-i18n="footer.links.mentoring">Mentoria</a>
     </div>
   </footer>
 
