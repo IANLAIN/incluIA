@@ -152,7 +152,8 @@ function updateAuthUI() {
     try {
       const client = window.supabase.createClient(supabaseUrl, supabaseKey);
       client.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
+        const isDemo = localStorage.getItem("demo_session") === "true";
+        if (session || isDemo) {
           btnLogout?.classList.remove("hidden");
           btnLogin?.classList.add("hidden");
         } else {
@@ -228,16 +229,17 @@ async function checkAuthAndLoad(path, options) {
       const supabaseKey = "sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE";
       const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
       const { data: { session } } = await supabaseClient.auth.getSession();
+      const isDemo = localStorage.getItem("demo_session") === "true";
 
       // Dashboard protection — require session
-      if (isDashboard && !session) {
+      if (isDashboard && !session && !isDemo) {
         loadPage("pages/login.html", options);
         return;
       }
 
       // Redirect to dashboard if logged in and visiting auth pages
       if (
-        session &&
+        (session || isDemo) &&
         (path === defaultRoute ||
           path.includes("login") ||
           path.includes("register"))

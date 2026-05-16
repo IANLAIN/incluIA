@@ -256,6 +256,7 @@ function setLanguage(lang) {
 
 export function initLanguageGate() {
   if (document.getElementById("language-gate")) return;
+  if (localStorage.getItem("app-lang")) return;
 
   const gate = document.createElement("div");
   gate.id = "language-gate";
@@ -263,6 +264,7 @@ export function initLanguageGate() {
   gate.setAttribute("role", "dialog");
   gate.setAttribute("aria-modal", "true");
   gate.setAttribute("aria-labelledby", "language-gate-title");
+  gate.tabIndex = -1;
   gate.innerHTML = `
     <div class="language-gate-card card">
       <p class="eyebrow">Idioma / Language</p>
@@ -277,17 +279,20 @@ export function initLanguageGate() {
       <p class="language-gate-note">Puedes cambiarlo en cualquier momento desde la barra superior.</p>
     </div>
   `;
-  document.body.appendChild(gate);
+  document.body.insertBefore(gate, document.body.firstChild);
 
   gate.querySelectorAll("[data-gate-lang]").forEach(btn => {
     btn.addEventListener("click", () => {
       setLanguage(btn.getAttribute("data-gate-lang"));
       gate.remove();
-      document.getElementById("app")?.focus?.();
+      document.querySelector(".skip-link")?.focus?.() || document.getElementById("app")?.focus?.();
     });
   });
 
-  requestAnimationFrame(() => gate.classList.add("is-visible"));
+  requestAnimationFrame(() => {
+    gate.classList.add("is-visible");
+    gate.focus();
+  });
 }
 
 export function initI18nSelect() {

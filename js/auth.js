@@ -26,6 +26,7 @@ export function initAuth(root = document) {
     localStorage.removeItem("user_role");
     localStorage.removeItem("user_id");
     localStorage.removeItem("pending_role");
+    localStorage.removeItem("demo_session");
     if (window.__spaNavigate) {
       window.__spaNavigate("index.html");
     } else {
@@ -198,6 +199,22 @@ export function initAuth(root = document) {
 
       setLoading(submitBtn, true, originalBtnText);
       setStatus(statusEl, "info", "⏳", "Verificando credenciales...");
+
+      // Cuentas de muestra (Bypass para Dashboard)
+      if (email === "demo.candidato@incluia.org" && pass === "Demo1234!") {
+        setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
+        localStorage.setItem("user_role", "candidate");
+        localStorage.setItem("demo_session", "true");
+        setTimeout(() => redirectToDashboard(), 800);
+        return;
+      }
+      if (email === "demo.empresa@incluia.org" && pass === "Demo1234!") {
+        setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
+        localStorage.setItem("user_role", "company");
+        localStorage.setItem("demo_session", "true");
+        setTimeout(() => redirectToDashboard(), 800);
+        return;
+      }
 
       try {
         const result = await supabaseClient.auth.signInWithPassword({
