@@ -1,55 +1,63 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IncluIA | Dashboard empresa</title>
-  <meta name="description" content="Portal corporativo con match, guias y metricas ESG." />
+  <meta name="description" content="Portal corporativo con match, guías y métricas ESG." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
+  </script>
 </head>
 <body>
 
   <header class="site-header">
-    <div class="brand">
+    <a href="../index.html" class="brand brand-link" data-nav>
       <span class="brand-mark">IncluIA</span>
       <span class="brand-tag">Portal corporativo</span>
-    </div>
+    </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
-      Menu
+      ☰ Menú
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
       <ul class="nav-list">
-        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
-        <li><a href="mentoring.html" data-i18n="nav.mentoring">Mentoria</a></li>
-        <li><a href="donate.html" data-i18n="nav.donate">Cómo apoyarnos</a></li>
+        <li><a href="../index.html" data-nav data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
+        <li><a href="donate.html" data-nav data-i18n="nav.donate">Cómo apoyarnos</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">🌙</button>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">☾</button>
+      <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
       <div class="lang-selector">
         <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="pt">Português</option>
-      </select>
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="pt">Português</option>
+        </select>
       </div>
+      <button class="btn btn-ghost btn-sm" data-logout>Cerrar sesión</button>
     </div>
   </header>
 
-  <main class="page">
+  <main class="page" data-auth-root>
     <div id="page-content">
       <section class="dashboard-hero card">
-        <span class="azure-pill badge-corner">Powered by Azure AI</span>
         <div>
           <p class="eyebrow" data-i18n="dash.comp.hero.eyebrow">Panel ESG y talento</p>
           <h1 data-i18n="dash.comp.hero.title">Empresa aliada: Nube Verde</h1>
-          <p data-i18n="dash.comp.hero.desc">Resumen de candidatos, guias de adaptacion y metricas de impacto.</p>
-          <p class="hint" data-i18n="dash.comp.hero.hint">Operando sobre infraestructura Azure con seguridad empresarial.</p>
+          <p data-i18n="dash.comp.hero.desc">Resumen de candidatos, guías de adaptación y métricas de impacto.</p>
+          <p class="hint" data-i18n="dash.comp.hero.hint">Operando sobre infraestructura segura.</p>
         </div>
         <div class="hero-actions">
           <button class="btn btn-primary" type="button" data-i18n="dash.comp.hero.btn.interview">Programar entrevista</button>
@@ -78,7 +86,7 @@
             <p data-i18n="dash.comp.match.2.desc">Soporte TI, buen manejo de procesos y checklists.</p>
             <div class="tag-row">
               <span class="chip">IT</span>
-              <span class="chip">Hibrido</span>
+              <span class="chip">Híbrido</span>
             </div>
           </article>
           <article class="match-card card">
@@ -95,8 +103,8 @@
 
       <section class="section" aria-labelledby="guide-title">
         <div class="section-header">
-          <h2 id="guide-title" data-i18n="dash.comp.guide.title">Generador de guia de adaptacion del puesto</h2>
-          <p data-i18n="dash.comp.guide.desc">Simulacion de IA responsable para sugerir ajustes.</p>
+          <h2 id="guide-title" data-i18n="dash.comp.guide.title">Generador de guía de adaptación del puesto</h2>
+          <p data-i18n="dash.comp.guide.desc">Simulación de IA responsable para sugerir ajustes.</p>
         </div>
         <div class="card" data-guide-generator>
           <div class="field">
@@ -107,30 +115,30 @@
             <label for="context-input" data-i18n="dash.comp.guide.context">Contexto</label>
             <textarea id="context-input" rows="3">Equipo remoto con reuniones semanales.</textarea>
           </div>
-          <button class="btn btn-primary" type="button" data-guide-action data-i18n="dash.comp.guide.btn">Generar guia</button>
+          <button class="btn btn-primary" type="button" data-guide-action data-i18n="dash.comp.guide.btn">Generar guía</button>
           <div class="guide-output" data-guide-output aria-live="polite" data-i18n="dash.comp.guide.output">
-            Las recomendaciones apareceran aqui.
+            Las recomendaciones aparecerán aquí.
           </div>
         </div>
       </section>
 
       <section class="section" aria-labelledby="esg-title">
         <div class="section-header">
-          <h2 id="esg-title" data-i18n="dash.comp.esg.title">Metricas de impacto social</h2>
-          <p data-i18n="dash.comp.esg.desc">Real-time analytics Supported by Microsoft Power BI.</p>
+          <h2 id="esg-title" data-i18n="dash.comp.esg.title">Métricas de impacto social</h2>
+          <p data-i18n="dash.comp.esg.desc">Analytics en tiempo real.</p>
         </div>
         <div class="grid grid-3">
           <div class="card chart-card">
-            <h3 data-i18n="dash.comp.esg.1">Retencion</h3>
-            <div class="chart" data-chart data-values="72,84,91" data-labels="Q1,Q2,Q3" aria-label="Retencion trimestral en porcentaje"></div>
+            <h3 data-i18n="dash.comp.esg.1">Retención</h3>
+            <div class="chart" data-chart data-values="72,84,91" data-labels="Q1,Q2,Q3" aria-label="Retención trimestral en porcentaje"></div>
           </div>
           <div class="card chart-card">
             <h3 data-i18n="dash.comp.esg.2">Bienestar</h3>
             <div class="chart" data-chart data-values="68,74,82" data-labels="Q1,Q2,Q3" aria-label="Bienestar trimestral en porcentaje"></div>
           </div>
           <div class="card chart-card">
-            <h3 data-i18n="dash.comp.esg.3">Capacitacion</h3>
-            <div class="chart" data-chart data-values="55,69,88" data-labels="Q1,Q2,Q3" aria-label="Capacitacion trimestral en porcentaje"></div>
+            <h3 data-i18n="dash.comp.esg.3">Capacitación</h3>
+            <div class="chart" data-chart data-values="55,69,88" data-labels="Q1,Q2,Q3" aria-label="Capacitación trimestral en porcentaje"></div>
           </div>
         </div>
       </section>
@@ -142,17 +150,15 @@
       <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
       <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
       <div class="footer-meta">
-        <span data-i18n="footer.meta">(c) 2026 IncluIA</span>
+        <span data-i18n="footer.meta">&copy; 2026 IncluIA</span>
         <span>|</span>
-        <span class="ms-badge" style="background-color: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-ink);" data-i18n="footer.badge">
-          Autenticación segura por Supabase
-        </span>
+        <span class="ms-badge" data-i18n="footer.badge">Autenticación segura por Supabase</span>
       </div>
     </div>
     <div class="footer-links">
-      <a href="../index.html" data-i18n="footer.links.login">Acceso</a>
-      <a href="mentoring.html" data-i18n="footer.links.mentoring">Mentoria</a>
-      <a href="dashboard-company.html" data-i18n="footer.links.esg">ESG</a>
+      <a href="../index.html" data-nav data-i18n="footer.links.login">Producto</a>
+      <a href="mentoring.html" data-nav data-i18n="footer.links.mentoring">Mentoría</a>
+      <a href="donate.html" data-nav data-i18n="footer.links.esg">Apoyo</a>
     </div>
   </footer>
 

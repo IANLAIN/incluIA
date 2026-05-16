@@ -1,13 +1,27 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IncluIA | Onboarding</title>
+  <meta name="description" content="Cuestionario de onboarding para personalizar tu experiencia en IncluIA." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
+  </script>
 </head>
 <body>
   <div id="page-content">
     <section class="onboarding-layout" id="onboarding-flow">
-      
+
       <div class="onboarding-header">
         <h1 data-i18n="onboarding.title">Conozcámonos mejor</h1>
         <p data-i18n="onboarding.desc">Queremos personalizar tu experiencia. No hay respuestas incorrectas.</p>
@@ -20,8 +34,8 @@
         <div class="step-text" id="texto-paso">Paso 1 de 5</div>
       </div>
 
-      <!-- Paso 1 -->
-      <div class="step-container active" id="paso_1" data-multi="false">
+      <!-- Step 1 -->
+      <div class="step-container active" id="step-1" data-multi="false">
         <h2 class="step-title">¿Cómo te describes?</h2>
         <div class="options-grid">
           <div class="opcion-card" data-value="autismo">
@@ -34,7 +48,7 @@
           </div>
           <div class="opcion-card" data-value="down">
             <span class="emoji" aria-hidden="true">💙</span>
-            <span>Tengo Down</span>
+            <span>Tengo síndrome de Down</span>
           </div>
           <div class="opcion-card" data-value="otra">
             <span class="emoji" aria-hidden="true">🌈</span>
@@ -47,8 +61,8 @@
         </div>
       </div>
 
-      <!-- Paso 2 -->
-      <div class="step-container" id="paso_2" data-multi="false">
+      <!-- Step 2 -->
+      <div class="step-container" id="step-2" data-multi="false">
         <h2 class="step-title">¿Qué tipo de trabajo te interesa?</h2>
         <div class="options-grid">
           <div class="opcion-card" data-value="tecnologia">
@@ -78,8 +92,8 @@
         </div>
       </div>
 
-      <!-- Paso 3 -->
-      <div class="step-container" id="paso_3" data-multi="false">
+      <!-- Step 3 -->
+      <div class="step-container" id="step-3" data-multi="false">
         <h2 class="step-title">¿Cómo prefieres trabajar?</h2>
         <div class="options-grid">
           <div class="opcion-card" data-value="casa">
@@ -101,8 +115,8 @@
         </div>
       </div>
 
-      <!-- Paso 4 -->
-      <div class="step-container" id="paso_4" data-multi="false">
+      <!-- Step 4 -->
+      <div class="step-container" id="step-4" data-multi="false">
         <h2 class="step-title">¿Qué ambiente de trabajo te hace sentir mejor?</h2>
         <div class="options-grid">
           <div class="opcion-card" data-value="silencioso">
@@ -124,8 +138,8 @@
         </div>
       </div>
 
-      <!-- Paso 5 -->
-      <div class="step-container" id="paso_5" data-multi="true">
+      <!-- Step 5 -->
+      <div class="step-container" id="step-5" data-multi="true">
         <h2 class="step-title">¿Qué habilidades tienes o quieres desarrollar? <br><small style="font-size:14px; font-weight:normal;">(selecciona hasta 3)</small></h2>
         <div class="options-grid">
           <div class="opcion-card" data-value="computadores">

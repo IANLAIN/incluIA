@@ -1,42 +1,49 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IncluIA | Mentoria</title>
-  <meta name="description" content="Centro de mentoria con chat simulado." />
+  <title>IncluIA | Mentoría</title>
+  <meta name="description" content="Centro de mentoría con chat simulado." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <script>
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
+  </script>
 </head>
 <body>
 
   <header class="site-header">
-    <div class="brand">
+    <a href="../index.html" class="brand brand-link" data-nav>
       <span class="brand-mark">IncluIA</span>
-      <span class="brand-tag">Centro de mentoria</span>
-    </div>
+      <span class="brand-tag">Centro de mentoría</span>
+    </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
-      Menu
+      ☰ Menú
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
       <ul class="nav-list">
-        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
-        <li><a href="mentoring.html" data-i18n="nav.mentoring">Mentoria</a></li>
-        <li><a href="donate.html" data-i18n="nav.donate">Cómo apoyarnos</a></li>
+        <li><a href="../index.html" data-nav data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
+        <li><a href="donate.html" data-nav data-i18n="nav.donate">Cómo apoyarnos</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">🌙</button>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">☾</button>
+      <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
       <div class="lang-selector">
         <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="pt">Português</option>
-      </select>
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="pt">Português</option>
+        </select>
       </div>
     </div>
   </header>
@@ -45,7 +52,7 @@
     <div id="page-content">
       <section class="section" aria-labelledby="mentor-title">
         <div class="section-header">
-          <h1 id="mentor-title" data-i18n="ment.title">Mentoria activa</h1>
+          <h1 id="mentor-title" data-i18n="ment.title">Mentoría activa</h1>
           <p data-i18n="ment.desc">Chat simulado para seguimiento diario.</p>
         </div>
         <div class="mentor-layout">
@@ -53,19 +60,19 @@
             <h2 data-i18n="ment.list.title">Mentores</h2>
             <ul class="clean-list">
               <li class="mentor-item is-active" data-i18n="ment.list.1">Carla M. - Bienestar</li>
-              <li class="mentor-item" data-i18n="ment.list.2">Raul T. - Productividad</li>
-              <li class="mentor-item" data-i18n="ment.list.3">Luz P. - Comunicacion</li>
+              <li class="mentor-item" data-i18n="ment.list.2">Raúl T. - Productividad</li>
+              <li class="mentor-item" data-i18n="ment.list.3">Luz P. - Comunicación</li>
             </ul>
           </aside>
 
           <section class="chat-panel card" aria-label="Chat con mentor">
             <div class="chat-thread" data-chat-thread aria-live="polite">
               <div class="message message-in">
-                <p data-i18n="ment.chat.1">Hola Alex, como estuvo tu energia hoy?</p>
+                <p data-i18n="ment.chat.1">Hola Alex, ¿cómo estuvo tu energía hoy?</p>
                 <span class="message-time">09:40</span>
               </div>
               <div class="message message-out">
-                <p data-i18n="ment.chat.2">Bien. Me ayudo tener la lista de tareas clara.</p>
+                <p data-i18n="ment.chat.2">Bien. Me ayudó tener la lista de tareas clara.</p>
                 <span class="message-time">09:42</span>
               </div>
               <div class="message message-in">
@@ -75,7 +82,7 @@
             </div>
             <form class="chat-form" data-chat-form>
               <label class="visually-hidden" for="chat-input">Escribe un mensaje</label>
-              <input id="chat-input" type="text" placeholder="Escribe un mensaje" data-chat-input />
+              <input id="chat-input" type="text" placeholder="Escribe un mensaje..." data-chat-input />
               <button class="btn btn-primary" type="submit" data-i18n="ment.chat.btn">Enviar</button>
             </form>
           </section>
@@ -89,17 +96,15 @@
       <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
       <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
       <div class="footer-meta">
-        <span data-i18n="footer.meta">(c) 2026 IncluIA</span>
+        <span data-i18n="footer.meta">&copy; 2026 IncluIA</span>
         <span>|</span>
-        <span class="ms-badge" style="background-color: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-ink);" data-i18n="footer.badge">
-          Autenticación segura por Supabase
-        </span>
+        <span class="ms-badge" data-i18n="footer.badge">Autenticación segura por Supabase</span>
       </div>
     </div>
     <div class="footer-links">
-      <a href="../index.html" data-i18n="footer.links.login">Acceso</a>
-      <a href="dashboard-company.html" data-i18n="footer.links.esg">ESG</a>
-      <a href="login.html" data-i18n="footer.links.mentoring">Mentoria</a>
+      <a href="../index.html" data-nav data-i18n="footer.links.login">Producto</a>
+      <a href="donate.html" data-nav data-i18n="footer.links.esg">Apoyo</a>
+      <a href="mentoring.html" data-nav data-i18n="footer.links.mentoring">Mentoría</a>
     </div>
   </footer>
 

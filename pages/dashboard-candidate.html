@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -10,52 +10,60 @@
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
+  </script>
 </head>
 <body>
 
   <header class="site-header">
-    <div class="brand">
+    <a href="../index.html" class="brand brand-link" data-nav>
       <span class="brand-mark">IncluIA</span>
       <span class="brand-tag">Panel del candidato</span>
-    </div>
+    </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
-      Menu
+      ☰ Menú
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
       <ul class="nav-list">
-        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
-        <li><a href="mentoring.html" data-i18n="nav.mentoring">Mentoria</a></li>
-        <li><a href="donate.html" data-i18n="nav.donate">Cómo apoyarnos</a></li>
+        <li><a href="../index.html" data-nav data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
+        <li><a href="donate.html" data-nav data-i18n="nav.donate">Cómo apoyarnos</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">🌙</button>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">☾</button>
+      <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
       <div class="lang-selector">
         <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="pt">Português</option>
-      </select>
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="pt">Português</option>
+        </select>
       </div>
+      <button class="btn btn-ghost btn-sm" data-logout>Cerrar sesión</button>
     </div>
   </header>
 
-  <main class="page">
+  <main class="page" data-auth-root>
     <div id="page-content">
       <section class="dashboard-hero card">
-        <span class="azure-pill badge-corner">Powered by Azure AI</span>
         <div>
           <p class="eyebrow" data-i18n="dash.cand.hero.eyebrow">Tu progreso hoy</p>
-          <h1 data-i18n="dash.cand.hero.title">Hola, Alex. Tu ruta esta clara y guiada.</h1>
-          <p data-i18n="dash.cand.hero.desc">Recuerda: puedes activar lenguaje simple en cualquier instruccion.</p>
-          <p class="hint" data-i18n="dash.cand.hero.hint">Infraestructura Azure para rendimiento y seguridad.</p>
+          <h1 data-i18n="dash.cand.hero.title">Hola, Alex. Tu ruta está clara y guiada.</h1>
+          <p data-i18n="dash.cand.hero.desc">Recuerda: puedes activar lenguaje simple en cualquier instrucción.</p>
+          <p class="hint" data-i18n="dash.cand.hero.hint">Infraestructura Supabase para rendimiento y seguridad.</p>
         </div>
         <div class="hero-actions">
           <button class="btn btn-primary" type="button" data-simplify data-target="instruction-text" data-i18n="dash.cand.hero.btn.simplify">
             Simplificar instrucciones
           </button>
-          <a class="btn btn-ghost" href="mentoring.html" data-i18n="dash.cand.hero.btn.mentor">Hablar con mentor</a>
+          <a class="btn btn-ghost" href="mentoring.html" data-nav data-i18n="dash.cand.hero.btn.mentor">Hablar con mentor</a>
         </div>
       </section>
 
@@ -69,10 +77,10 @@
             1. Completa tu perfil sensorial. 2. Elige horarios preferidos. 3. Revisa tu primer reto.
           </p>
           <ol class="stepper">
-            <li class="step is-complete" data-i18n="dash.cand.onboard.step1">Perfil sensorial</li>
-            <li class="step is-active" data-i18n="dash.cand.onboard.step2">Rutina diaria</li>
-            <li class="step" data-i18n="dash.cand.onboard.step3">Primer reto</li>
-            <li class="step" data-i18n="dash.cand.onboard.step4">Feedback inicial</li>
+            <li class="stepper-step is-complete" data-i18n="dash.cand.onboard.step1">Perfil sensorial</li>
+            <li class="stepper-step is-active" data-i18n="dash.cand.onboard.step2">Rutina diaria</li>
+            <li class="stepper-step" data-i18n="dash.cand.onboard.step3">Primer reto</li>
+            <li class="stepper-step" data-i18n="dash.cand.onboard.step4">Feedback inicial</li>
           </ol>
         </div>
       </section>
@@ -85,8 +93,8 @@
         <div class="task-board">
           <article class="task-card card">
             <div>
-              <h3 data-i18n="dash.cand.task.1.title">Check-in de energia</h3>
-              <p data-i18n="dash.cand.task.1.desc">Registro rapido de tu nivel de energia.</p>
+              <h3 data-i18n="dash.cand.task.1.title">Check-in de energía</h3>
+              <p data-i18n="dash.cand.task.1.desc">Registro rápido de tu nivel de energía.</p>
               <progress value="60" max="100"></progress>
             </div>
             <button class="btn btn-soft" type="button" data-task-toggle data-i18n="dash.cand.task.btn">Completar</button>
@@ -94,14 +102,14 @@
           <article class="task-card card">
             <div>
               <h3 data-i18n="dash.cand.task.2.title">Micro aprendizaje</h3>
-              <p data-i18n="dash.cand.task.2.desc">Video de 3 minutos sobre comunicacion efectiva.</p>
+              <p data-i18n="dash.cand.task.2.desc">Video de 3 minutos sobre comunicación efectiva.</p>
               <progress value="30" max="100"></progress>
             </div>
             <button class="btn btn-soft" type="button" data-task-toggle data-i18n="dash.cand.task.btn">Completar</button>
           </article>
           <article class="task-card card">
             <div>
-              <h3 data-i18n="dash.cand.task.3.title">Reto practico</h3>
+              <h3 data-i18n="dash.cand.task.3.title">Reto práctico</h3>
               <p data-i18n="dash.cand.task.3.desc">Organiza tu espacio digital con una lista simple.</p>
               <progress value="10" max="100"></progress>
             </div>
@@ -117,19 +125,19 @@
         </div>
         <div class="grid grid-3">
           <article class="skill-card card">
-            <h3 data-i18n="dash.cand.skill.1.title">Analisis de datos</h3>
+            <h3 data-i18n="dash.cand.skill.1.title">Análisis de datos</h3>
             <div class="skill-meter" style="--level: 0.82"></div>
             <p class="skill-note" data-i18n="dash.cand.skill.1.desc">Fuerte en patrones y detalle.</p>
           </article>
           <article class="skill-card card">
-            <h3 data-i18n="dash.cand.skill.2.title">Comunicacion escrita</h3>
+            <h3 data-i18n="dash.cand.skill.2.title">Comunicación escrita</h3>
             <div class="skill-meter" style="--level: 0.68"></div>
             <p class="skill-note" data-i18n="dash.cand.skill.2.desc">Mejora con plantillas breves.</p>
           </article>
           <article class="skill-card card">
             <h3 data-i18n="dash.cand.skill.3.title">Trabajo en foco</h3>
             <div class="skill-meter" style="--level: 0.9"></div>
-            <p class="skill-note" data-i18n="dash.cand.skill.3.desc">Alta concentracion en tareas secuenciales.</p>
+            <p class="skill-note" data-i18n="dash.cand.skill.3.desc">Alta concentración en tareas secuenciales.</p>
           </article>
         </div>
       </section>
@@ -141,17 +149,15 @@
       <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
       <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
       <div class="footer-meta">
-        <span data-i18n="footer.meta">(c) 2026 IncluIA</span>
+        <span data-i18n="footer.meta">&copy; 2026 IncluIA</span>
         <span>|</span>
-        <span class="ms-badge" style="background-color: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-ink);" data-i18n="footer.badge">
-          Autenticación segura por Supabase
-        </span>
+        <span class="ms-badge" data-i18n="footer.badge">Autenticación segura por Supabase</span>
       </div>
     </div>
     <div class="footer-links">
-      <a href="../index.html" data-i18n="footer.links.login">Acceso</a>
-      <a href="mentoring.html" data-i18n="footer.links.mentoring">Mentoria</a>
-      <a href="dashboard-company.html" data-i18n="footer.links.esg">ESG</a>
+      <a href="../index.html" data-nav data-i18n="footer.links.login">Producto</a>
+      <a href="mentoring.html" data-nav data-i18n="footer.links.mentoring">Mentoría</a>
+      <a href="donate.html" data-nav data-i18n="footer.links.esg">Apoyo</a>
     </div>
   </footer>
 

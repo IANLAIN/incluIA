@@ -1,3 +1,7 @@
+/**
+ * onboarding.js — Sensory profile questionnaire flow
+ * Handles step navigation, option selection, and profile saving.
+ */
 export function initOnboarding(root = document) {
   const onboardingRoot = root.querySelector('#onboarding-flow');
   if (!onboardingRoot) return;
@@ -11,19 +15,20 @@ export function initOnboarding(root = document) {
   const progressBar = root.querySelector('#barra-progreso');
   const stepText = root.querySelector('#texto-paso');
 
+  if (!btnNext || !btnPrev) return;
+
   function mostrarPaso(paso) {
     root.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
     const stepEl = root.querySelector(`#step-${paso}`);
     if (stepEl) {
       stepEl.classList.add('active');
     }
-    btnPrev.style.display = paso === 1 ? 'none' : 'block';
-    
-    // Si estamos en el último paso y ya hay opciones seleccionadas
+    btnPrev.style.display = paso === 1 ? 'none' : 'inline-flex';
+
     if (paso === totalPasos) {
-       btnNext.textContent = 'Finalizar';
+      btnNext.textContent = 'Finalizar';
     } else {
-       btnNext.textContent = 'Siguiente';
+      btnNext.textContent = 'Siguiente';
     }
   }
 
@@ -37,6 +42,7 @@ export function initOnboarding(root = document) {
   root.querySelectorAll('.opcion-card').forEach(card => {
     card.addEventListener('click', () => {
       const parentStep = card.closest('.step-container');
+      if (!parentStep) return;
       const isMulti = parentStep.dataset.multi === 'true';
       const stepId = parentStep.id;
 
@@ -44,7 +50,7 @@ export function initOnboarding(root = document) {
         // Single selection
         parentStep.querySelectorAll('.opcion-card').forEach(c => c.classList.remove('seleccionada'));
         card.classList.add('seleccionada');
-        
+
         // Auto-advance for single selection
         respuestas[stepId] = card.dataset.value;
         setTimeout(() => siguientePaso(), 400);
@@ -53,12 +59,18 @@ export function initOnboarding(root = document) {
         card.classList.toggle('seleccionada');
         const seleccionadas = Array.from(parentStep.querySelectorAll('.opcion-card.seleccionada')).map(c => c.dataset.value);
         respuestas[stepId] = seleccionadas;
-        
+
         // Disable more than 3
         if (seleccionadas.length >= 3) {
-           parentStep.querySelectorAll('.opcion-card:not(.seleccionada)').forEach(c => c.style.opacity = '0.5');
+          parentStep.querySelectorAll('.opcion-card:not(.seleccionada)').forEach(c => {
+            c.style.opacity = '0.4';
+            c.style.pointerEvents = 'none';
+          });
         } else {
-           parentStep.querySelectorAll('.opcion-card').forEach(c => c.style.opacity = '1');
+          parentStep.querySelectorAll('.opcion-card').forEach(c => {
+            c.style.opacity = '1';
+            c.style.pointerEvents = 'auto';
+          });
         }
       }
     });
@@ -68,17 +80,22 @@ export function initOnboarding(root = document) {
     btnNext.disabled = true;
     btnNext.textContent = 'Guardando...';
     try {
-      const supabaseClient = window.supabase.createClient('https://oupbptgzfevkzzvscekj.supabase.co', 'sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE');
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      
-      if (session) {
-        const userId = session.user.id;
-        await supabaseClient.from('profiles').update({
-          gustos: respuestas,
-          onboarding_completed: true
-        }).eq('id', userId);
+      if (window.supabase) {
+        const supabaseClient = window.supabase.createClient(
+          'https://oupbptgzfevkzzvscekj.supabase.co',
+          'sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE'
+        );
+        const { data: { session } } = await supabaseClient.auth.getSession();
+
+        if (session) {
+          const userId = session.user.id;
+          await supabaseClient.from('profiles').update({
+            gustos: respuestas,
+            onboarding_completed: true
+          }).eq('id', userId);
+        }
       }
-      
+
       const role = localStorage.getItem('user_role') || 'candidate';
       if (window.__spaNavigate) {
         window.__spaNavigate(`pages/dashboard-${role}.html`);
@@ -108,8 +125,8 @@ export function initOnboarding(root = document) {
     }
   }
 
-  btnNext?.addEventListener('click', siguientePaso);
-  btnPrev?.addEventListener('click', anteriorPaso);
+  btnNext.addEventListener('click', siguientePaso);
+  btnPrev.addEventListener('click', anteriorPaso);
 
   mostrarPaso(pasoActual);
   actualizarBarra();

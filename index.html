@@ -10,22 +10,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="prefetch" href="index.html" />
-  <link rel="prefetch" href="pages/login.html" />
-  <link rel="prefetch" href="pages/dashboard-candidate.html" />
-  <link rel="prefetch" href="pages/dashboard-company.html" />
-  <link rel="prefetch" href="pages/donate.html" />
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Prevent FOUC: apply saved theme immediately -->
+  <script>
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#app">Ir al contenido principal</a>
+
   <header class="site-header">
-    <div class="brand">
+    <a href="index.html" class="brand brand-link" data-nav>
       <span class="brand-mark">IncluIA</span>
       <span class="brand-tag" data-i18n="brand.tag">Talento neurodivergente, impacto real</span>
-    </div>
+    </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
-      Menu
+      ☰ Menú
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
       <ul class="nav-list">
         <li><a href="index.html" data-nav data-i18n="nav.home">Inicio</a></li>
         <li><a href="pages/mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
@@ -33,7 +39,7 @@
       </ul>
     </nav>
     <div class="header-actions">
-      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema" aria-pressed="false">🌙</button>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema" aria-pressed="false">☾</button>
       <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
       <div class="lang-selector">
         <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
@@ -43,6 +49,8 @@
           <option value="pt">Português</option>
         </select>
       </div>
+      <a href="pages/login.html" data-nav class="btn btn-primary btn-sm" id="btn-login" data-i18n="landing.hero.btn.login">Iniciar sesión</a>
+      <button class="btn btn-ghost btn-sm hidden" id="btn-logout" data-logout>Cerrar sesión</button>
     </div>
   </header>
 
@@ -50,7 +58,7 @@
     <div id="page-content">
       <section id="hero" class="hero" aria-labelledby="hero-title">
         <div class="hero-content">
-          <p class="eyebrow" data-i18n="landing.hero.eyebrow">Plataforma de inclusion laboral</p>
+          <p class="eyebrow" data-i18n="landing.hero.eyebrow">Plataforma de inclusión laboral</p>
           <h1 id="hero-title" data-i18n="landing.hero.title">Conecta talento neurodivergente con empresas listas para incluir</h1>
           <p class="hero-text" data-i18n="landing.hero.text">
             Diseñada para autismo, síndrome de Down y otras condiciones intelectuales y
@@ -63,20 +71,24 @@
           </div>
           <div class="hero-badges">
             <span class="chip" data-i18n="landing.hero.chip.wcag">WCAG 2.1</span>
-            <span class="chip" data-i18n="landing.hero.chip.ia">IA empatica</span>
+            <span class="chip" data-i18n="landing.hero.chip.ia">IA empática</span>
             <span class="chip" data-i18n="landing.hero.chip.esg">ESG medible</span>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <img src="assets/images/hero-illustration.svg" alt="" />
+          <div class="hero-illustration-placeholder">
+            <span class="hero-emoji">🧩</span>
+            <span class="hero-emoji">🤝</span>
+            <span class="hero-emoji">🌱</span>
+          </div>
           <div class="stat-grid">
             <article class="stat-card">
               <p class="stat-value" data-i18n="landing.stat.1.val">94%</p>
-              <p class="stat-label" data-i18n="landing.stat.1.label">Satisfaccion en onboarding</p>
+              <p class="stat-label" data-i18n="landing.stat.1.label">Satisfacción en onboarding</p>
             </article>
             <article class="stat-card">
               <p class="stat-value" data-i18n="landing.stat.2.val">3.2x</p>
-              <p class="stat-label" data-i18n="landing.stat.2.label">Velocidad de adaptacion</p>
+              <p class="stat-label" data-i18n="landing.stat.2.label">Velocidad de adaptación</p>
             </article>
             <article class="stat-card">
               <p class="stat-value" data-i18n="landing.stat.3.val">+48</p>
@@ -88,24 +100,24 @@
 
       <section class="section" aria-labelledby="how-title">
         <div class="section-header">
-          <h2 id="how-title" data-i18n="landing.how.title">Como funciona</h2>
-          <p data-i18n="landing.how.desc">Un recorrido en tres pasos con foco en autonomia, claridad y acompanamiento.</p>
+          <h2 id="how-title" data-i18n="landing.how.title">Cómo funciona</h2>
+          <p data-i18n="landing.how.desc">Un recorrido en tres pasos con foco en autonomía, claridad y acompañamiento.</p>
         </div>
         <div class="grid grid-3">
-          <article class="feature-card">
-            <img src="assets/icons/icon-brain.svg" alt="" aria-hidden="true" />
+          <article class="feature-card card">
+            <div class="feature-icon">🧠</div>
             <h3 data-i18n="landing.how.1.title">Perfil sensorial</h3>
-            <p data-i18n="landing.how.1.desc">Mapa visual de preferencias, ritmos y apoyos que guian todo el proceso.</p>
+            <p data-i18n="landing.how.1.desc">Mapa visual de preferencias, ritmos y apoyos que guían todo el proceso.</p>
           </article>
-          <article class="feature-card">
-            <img src="assets/icons/icon-briefcase.svg" alt="" aria-hidden="true" />
+          <article class="feature-card card">
+            <div class="feature-icon">💼</div>
             <h3 data-i18n="landing.how.2.title">Match de rol</h3>
             <p data-i18n="landing.how.2.desc">IA responsable que sugiere roles basados en habilidades y contexto real.</p>
           </article>
-          <article class="feature-card">
-            <img src="assets/icons/icon-heart.svg" alt="" aria-hidden="true" />
-            <h3 data-i18n="landing.how.3.title">Mentoria activa</h3>
-            <p data-i18n="landing.how.3.desc">Canales de apoyo entre mentor y colaborador con guias simples.</p>
+          <article class="feature-card card">
+            <div class="feature-icon">💚</div>
+            <h3 data-i18n="landing.how.3.title">Mentoría activa</h3>
+            <p data-i18n="landing.how.3.desc">Canales de apoyo entre mentor y colaborador con guías simples.</p>
           </article>
         </div>
       </section>
@@ -113,23 +125,23 @@
       <section class="section" aria-labelledby="impact-title">
         <div class="section-header">
           <h2 id="impact-title" data-i18n="landing.impact.title">Impacto y confianza</h2>
-          <p data-i18n="landing.impact.desc">Indicadores claros para equipos ESG y comites de inclusion.</p>
+          <p data-i18n="landing.impact.desc">Indicadores claros para equipos ESG y comités de inclusión.</p>
         </div>
         <div class="grid grid-2">
           <article class="card">
-            <h3 data-i18n="landing.impact.1.title">Diseno accesible por defecto</h3>
+            <h3 data-i18n="landing.impact.1.title">Diseño accesible por defecto</h3>
             <ul class="clean-list">
-              <li data-i18n="landing.impact.1.li1">Contraste alto y tipografia clara.</li>
+              <li data-i18n="landing.impact.1.li1">Contraste alto y tipografía clara.</li>
               <li data-i18n="landing.impact.1.li2">Contenido por bloques para reducir carga cognitiva.</li>
               <li data-i18n="landing.impact.1.li3">Ritmos visuales calmados y feedback inmediato.</li>
             </ul>
           </article>
           <article class="card">
             <h3 data-i18n="landing.impact.2.title">Resultados visibles</h3>
-            <p data-i18n="landing.impact.2.desc">Panel ESG con retencion, bienestar y progreso de habilidades por cohorte.</p>
+            <p data-i18n="landing.impact.2.desc">Panel ESG con retención, bienestar y progreso de habilidades por cohorte.</p>
             <div class="impact-row">
-              <span class="chip chip-success" data-i18n="landing.impact.chip1">+28% retencion</span>
-              <span class="chip chip-soft" data-i18n="landing.impact.chip2">-42% rotacion</span>
+              <span class="chip chip-success" data-i18n="landing.impact.chip1">+28% retención</span>
+              <span class="chip chip-soft" data-i18n="landing.impact.chip2">-42% rotación</span>
               <span class="chip chip-soft" data-i18n="landing.impact.chip3">+36% clima</span>
             </div>
           </article>

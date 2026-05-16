@@ -1,12 +1,18 @@
+/**
+ * main.js — SPA Orchestrator for IncluIA
+ * Handles page fetching, history navigation, and initializes all modules.
+ */
 import { setupNavigation, setActiveNav } from "./navigation.js";
 import { initAuth } from "./auth.js";
 import { initAiSim } from "./ai-sim.js";
 import { initI18nSelect, initLanguageGate, applyTranslations } from "./i18n.js";
 import { initTheme } from "./theme.js";
 import { initOnboarding } from "./onboarding.js";
+import { initDonate } from "./donate.js";
 
 const app = document.getElementById("app");
 const defaultRoute = "index.html";
+
 const routes = new Map([
   ["index.html", defaultRoute],
   ["login.html", "pages/login.html"],
@@ -52,22 +58,33 @@ function resolveRouteFromLocation() {
   return match ? routes.get(match) : defaultRoute;
 }
 
+// Track current route to avoid redundant loads
+let currentRoute = null;
+
 // Fetch a page and inject its main content into the shell.
 async function loadPage(path, { pushState = true, initialLoad = false } = {}) {
   if (!app) return;
   const resolvedPath = resolveRoutePath(path);
+
+  // Skip if same route (unless initial load)
+  if (!initialLoad && resolvedPath === currentRoute) return;
+  currentRoute = resolvedPath;
+
   try {
     if (initialLoad) {
       upgradeInternalLinks(app);
       initPageInteractions(app);
       setActiveNav(resolvedPath);
       applyTranslations();
-      if (pushState) history.pushState({ path: resolvedPath }, "", resolvedPath);
+      updateAuthUI();
       initScrollAnimations(app);
       return;
     }
 
-    const response = await fetch(resolvedPath, { cache: "no-store" });
+    // Use absolute URL for fetch to avoid relative path resolution issues
+    const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '').replace(/\/pages\/?.*/, '/');
+    const fetchUrl = new URL(resolvedPath, baseUrl).href;
+    const response = await fetch(fetchUrl, { cache: "no-store" });
     if (!response.ok) throw new Error("Fetch failed");
     const html = await response.text();
     const parsed = new DOMParser().parseFromString(html, "text/html");
@@ -85,7 +102,13 @@ async function loadPage(path, { pushState = true, initialLoad = false } = {}) {
     initPageInteractions(app);
     setActiveNav(resolvedPath);
     applyTranslations();
-    if (pushState) history.pushState({ path: resolvedPath }, "", resolvedPath);
+    updateAuthUI();
+
+    if (pushState) {
+      // Use the root-relative path for pushState
+      const stateUrl = baseUrl.replace(window.location.origin, '') + resolvedPath;
+      history.pushState({ path: resolvedPath }, "", stateUrl);
+    }
 
     // Fade in
     requestAnimationFrame(() => {
@@ -95,9 +118,16 @@ async function loadPage(path, { pushState = true, initialLoad = false } = {}) {
     });
 
     initScrollAnimations(app);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     app.focus();
   } catch {
-    app.innerHTML = `<div class="card"><h2>Error al cargar</h2><p>Intenta nuevamente o usa el menú.</p></div>`;
+    app.innerHTML = `
+      <div class="card" style="max-width:600px;margin:80px auto;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:16px;">😔</div>
+        <h2>Error al cargar</h2>
+        <p style="color:var(--color-muted);">La página no se pudo cargar. Intenta nuevamente o usa el menú.</p>
+        <a href="index.html" data-nav class="btn btn-primary" style="margin-top:16px;">Volver al inicio</a>
+      </div>`;
     app.style.opacity = "1";
     app.style.transform = "none";
   }
@@ -108,25 +138,55 @@ function initPageInteractions(root) {
   initAuth(root);
   initAiSim(root);
   initOnboarding(root);
+  initDonate(root);
 }
 
-// Normalize internal links when content is loaded inside the SPA shell.
+// Update login/logout button visibility
+function updateAuthUI() {
+  const btnLogout = document.getElementById("btn-logout");
+  const btnLogin = document.getElementById("btn-login");
+
+  if (window.supabase) {
+    const supabaseUrl = "https://oupbptgzfevkzzvscekj.supabase.co";
+    const supabaseKey = "sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE";
+    try {
+      const client = window.supabase.createClient(supabaseUrl, supabaseKey);
+      client.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          btnLogout?.classList.remove("hidden");
+          btnLogin?.classList.add("hidden");
+        } else {
+          btnLogout?.classList.add("hidden");
+          btnLogin?.classList.remove("hidden");
+        }
+      });
+    } catch {
+      // Supabase not available, show login
+      btnLogout?.classList.add("hidden");
+      btnLogin?.classList.remove("hidden");
+    }
+  } else {
+    btnLogout?.classList.add("hidden");
+    btnLogin?.classList.remove("hidden");
+  }
+}
+
+// Mark internal links for SPA interception.
+// Path normalization is handled by navigation.js normalizeRoute().
 function upgradeInternalLinks(root) {
-  const pageMap = {
-    "login.html": "login.html",
-    "register.html": "register.html",
-    "dashboard-candidate.html": "dashboard-candidate.html",
-    "dashboard-company.html": "dashboard-company.html",
-    "mentoring.html": "mentoring.html",
-    "onboarding.html": "onboarding.html",
-    "candidate-dashboard.html": "dashboard-candidate.html",
-    "company-dashboard.html": "dashboard-company.html",
-  };
+  const pageFiles = new Set([
+    "login.html", "register.html", "dashboard-candidate.html",
+    "dashboard-company.html", "mentoring.html", "onboarding.html",
+    "donate.html", "index.html",
+  ]);
+
   root.querySelectorAll("a[href]").forEach((link) => {
-    const href = link.getAttribute("href");
-    const normalized = pageMap[href];
-    if (normalized) {
-      link.setAttribute("href", `pages/${normalized}`);
+    const href = link.getAttribute("href") || "";
+    if (href.startsWith("http") || href.startsWith("#") || href.startsWith("mailto:")) return;
+
+    // Extract filename from any path format
+    const fileName = href.replace(/^\.\.\//, "").replace(/^\.\//, "").replace(/^pages\//, "").split("?")[0].split("/").pop();
+    if (pageFiles.has(fileName)) {
       link.setAttribute("data-nav", "");
     }
   });
@@ -134,73 +194,82 @@ function upgradeInternalLinks(root) {
 
 // ── Intersection Observer — scroll animations ─────────────────
 function initScrollAnimations(root) {
-  // Skip if user prefers reduced motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const targets = root.querySelectorAll('section, .card, .feature-card, .stat-card, .auth-panel, .auth-aside');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('section-visible');
-        entry.target.classList.remove('section-hidden');
-        observer.unobserve(entry.target); // animate once
-      }
-    });
-  }, { threshold: 0.12 });
+  const targets = root.querySelectorAll(
+    "section, .card, .feature-card, .stat-card, .auth-panel, .auth-aside"
+  );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("section-visible");
+          entry.target.classList.remove("section-hidden");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08 }
+  );
 
-  targets.forEach(el => {
-    el.classList.add('section-hidden');
+  targets.forEach((el) => {
+    el.classList.add("section-hidden");
     observer.observe(el);
   });
 }
 
+// ── Auth-guarded navigation ──────────────────────────────────
+async function checkAuthAndLoad(path, options) {
+  const isDashboard = path.includes("dashboard");
+
+  if (window.supabase) {
+    try {
+      const supabaseUrl = "https://oupbptgzfevkzzvscekj.supabase.co";
+      const supabaseKey = "sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE";
+      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      // Dashboard protection — require session
+      if (isDashboard && !session) {
+        loadPage("pages/login.html", options);
+        return;
+      }
+
+      // Redirect to dashboard if logged in and visiting auth pages
+      if (
+        session &&
+        (path === defaultRoute ||
+          path.includes("login") ||
+          path.includes("register"))
+      ) {
+        const role = localStorage.getItem("user_role") || "candidate";
+        loadPage(`pages/dashboard-${role}.html`, {
+          ...options,
+          initialLoad: false,
+        });
+        return;
+      }
+    } catch {
+      // Supabase unavailable, proceed normally
+    }
+  }
+  loadPage(path, options);
+}
+
+// ── App Initialization ──────────────────────────────────────
 if (app) {
-  // Expose SPA navigate so auth.js can redirect after login
+  // Expose SPA navigate so auth.js and other modules can redirect
   window.__spaNavigate = (path) => loadPage(path);
 
   initTheme();
   initI18nSelect();
   initLanguageGate();
   setupNavigation({ onNavigate: loadPage, useSpa: true });
+
   window.addEventListener("popstate", () => {
     const path = resolveRouteFromLocation();
     checkAuthAndLoad(path, { pushState: false });
   });
-
-  async function checkAuthAndLoad(path, options) {
-    const isDashboard = path.includes('dashboard');
-    if (window.supabase) {
-      const supabaseUrl = 'https://oupbptgzfevkzzvscekj.supabase.co';
-      const supabaseKey = 'sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE';
-      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      
-      const btnLogout = document.getElementById('btn-logout');
-      const btnLogin = document.getElementById('btn-login');
-
-      if (session) {
-        btnLogout?.classList.remove('hidden');
-        btnLogin?.classList.add('hidden');
-      } else {
-        btnLogout?.classList.add('hidden');
-        btnLogin?.classList.remove('hidden');
-      }
-
-      // Dashboard protection — sin sesión no entra
-      if (isDashboard && !session) {
-        loadPage('pages/login.html', options);
-        return;
-      }
-      
-      // Redirect to dashboard if logged in and visiting public pages
-      if (session && (path === defaultRoute || path.includes('login') || path.includes('register'))) {
-        const role = localStorage.getItem('user_role') || 'candidate';
-        loadPage(`pages/dashboard-${role}.html`, { ...options, initialLoad: false });
-        return;
-      }
-    }
-    loadPage(path, options);
-  }
 
   const initial = resolveRouteFromLocation();
   checkAuthAndLoad(initial, { pushState: false, initialLoad: true });

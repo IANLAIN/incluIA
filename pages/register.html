@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -10,276 +10,217 @@
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const savedTheme = localStorage.getItem("app-theme") || "light";
-    document.documentElement.setAttribute("data-theme", savedTheme);
+    const t = localStorage.getItem("app-theme") || "light";
+    document.documentElement.setAttribute("data-theme", t);
+    const f = localStorage.getItem("app-font");
+    if (f === "dyslexic") document.documentElement.setAttribute("data-font", "dyslexic");
   </script>
-  <style>
-    .step {
-      display: none;
-    }
-    .step.active {
-      display: block;
-    }
-    .ps-bar {
-      height: 4px;
-      width: 33%;
-      background: var(--color-border);
-      border-radius: var(--radius-pill);
-      transition: background 0.3s ease;
-    }
-    .ps-bar.debil { background: #f85149; }
-    .ps-bar.media { background: #e3b341; }
-    .ps-bar.fuerte { background: #34d399; }
-    
-    .strength-bar-wrap {
-      display: flex;
-      gap: 4px;
-      margin-top: 8px;
-    }
-  </style>
 </head>
 <body>
+
+  <header class="site-header">
+    <a href="../index.html" class="brand brand-link" data-nav>
+      <span class="brand-mark">IncluIA</span>
+      <span class="brand-tag" data-i18n="brand.tag">Únete a IncluIA</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      ☰ Menú
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+      <ul class="nav-list">
+        <li><a href="../index.html" data-nav data-i18n="nav.home">Inicio</a></li>
+        <li><a href="mentoring.html" data-nav data-i18n="nav.mentoring">Mentoría</a></li>
+        <li><a href="donate.html" data-nav data-i18n="nav.donate">Cómo apoyarnos</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">☾</button>
+      <button id="dyslexic-toggle" class="theme-toggle-btn" aria-label="Activar fuente para dislexia" aria-pressed="false" title="Fuente para dislexia">Aa</button>
+      <div class="lang-selector">
+        <select id="lang-select" class="lang-select" aria-label="Seleccionar idioma">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
   <main class="page">
     <div id="page-content">
-      <div id="role-modal" class="language-gate is-visible role-modal" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
-        <div class="language-gate-card card">
-          <p class="eyebrow">Registro / Sign up</p>
-          <h2 id="role-modal-title">Antes de continuar, elige tu tipo de acceso</h2>
-          <p>Selecciona la opción que mejor te representa para personalizar el formulario.</p>
-          <div class="role-cards role-cards--modal">
-            <button type="button" id="modal-candidato" class="role-card" data-role="candidato">
-              <span class="emoji">🧠</span>
-              <div class="role-card-content">
-                <span class="role-card-title">Candidato / Aliado</span>
-                <span class="role-card-desc">Busco oportunidades laborales o apoyo a personas neurodivergentes.</span>
-              </div>
-            </button>
-            <button type="button" id="modal-empresa" class="role-card" data-role="empresa">
-              <span class="emoji">🏢</span>
-              <div class="role-card-content">
-                <span class="role-card-title">Empresa aliada</span>
-                <span class="role-card-desc">Quiero contratar talento de forma inclusiva y clara.</span>
-              </div>
-            </button>
-          </div>
-          <div class="language-gate-actions">
-            <button type="button" class="btn btn-ghost" data-close-role-modal>Ver formulario</button>
-          </div>
-        </div>
-      </div>
+      <div class="split-layout" data-auth-root data-register-wizard id="register-shell">
 
-      <div class="split-layout" data-auth-root id="register-shell">
-        
-        <!-- Panel Izquierdo (Info) -->
+        <!-- Left Panel (Info) -->
         <div class="split-left">
           <p class="eyebrow" data-i18n="auth.register.eyebrow">Únete a IncluIA</p>
-          <h1 style="font-size: 40px; margin-bottom: 0;">Tu espacio, <br>tus reglas.</h1>
-          <p style="color: var(--color-muted); font-size: 18px; margin-bottom: 24px;">Una plataforma diseñada sin distracciones, para que tu talento brille.</p>
-          
-          <div class="clean-list" style="gap: 20px;">
-            <div style="display: flex; gap: 16px; align-items: start;">
-              <span class="emoji" style="font-size: 24px;">🧩</span>
+          <h1 class="split-title">Tu espacio, <br>tus reglas.</h1>
+          <p class="split-subtitle">Una plataforma diseñada sin distracciones, para que tu talento brille.</p>
+
+          <div class="feature-list-compact">
+            <div class="feature-list-item">
+              <span class="emoji">🧩</span>
               <div>
-                <h3 style="font-size: 16px; margin:0;">Menos pasos, más claridad</h3>
-                <p style="font-size: 14px; color: var(--color-muted); margin:0;">Diseño pensado para reducir la carga cognitiva.</p>
+                <h3>Menos pasos, más claridad</h3>
+                <p>Diseño pensado para reducir la carga cognitiva.</p>
               </div>
             </div>
-            <div style="display: flex; gap: 16px; align-items: start;">
-              <span class="emoji" style="font-size: 24px;">🛡️</span>
+            <div class="feature-list-item">
+              <span class="emoji">🛡️</span>
               <div>
-                <h3 style="font-size: 16px; margin:0;">Autenticación segura con Google</h3>
-                <p style="font-size: 14px; color: var(--color-muted); margin:0;">Tú decides qué información compartir y con quién.</p>
+                <h3>Autenticación segura con Google</h3>
+                <p>Tú decides qué información compartir y con quién.</p>
               </div>
             </div>
-            <div style="display: flex; gap: 16px; align-items: start;">
-              <span class="emoji" style="font-size: 24px;">✨</span>
+            <div class="feature-list-item">
+              <span class="emoji">✨</span>
               <div>
-                <h3 style="font-size: 16px; margin:0;">Onboarding personalizado</h3>
-                <p style="font-size: 14px; color: var(--color-muted); margin:0;">Ajustamos la experiencia a tus preferencias.</p>
+                <h3>Onboarding personalizado</h3>
+                <p>Ajustamos la experiencia a tus preferencias.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Panel Derecho (Wizard) -->
+        <!-- Right Panel (Wizard) -->
         <div class="split-right">
           <!-- Progress Bar -->
-          <div class="progress-bar-wrap" style="display: flex; gap: 4px; margin-bottom: 32px;">
-            <div class="prog-step active" style="flex: 1; height: 6px; background: var(--color-primary); border-radius: 999px;"></div>
-            <div class="prog-step prog-line" style="flex: 1; height: 6px; background: var(--color-border); border-radius: 999px;"></div>
-            <div class="prog-step prog-line" style="flex: 1; height: 6px; background: var(--color-border); border-radius: 999px;"></div>
+          <div class="register-progress">
+            <div class="prog-step active" data-step-indicator="1"></div>
+            <div class="prog-step" data-step-indicator="2"></div>
+            <div class="prog-step" data-step-indicator="3"></div>
           </div>
 
-          <!-- Paso 1: Selección de Rol -->
-          <div id="step1" class="step active">
+          <!-- Step 1: Role Selection -->
+          <div id="reg-step-1" class="reg-step active" data-reg-step="1">
             <div class="wizard-header">
               <h2>¿Cómo te identificas?</h2>
-              <p style="color: var(--color-muted); font-size: 15px;">Selecciona tu rol para continuar.</p>
+              <p class="wizard-desc">Selecciona tu rol para continuar.</p>
             </div>
-            
-            <div class="role-cards">
-              <div id="card-candidato" class="role-card" onclick="seleccionarRol('candidato')" tabindex="0">
+
+            <div class="role-cards" data-role-cards>
+              <button type="button" class="role-card" data-role="candidate" tabindex="0">
                 <span class="emoji">🧠</span>
                 <div class="role-card-content">
                   <span class="role-card-title">Candidato / Aliado <span class="chip chip-soft" style="font-size: 11px;">Candidato</span></span>
                   <span class="role-card-desc">Busco oportunidades laborales o apoyo a personas neurodivergentes.</span>
                 </div>
-              </div>
-              
-              <div id="card-empresa" class="role-card" onclick="seleccionarRol('empresa')" tabindex="0">
+              </button>
+
+              <button type="button" class="role-card" data-role="company" tabindex="0">
                 <span class="emoji">🏢</span>
                 <div class="role-card-content">
                   <span class="role-card-title">Reclutador / Manager <span class="chip chip-success" style="font-size: 11px;">Empresa</span></span>
                   <span class="role-card-desc">Quiero contratar talento neurodivergente de forma inclusiva.</span>
                 </div>
-              </div>
+              </button>
             </div>
 
-            <button id="btnContinuar" class="btn btn-primary btn-full" disabled onclick="irAPaso2()" style="opacity: 0.5;">Continuar</button>
+            <button class="btn btn-primary btn-full" disabled data-btn-to-step2>Continuar</button>
             <p class="auth-hint">
               ¿Ya tienes cuenta? <a href="login.html" data-nav>Inicia sesión aquí</a>
             </p>
           </div>
 
-          <!-- Paso 2A: Formulario Candidato -->
-          <div id="step2a" class="step">
-            <button class="btn btn-outline" onclick="volver()" style="padding: 4px 12px; font-size: 13px; margin-bottom: 24px;">&larr; Volver</button>
-            <div style="margin-bottom: 20px;">
-              <span class="chip chip-soft">🧠 Candidato / Aliado</span>
-            </div>
+          <!-- Step 2: Registration Form -->
+          <div id="reg-step-2" class="reg-step" data-reg-step="2">
+            <button class="btn btn-outline btn-back" type="button" data-btn-back-1>← Volver</button>
+            <div class="role-badge-display" data-role-badge></div>
 
-            <button class="btn btn-outline btn-full" type="button" onclick="loginConGoogle()">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20" style="margin-right:8px; display:inline-block; vertical-align:middle;"/>
-              <span>Continuar con Google</span>
+            <button class="btn btn-google btn-full" type="button" data-google-register>
+              <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.97 23.97 0 000 24c0 3.77.9 7.35 2.56 10.52l7.97-5.93z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.93C6.51 42.62 14.62 48 24 48z"/></svg>
+              <span data-google-btn-text>Continuar con Google</span>
             </button>
 
-            <div class="auth-divider">o regístrate con correo</div>
+            <div class="auth-divider" data-form-divider-text>o regístrate con correo</div>
 
-            <div class="auth-form" onsubmit="return false;">
+            <form id="register-form" class="auth-form" data-register-form>
               <div class="field">
-                <label class="field-label" for="c-nombre">Nombre completo</label>
-                <input type="text" id="c-nombre" placeholder="Tu nombre y apellido" required />
+                <label class="field-label" for="reg-full-name" data-name-label>Nombre completo</label>
+                <input type="text" id="reg-full-name" placeholder="Tu nombre y apellido" required />
+              </div>
+
+              <!-- Company-specific fields (hidden by default) -->
+              <div class="company-fields" data-company-fields style="display:none;">
+                <div class="field">
+                  <label class="field-label" for="reg-company-name">Nombre de la empresa</label>
+                  <input type="text" id="reg-company-name" placeholder="Ej. Tech Corp" />
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label class="field-label" for="reg-company-role">Tu cargo</label>
+                    <select id="reg-company-role">
+                      <option value="">Selecciona...</option>
+                      <option value="Reclutador">Reclutador/a</option>
+                      <option value="Manager">Manager / Líder</option>
+                      <option value="RRHH">Director/a de RRHH</option>
+                      <option value="CEO">CEO / Fundador/a</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="reg-company-size">Tamaño</label>
+                    <select id="reg-company-size">
+                      <option value="">Selecciona...</option>
+                      <option value="1-10">1–10</option>
+                      <option value="11-50">11–50</option>
+                      <option value="51-200">51–200</option>
+                      <option value="200+">200+</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
               <div class="field">
-                <label class="field-label" for="c-email">Correo electrónico</label>
-                <input type="email" id="c-email" placeholder="nombre@correo.com" required />
+                <label class="field-label" for="reg-email" data-i18n="auth.label.email">Correo electrónico</label>
+                <input type="email" id="reg-email" placeholder="nombre@correo.com" autocomplete="email" required />
               </div>
 
               <div class="field">
-                <label class="field-label" for="c-pw">Contraseña</label>
+                <label class="field-label" for="reg-password" data-i18n="auth.label.password">Contraseña</label>
                 <div class="input-wrap">
-                  <input class="pass-input" type="password" id="c-pw" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required oninput="verificarFortaleza(this,'c-fuerza','c-nivel')" />
-                  <button class="eye-btn" type="button" onclick="togglePassword('c-pw', this)">👁</button>
+                  <input class="pass-input" type="password" id="reg-password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required />
+                  <button class="eye-btn" id="regEyeBtn" type="button" aria-label="Mostrar contraseña">
+                    <svg class="eye-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
                 </div>
-                <div id="c-fuerza" class="strength-bar-wrap">
-                  <div class="ps-bar"></div>
-                  <div class="ps-bar"></div>
-                  <div class="ps-bar"></div>
+                <div class="strength-bar-wrap">
+                  <div class="strength-bar" id="strengthBar"></div>
                 </div>
-                <p class="strength-label" id="c-nivel" style="font-size: 13px; margin-top: 6px; min-height: 18px;"></p>
+                <p class="strength-label" id="strengthLabel"></p>
               </div>
 
-              <button class="btn btn-primary btn-full" id="btn-candidato" onclick="registrarCandidato()">Crear mi cuenta</button>
-            </div>
+              <p class="ms-status" id="reg-status-message" role="status" aria-live="polite" hidden></p>
+              <button class="btn btn-primary btn-full" type="submit" data-btn-submit>Crear mi cuenta</button>
+            </form>
           </div>
 
-          <!-- Paso 2B: Formulario Empresa -->
-          <div id="step2b" class="step">
-            <button class="btn btn-outline" onclick="volver()" style="padding: 4px 12px; font-size: 13px; margin-bottom: 24px;">&larr; Volver</button>
-            <div style="margin-bottom: 20px;">
-              <span class="chip chip-success">🏢 Empresa / Reclutador</span>
+          <!-- Step 3: Email Verification -->
+          <div id="reg-step-3" class="reg-step" data-reg-step="3">
+            <div class="verification-screen">
+              <div class="verification-icon">📬</div>
+              <h2>Revisa tu correo</h2>
+              <p class="verification-desc">Hemos enviado un enlace de confirmación a:<br><strong data-verify-email></strong></p>
+
+              <div class="verification-tips">
+                <ul>
+                  <li>Revisa tu carpeta de Spam.</li>
+                  <li>Busca el remitente <strong>noreply@mail.supabase.co</strong></li>
+                  <li>Espera al menos 2 minutos.</li>
+                </ul>
+              </div>
+
+              <button class="btn btn-outline btn-full" data-btn-resend>Reenviar correo</button>
+              <p class="ms-status" data-resend-status role="status" aria-live="polite"></p>
+              <p class="auth-hint" style="margin-top: 24px;">
+                <a href="login.html" data-nav>Ir a Iniciar sesión</a>
+              </p>
             </div>
-            
-            <div class="msg-success" style="margin-bottom: 24px; padding: 12px; border-radius: 8px; font-size: 14px;">
-              ✅ Acceso empresarial verificado — Tu cuenta será revisada en menos de 24h.
-            </div>
-
-            <button class="btn btn-outline btn-full" type="button" onclick="loginConGoogle()">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20" style="margin-right:8px; display:inline-block; vertical-align:middle;"/>
-              <span>Continuar con Google corporativo</span>
-            </button>
-
-            <div class="auth-divider">o completa el formulario</div>
-
-            <div class="auth-form" onsubmit="return false;">
-              <div class="field">
-                <label class="field-label" for="e-nombre">Nombre y Apellido</label>
-                <input type="text" id="e-nombre" placeholder="Tu nombre" required />
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="e-empresa">Nombre de la empresa</label>
-                <input type="text" id="e-empresa" placeholder="Ej. Tech Corp" required />
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <div class="field">
-                  <label class="field-label" for="e-cargo">Tu cargo</label>
-                  <select id="e-cargo" required>
-                    <option value="">Selecciona...</option>
-                    <option value="Reclutador">Reclutador/a</option>
-                    <option value="Manager">Manager / Líder</option>
-                    <option value="RRHH">Director/a de RRHH</option>
-                    <option value="CEO">CEO / Fundador/a</option>
-                    <option value="Otro">Otro</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label class="field-label" for="e-tamano">Tamaño</label>
-                  <select id="e-tamano" required>
-                    <option value="">Selecciona...</option>
-                    <option value="1-10">1–10</option>
-                    <option value="11-50">11–50</option>
-                    <option value="51-200">51–200</option>
-                    <option value="200+">200+</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="e-email">Correo corporativo</label>
-                <input type="email" id="e-email" placeholder="nombre@empresa.com" required />
-              </div>
-
-              <div class="field">
-                <label class="field-label" for="e-pw">Contraseña</label>
-                <div class="input-wrap">
-                  <input class="pass-input" type="password" id="e-pw" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required oninput="verificarFortaleza(this,'e-fuerza','e-nivel')" />
-                  <button class="eye-btn" type="button" onclick="togglePassword('e-pw', this)">👁</button>
-                </div>
-                <div id="e-fuerza" class="strength-bar-wrap">
-                  <div class="ps-bar"></div>
-                  <div class="ps-bar"></div>
-                  <div class="ps-bar"></div>
-                </div>
-                <p class="strength-label" id="e-nivel" style="font-size: 13px; margin-top: 6px; min-height: 18px;"></p>
-              </div>
-
-              <button class="btn btn-primary btn-full" id="btn-empresa" onclick="registrarEmpresa()">Crear cuenta empresarial</button>
-            </div>
-          </div>
-
-          <!-- Paso 3: Verificación -->
-          <div id="step3" class="step" style="text-align: center; padding: 20px 0;">
-            <div style="font-size: 64px; margin-bottom: 16px;">📬</div>
-            <h2>Revisa tu correo</h2>
-            <p style="color: var(--color-muted); margin-bottom: 24px;">Hemos enviado un enlace de confirmación a:<br><strong id="email-confirmacion" style="color: var(--color-ink);"></strong></p>
-            
-            <div style="background: var(--color-surface-alt); padding: 16px; border-radius: var(--radius-md); text-align: left; margin-bottom: 24px; font-size: 14px;">
-              <ul style="margin:0; padding-left: 20px; color: var(--color-muted);">
-                <li>Revisa tu carpeta de Spam.</li>
-                <li>Busca el remitente <strong>noreply@mail.supabase.co</strong></li>
-                <li>Espera al menos 2 minutos.</li>
-              </ul>
-            </div>
-
-            <button id="btn-reenviar" class="btn btn-outline btn-full" onclick="reenviarEmail()" style="margin-bottom: 16px;">Reenviar correo</button>
-            <p id="msg-reenvio" style="text-align: center; font-size: 14px; font-weight: 500;"></p>
-            <p class="auth-hint" style="margin-top: 24px;">
-              <a href="login.html">Ir a Iniciar sesión</a>
-            </p>
           </div>
 
         </div>
@@ -287,310 +228,23 @@
     </div>
   </main>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title" data-i18n="footer.title">IncluIA by Design</p>
+      <p class="footer-text" data-i18n="footer.text">Accesible, modular y listo para escalar sobre infraestructura Supabase.</p>
+      <div class="footer-meta">
+        <span data-i18n="footer.meta">&copy; 2026 IncluIA</span>
+        <span>|</span>
+        <span class="ms-badge" data-i18n="footer.badge">Autenticación segura por Supabase</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html" data-nav data-i18n="footer.links.login">Producto</a>
+      <a href="donate.html" data-nav data-i18n="footer.links.esg">Apoyo</a>
+      <a href="mentoring.html" data-nav data-i18n="footer.links.mentoring">Mentoría</a>
+    </div>
+  </footer>
 
-    const SUPABASE_URL = 'https://oupbptgzfevkzzvscekj.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_Obya200r1UbgWVnMbuhhiw_Xto1ETSE';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let rolSeleccionado = null;
-    let cooldownActivo  = false;
-
-    // ─── NAVEGACIÓN ENTRE PASOS ───────────────────────────────────────────────
-
-    function mostrarPaso(idAnterior, idNuevo) {
-      const anterior = document.getElementById(idAnterior);
-      const nuevo    = document.getElementById(idNuevo);
-
-      anterior.style.transition = 'opacity 0.25s, transform 0.25s';
-      anterior.style.opacity    = '0';
-      anterior.style.transform  = 'translateX(-20px)';
-
-      setTimeout(() => {
-        anterior.classList.remove('active');
-        anterior.style.opacity   = '';
-        anterior.style.transform = '';
-        anterior.style.transition = '';
-
-        nuevo.classList.add('active');
-        nuevo.style.opacity   = '0';
-        nuevo.style.transform = 'translateX(20px)';
-
-        requestAnimationFrame(() => {
-          nuevo.style.transition = 'opacity 0.25s, transform 0.25s';
-          nuevo.style.opacity    = '1';
-          nuevo.style.transform  = 'translateX(0)';
-        });
-
-        setTimeout(() => {
-          nuevo.style.transition = '';
-        }, 300);
-
-      }, 260);
-    }
-
-    function actualizarProgreso(pasoActual) {
-      const activeColor = 'var(--color-primary)';
-      const inactiveColor = 'var(--color-border)';
-
-      document.querySelectorAll('.prog-step').forEach((el, i) => {
-        if (i + 1 <= pasoActual) {
-          el.style.background = activeColor;
-        } else {
-          el.style.background = inactiveColor;
-        }
-      });
-    }
-
-    // ─── PASO 1: SELECCIÓN DE ROL ────────────────────────────────────────────
-
-    function cerrarModalRol() {
-      const modal = document.getElementById('role-modal');
-      if (modal) modal.classList.remove('is-visible');
-    }
-
-    function seleccionarRol(rol) {
-      rolSeleccionado = rol;
-
-      document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('card-' + rol).classList.add('selected');
-
-      const btn = document.getElementById('btnContinuar');
-      btn.disabled = false;
-      btn.style.opacity = '1';
-      btn.style.cursor  = 'pointer';
-
-      cerrarModalRol();
-    }
-
-    function irAPaso2() {
-      if (!rolSeleccionado) return;
-      const destino = rolSeleccionado === 'candidato' ? 'step2a' : 'step2b';
-      mostrarPaso('step1', destino);
-      actualizarProgreso(2);
-    }
-
-    document.querySelectorAll('[data-close-role-modal]').forEach(btn => {
-      btn.addEventListener('click', cerrarModalRol);
-    });
-
-    document.getElementById('modal-candidato')?.addEventListener('click', () => {
-      seleccionarRol('candidato');
-      irAPaso2();
-    });
-
-    document.getElementById('modal-empresa')?.addEventListener('click', () => {
-      seleccionarRol('empresa');
-      irAPaso2();
-    });
-
-    // ─── BOTÓN VOLVER ────────────────────────────────────────────────────────
-
-    function volver() {
-      const activo = document.querySelector('.step.active');
-      if (!activo || activo.id === 'step1') return;
-      mostrarPaso(activo.id, 'step1');
-      actualizarProgreso(1);
-    }
-
-    // ─── GOOGLE OAUTH ────────────────────────────────────────────────────────
-
-    async function loginConGoogle() {
-      localStorage.setItem('pending_role', rolSeleccionado || 'candidato');
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin }
-      });
-      if (error) mostrarError('Error al conectar con Google: ' + error.message);
-    }
-
-    // ─── HELPERS DE FORMULARIO ───────────────────────────────────────────────
-
-    function togglePassword(inputId, boton) {
-      const input = document.getElementById(inputId);
-      const esPassword = input.type === 'password';
-      input.type      = esPassword ? 'text' : 'password';
-      boton.textContent = esPassword ? '🙈' : '👁';
-    }
-
-    function verificarFortaleza(input, barraId, etiquetaId) {
-      const valor  = input.value;
-      const barras = document.querySelectorAll('#' + barraId + ' .ps-bar');
-      const label  = document.getElementById(etiquetaId);
-      barras.forEach(b => b.className = 'ps-bar');
-      if (!valor) { label.textContent = ''; return; }
-
-      let puntos = 0;
-      if (valor.length >= 8) puntos++;
-      if (/[A-Z]/.test(valor) && /[0-9]/.test(valor)) puntos++;
-      if (/[^A-Za-z0-9]/.test(valor)) puntos++;
-
-      const clases  = ['debil', 'media', 'fuerte'];
-      const textos  = ['Débil', 'Media', 'Fuerte 💪'];
-      const colores = ['#f85149', '#e3b341', '#34d399'];
-
-      for (let i = 0; i < puntos; i++) barras[i].classList.add(clases[puntos - 1]);
-      label.textContent = textos[puntos - 1] || '';
-      label.style.color = colores[puntos - 1] || '';
-    }
-
-    function mostrarError(mensaje) {
-      let errDiv = document.getElementById('error-global');
-      if (!errDiv) {
-        errDiv = document.createElement('div');
-        errDiv.id = 'error-global';
-        errDiv.style.cssText = `
-          color: #f85149;
-          font-size: 13px;
-          margin-top: 12px;
-          padding: 10px 14px;
-          background: rgba(248,81,73,0.1);
-          border: 1px solid rgba(248,81,73,0.3);
-          border-radius: 8px;
-        `;
-        document.querySelector('.step.active')?.appendChild(errDiv);
-      }
-      errDiv.textContent = mensaje;
-      setTimeout(() => { if (errDiv) errDiv.remove(); }, 5000);
-    }
-
-    // ─── REGISTRAR CANDIDATO ─────────────────────────────────────────────────
-
-    async function registrarCandidato() {
-      const nombre = document.getElementById('c-nombre').value.trim();
-      const email  = document.getElementById('c-email').value.trim();
-      const pw     = document.getElementById('c-pw').value;
-
-      if (!nombre || !email || pw.length < 8) {
-        mostrarError('Completa todos los campos. La contraseña debe tener mínimo 8 caracteres.');
-        return;
-      }
-
-      const btn = document.getElementById('btn-candidato');
-      btn.disabled = true;
-      btn.textContent = 'Creando cuenta...';
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: pw,
-        options: { data: { full_name: nombre, role: 'candidato' } }
-      });
-
-      btn.disabled = false;
-      btn.textContent = 'Crear mi cuenta';
-
-      if (error) { mostrarError(error.message); return; }
-
-      // Upsert profile
-      if (data?.user) {
-        await supabase.from('profiles').upsert({
-          id: data.user.id,
-          full_name: nombre,
-          email,
-          role: 'candidato',
-          onboarding_completed: false
-        });
-      }
-
-      document.getElementById('email-confirmacion').textContent = email;
-      mostrarPaso('step2a', 'step3');
-      actualizarProgreso(3);
-    }
-
-    // ─── REGISTRAR EMPRESA ───────────────────────────────────────────────────
-
-    async function registrarEmpresa() {
-      const nombre  = document.getElementById('e-nombre').value.trim();
-      const empresa = document.getElementById('e-empresa').value.trim();
-      const cargo   = document.getElementById('e-cargo').value;
-      const tamano  = document.getElementById('e-tamano').value;
-      const email   = document.getElementById('e-email').value.trim();
-      const pw      = document.getElementById('e-pw').value;
-
-      if (!nombre || !empresa || !cargo || !tamano || !email || pw.length < 8) {
-        mostrarError('Por favor completa todos los campos requeridos.');
-        return;
-      }
-
-      const btn = document.getElementById('btn-empresa');
-      btn.disabled = true;
-      btn.textContent = 'Creando cuenta...';
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: pw,
-        options: {
-          data: {
-            full_name: nombre,
-            role: 'empresa',
-            company_name: empresa,
-            company_role: cargo,
-            company_size: tamano,
-            onboarding_completed: false,
-            verified: false
-          }
-        }
-      });
-
-      btn.disabled = false;
-      btn.textContent = 'Crear cuenta empresarial';
-
-      if (error) { mostrarError(error.message); return; }
-
-      if (data?.user) {
-        await supabase.from('profiles').upsert({
-          id: data.user.id,
-          full_name: nombre,
-          email,
-          role: 'empresa',
-          company_name: empresa,
-          company_role: cargo,
-          company_size: tamano,
-          onboarding_completed: false,
-          verified: false
-        });
-      }
-
-      document.getElementById('email-confirmacion').textContent = email;
-      mostrarPaso('step2b', 'step3');
-      actualizarProgreso(3);
-    }
-
-    // ─── REENVIAR EMAIL ──────────────────────────────────────────────────────
-
-    async function reenviarEmail() {
-      if (cooldownActivo) return;
-      const email = document.getElementById('email-confirmacion').textContent;
-      const msg   = document.getElementById('msg-reenvio');
-      const btn   = document.getElementById('btn-reenviar');
-
-      const { error } = await supabase.auth.resend({ type: 'signup', email });
-      if (error) { msg.textContent = 'Error al reenviar. Intenta de nuevo.'; msg.style.color = '#f85149'; return; }
-
-      msg.style.color   = 'var(--color-primary)';
-      msg.textContent   = '✅ Correo reenviado. Espera 60 segundos.';
-      cooldownActivo    = true;
-      btn.disabled      = true;
-
-      setTimeout(() => {
-        cooldownActivo  = false;
-        btn.disabled    = false;
-        msg.textContent = '';
-      }, 60000);
-    }
-
-    // ─── EXPONER AL SCOPE GLOBAL (OBLIGATORIO CON type="module") ─────────────
-
-    window.seleccionarRol     = seleccionarRol;
-    window.irAPaso2           = irAPaso2;
-    window.volver             = volver;
-    window.loginConGoogle     = loginConGoogle;
-    window.togglePassword     = togglePassword;
-    window.verificarFortaleza = verificarFortaleza;
-    window.registrarCandidato = registrarCandidato;
-    window.registrarEmpresa   = registrarEmpresa;
-    window.reenviarEmail      = reenviarEmail;
-  </script>
+  <script type="module" src="../js/main.js"></script>
 </body>
 </html>

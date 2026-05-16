@@ -1,70 +1,71 @@
 /**
- * theme.js — Dark/Light mode + Dyslexic font toggle
- * Persists preferences in localStorage.
- * Dyslexic mode adds [data-font="dyslexic"] to <html>,
- * which the CSS rule in styles.css picks up automatically.
+ * theme.js — Dark mode toggle + dyslexic font toggle
+ * Persists choices to localStorage for cross-page continuity.
  */
 export function initTheme() {
-  // ── Dark / Light mode ─────────────────────────────────────────
-  const savedTheme = localStorage.getItem("app-theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
+  // ── Dark Mode Toggle ─────────────────────────────────────
+  const themeToggle = document.getElementById("theme-toggle");
+  const html = document.documentElement;
 
-  document.querySelectorAll("#theme-toggle").forEach(btn => {
-    btn.textContent = savedTheme === "dark" ? "☀" : "☾";
-    btn.setAttribute("aria-pressed", savedTheme === "dark");
-    btn.setAttribute("aria-label", savedTheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
-    btn.title = savedTheme === "dark" ? "Modo claro" : "Modo oscuro";
-
-    btn.addEventListener("click", () => {
-      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-      const newTheme = isDark ? "light" : "dark";
-
-      document.documentElement.setAttribute("data-theme", newTheme);
-      localStorage.setItem("app-theme", newTheme);
-
-      document.querySelectorAll("#theme-toggle").forEach(b => {
-        b.textContent = newTheme === "dark" ? "☀" : "☾";
-        b.setAttribute("aria-pressed", newTheme === "dark");
-        b.setAttribute("aria-label", newTheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
-        b.title = newTheme === "dark" ? "Modo claro" : "Modo oscuro";
-      });
-    });
-  });
-
-  // ── Dyslexic font toggle ───────────────────────────────────────
-  // Looks for any button with id="dyslexic-toggle" in the page.
-  // When activated, sets data-font="dyslexic" on <html>.
-  // CSS in styles.css applies 'OpenDyslexic' to all elements.
-  const savedFont = localStorage.getItem("app-font") || "default";
-  if (savedFont === "dyslexic") {
-    document.documentElement.setAttribute("data-font", "dyslexic");
+  function applyTheme(theme) {
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("app-theme", theme);
+    if (themeToggle) {
+      themeToggle.textContent = theme === "dark" ? "☀" : "☾";
+      themeToggle.setAttribute(
+        "aria-pressed",
+        theme === "dark" ? "true" : "false"
+      );
+    }
   }
 
-  document.querySelectorAll("#dyslexic-toggle").forEach(btn => {
-    const isActive = savedFont === "dyslexic";
-    btn.setAttribute("aria-pressed", isActive);
-    btn.textContent = "Aa";
-    btn.setAttribute("aria-label", isActive ? "Desactivar fuente para dislexia" : "Activar fuente para dislexia");
-    btn.title = isActive ? "Fuente normal" : "Fuente para dislexia";
+  // Init from localStorage or system preference
+  const saved = localStorage.getItem("app-theme");
+  if (saved) {
+    applyTheme(saved);
+  } else {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+  }
 
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-font");
-      const next = current === "dyslexic" ? "default" : "dyslexic";
-
-      if (next === "dyslexic") {
-        document.documentElement.setAttribute("data-font", "dyslexic");
-      } else {
-        document.documentElement.removeAttribute("data-font");
-      }
-
-      localStorage.setItem("app-font", next);
-
-      document.querySelectorAll("#dyslexic-toggle").forEach(b => {
-        b.setAttribute("aria-pressed", next === "dyslexic");
-        b.textContent = "Aa";
-        b.setAttribute("aria-label", next === "dyslexic" ? "Desactivar fuente para dislexia" : "Activar fuente para dislexia");
-        b.title = next === "dyslexic" ? "Fuente normal" : "Fuente para dislexia";
-      });
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const current = html.getAttribute("data-theme") || "light";
+      applyTheme(current === "dark" ? "light" : "dark");
     });
-  });
+  }
+
+  // ── Dyslexic Font Toggle ───────────────────────────────────
+  const dyslexicToggle = document.getElementById("dyslexic-toggle");
+
+  function applyFont(font) {
+    if (font === "dyslexic") {
+      html.setAttribute("data-font", "dyslexic");
+      localStorage.setItem("app-font", "dyslexic");
+    } else {
+      html.removeAttribute("data-font");
+      localStorage.removeItem("app-font");
+    }
+    if (dyslexicToggle) {
+      dyslexicToggle.setAttribute(
+        "aria-pressed",
+        font === "dyslexic" ? "true" : "false"
+      );
+      dyslexicToggle.style.background =
+        font === "dyslexic" ? "var(--color-primary)" : "";
+      dyslexicToggle.style.color =
+        font === "dyslexic" ? "var(--btn-primary-text)" : "";
+    }
+  }
+
+  // Init font from localStorage
+  const savedFont = localStorage.getItem("app-font");
+  applyFont(savedFont || "default");
+
+  if (dyslexicToggle) {
+    dyslexicToggle.addEventListener("click", () => {
+      const current = html.getAttribute("data-font");
+      applyFont(current === "dyslexic" ? "default" : "dyslexic");
+    });
+  }
 }
