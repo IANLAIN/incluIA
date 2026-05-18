@@ -155,7 +155,7 @@ export function initAuth(root = document) {
     btn.addEventListener("click", async (e) => {
       e.preventDefault();
       if (!supabaseClient) {
-        setStatus(statusEl, "error", "⚠️", "Supabase no disponible. Recarga la página.");
+        setStatus(statusEl, "error", "⚠️", "Función OAuth no disponible en modo offline de prueba.");
         return;
       }
 
@@ -188,13 +188,31 @@ export function initAuth(root = document) {
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!supabaseClient) {
-        setStatus(statusEl, "error", "⚠️", "Backend no configurado. Usa Google por ahora.");
+      const emailEl = form.querySelector("[type='email']");
+      const passEl = form.querySelector("[type='password']");
+      const tempEmail = emailEl?.value?.trim();
+      const tempPass = passEl?.value;
+      
+      // Auto-bypass para Cuentas de muestra (Bypass para Dashboard) incluso si Supabase falla
+      if (tempEmail === "demo.candidato@incluia.org" && tempPass === "Demo1234!") {
+        setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
+        localStorage.setItem("user_role", "candidate");
+        localStorage.setItem("demo_session", "true");
+        setTimeout(() => redirectToDashboard(), 800);
+        return;
+      }
+      if (tempEmail === "demo.empresa@incluia.org" && tempPass === "Demo1234!") {
+        setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
+        localStorage.setItem("user_role", "company");
+        localStorage.setItem("demo_session", "true");
+        setTimeout(() => redirectToDashboard(), 800);
         return;
       }
 
-      const emailEl = form.querySelector("[type='email']");
-      const passEl = form.querySelector("[type='password']");
+      if (!supabaseClient) {
+        setStatus(statusEl, "error", "⚠️", "Backend no configurado. Vuelve a intentar en un momento.");
+        return;
+      }
       const email = emailEl?.value?.trim();
       const pass = passEl?.value;
 
@@ -218,14 +236,7 @@ export function initAuth(root = document) {
       setLoading(submitBtn, true, originalBtnText);
       setStatus(statusEl, "info", "⏳", "Verificando credenciales...");
 
-      // Cuentas de muestra (Bypass para Dashboard)
-      if (email === "demo.candidato@incluia.org" && pass === "Demo1234!") {
-        setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
-        localStorage.setItem("user_role", "candidate");
-        localStorage.setItem("demo_session", "true");
-        setTimeout(() => redirectToDashboard(), 800);
-        return;
-      }
+
       if (email === "demo.empresa@incluia.org" && pass === "Demo1234!") {
         setStatus(statusEl, "success", "✅", "¡Sesión de muestra iniciada!");
         localStorage.setItem("user_role", "company");
@@ -450,9 +461,13 @@ function initRegisterWizard(root, supabase) {
 
   // Google Auth for Registration
   const btnGoogleRegister = root.querySelector("[data-google-register]");
-  if (btnGoogleRegister && supabase) {
+  if (btnGoogleRegister) {
     btnGoogleRegister.addEventListener("click", async (e) => {
       e.preventDefault();
+      if (!supabase) {
+         setRegStatus("error", "⚠️", "Función OAuth no disponible en modo offline de prueba.");
+         return;
+      }
       btnGoogleRegister.disabled = true;
       const textEl = btnGoogleRegister.querySelector("[data-google-btn-text]");
       if (textEl) textEl.textContent = "Conectando...";
@@ -476,7 +491,7 @@ function initRegisterWizard(root, supabase) {
   }
 
   // Form Submit
-  if (registerForm && supabase) {
+  if (registerForm) {
     const submitBtn = registerForm.querySelector("[data-btn-submit]");
     const statusEl = root.querySelector("#reg-status-message");
 
@@ -510,6 +525,21 @@ function initRegisterWizard(root, supabase) {
       }
 
       const roleForSupabase = selectedRole === "company" ? "company" : "candidate";
+
+      // --- OFFLINE / DEMO BYPASS ---
+      if (email.startsWith("demo") || !supabase) {
+        setRegStatus("success", "✅", "¡Configuración de prueba exitosa!");
+        localStorage.setItem("user_role", roleForSupabase);
+        localStorage.setItem("demo_session", "true");
+        setTimeout(() => {
+          const dest = roleForSupabase === "company" ? "pages/dashboard-company.html" : "pages/dashboard-candidate.html";
+          if (window.__spaNavigate) window.__spaNavigate(dest);
+          else window.location.href = dest;
+        }, 1200);
+        return;
+      }
+      // ----------------------------
+
       let metadata = { full_name: fullName, role: roleForSupabase };
       let profileData = {
         email,

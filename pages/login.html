@@ -71,6 +71,16 @@
               <p class="ms-status" data-ms-status role="status" aria-live="polite"></p>
             </div>
 
+            
+              <div class="demo-logins" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('login-email').value='demo.candidato@incluia.org'; document.getElementById('login-password').value='Demo1234!'; document.getElementById('login-form').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));">
+                  👤 Demo Candidato
+                </button>
+                <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('login-email').value='demo.empresa@incluia.org'; document.getElementById('login-password').value='Demo1234!'; document.getElementById('login-form').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));">
+                  🏢 Demo Empresa
+                </button>
+              </div>
+
             <form id="login-form" class="auth-form">
               <div class="field">
                 <label for="login-email" data-i18n="auth.label.email">Correo electrónico</label>
