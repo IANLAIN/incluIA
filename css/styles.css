@@ -1013,3 +1013,8 @@ button.is-loading {
 body.is-home-route header .brand { opacity: 0; pointer-events: none; visibility: hidden; }
 
 
+
+/* Ocultar el hipercubo en cualquier sección que no sea el inicio */
+body:not(.is-home-route) #hypercube-canvas {
+  display: none !important;
+}
