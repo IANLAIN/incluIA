@@ -67,7 +67,12 @@ const translations = {
     "dash.comp.guide.title": "Generador de guía de adaptación del puesto", "dash.comp.guide.desc": "Simulación de IA responsable para sugerir ajustes.", "dash.comp.guide.role": "Rol a adaptar", "dash.comp.guide.context": "Contexto", "dash.comp.guide.btn": "Generar guía", "dash.comp.guide.output": "Las recomendaciones aparecerán aquí.",
     "dash.comp.esg.title": "Métricas de impacto social", "dash.comp.esg.desc": "Analytics en tiempo real.", "dash.comp.esg.1": "Retención", "dash.comp.esg.2": "Bienestar", "dash.comp.esg.3": "Capacitación",
     "ment.title": "Mentoría activa", "ment.desc": "Chat simulado para seguimiento diario.", "ment.list.title": "Mentores", "ment.list.1": "Carla M. - Bienestar", "ment.list.2": "Raúl T. - Productividad", "ment.list.3": "Luz P. - Comunicación", "ment.chat.1": "Hola Alex, ¿cómo estuvo tu energía hoy?", "ment.chat.2": "Bien. Me ayudó tener la lista de tareas clara.", "ment.chat.3": "Perfecto. Recuerda que puedes pedir pausas cortas cuando lo necesites.", "ment.chat.btn": "Enviar",
-    "donate.title": "Cómo apoyarnos", "donate.desc": "Tu donación ayuda a expandir el acceso a oportunidades laborales inclusivas a nivel mundial.", "donate.1.title": "Donar con tarjeta", "donate.1.desc": "Contribuye de forma segura con Visa, Mastercard o American Express.", "donate.1.btn": "Donar con tarjeta", "donate.2.title": "Donar con PayPal", "donate.2.desc": "Usa tu cuenta PayPal para apoyar nuestro proyecto global.", "donate.2.btn": "Donar con PayPal", "donate.3.title": "Donar con cripto", "donate.3.desc": "Aceptamos Bitcoin, Ethereum y otras criptomonedas para donaciones anónimas.", "donate.3.btn": "Ver wallets", "donate.4.title": "Otras formas de ayudar", "donate.4.li1": "Comparte nuestra plataforma", "donate.4.li2": "Únete como mentor", "donate.4.li3": "Recomienda empresas aliadas"
+    "donate.title": "Cómo apoyarnos", "donate.desc": "Tu donación ayuda a expandir el acceso a oportunidades laborales inclusivas a nivel mundial.", "donate.1.title": "Donar con tarjeta", "donate.1.desc": "Contribuye de forma segura con Visa, Mastercard o American Express.", "donate.1.btn": "Donar con tarjeta", "donate.2.title": "Donar con PayPal", "donate.2.desc": "Usa tu cuenta PayPal para apoyar nuestro proyecto global.", "donate.2.btn": "Donar con PayPal", "donate.3.title": "Donar con cripto", "donate.3.desc": "Aceptamos Bitcoin, Ethereum y otras criptomonedas para donaciones anónimas.", "donate.3.btn": "Ver wallets", "donate.4.title": "Otras formas de ayudar", "donate.4.li1": "Comparte nuestra plataforma", "donate.4.li2": "Únete como mentor", "donate.4.li3": "Recomienda empresas aliadas",
+    "gate.lang.eyebrow": "Idioma / Language", "gate.lang.title": "Elige tu idioma / Choose your language", "gate.lang.note": "Puedes cambiarlo en cualquier momento desde la barra superior.", "gate.btn.confirm": "Confirmar",
+    "gate.user.eyebrow": "Bienvenido", "gate.user.title": "¿Cómo usarás incluIA?", "gate.user.desc": "Selecciona tu tipo de usuario para personalizar tu experiencia.",
+    "gate.user.visitor": "Visitante (Quiero explorar)", "gate.user.company": "Empresa (Busco talento corporativo)", "gate.user.candidate": "Candidato (Busco empleo inclusivo)",
+    "gate.cand.eyebrow": "Perfil de Candidato", "gate.cand.title": "¿Con qué condición te identificas?", "gate.cand.desc": "Esto nos ayuda a adaptar el entorno y las ofertas a tus necesidades.",
+    "gate.cand.down": "Síndrome de Down", "gate.cand.autism": "Autismo", "gate.cand.adhd": "TDAH", "gate.cand.intellectual": "Discapacidad intelectual", "gate.cand.other": "Prefiero no decirlo / Otra"
   },
   en: {
     "nav.home": "Home", "nav.why": "Why incluIA?", "nav.mentoring": "Mentoring", "nav.donate": "How to support us",
@@ -137,7 +142,12 @@ const translations = {
     "dash.comp.guide.title": "Role adaptation guide generator", "dash.comp.guide.desc": "Responsible AI simulation to suggest adjustments.", "dash.comp.guide.role": "Role to adapt", "dash.comp.guide.context": "Context", "dash.comp.guide.btn": "Generate guide", "dash.comp.guide.output": "Recommendations will appear here.",
     "dash.comp.esg.title": "Social impact metrics", "dash.comp.esg.desc": "Real-time analytics.", "dash.comp.esg.1": "Retention", "dash.comp.esg.2": "Well-being", "dash.comp.esg.3": "Training",
     "ment.title": "Active mentoring", "ment.desc": "Simulated chat for daily tracking.", "ment.list.title": "Mentors", "ment.list.1": "Carla M. - Well-being", "ment.list.2": "Raul T. - Productivity", "ment.list.3": "Luz P. - Communication", "ment.chat.1": "Hi Alex, how was your energy today?", "ment.chat.2": "Good. Having a clear task list helped.", "ment.chat.3": "Perfect. Remember you can ask for short breaks when needed.", "ment.chat.btn": "Send",
-    "donate.title": "How to support us", "donate.desc": "Your donation helps expand access to inclusive job opportunities worldwide.", "donate.1.title": "Donate with card", "donate.1.desc": "Contribute securely with Visa, Mastercard, or Amex.", "donate.1.btn": "Donate with card", "donate.2.title": "Donate with PayPal", "donate.2.desc": "Use your PayPal account to support our global project.", "donate.2.btn": "Donate with PayPal", "donate.3.title": "Donate with crypto", "donate.3.desc": "We accept Bitcoin, Ethereum for anonymous donations.", "donate.3.btn": "View wallets", "donate.4.title": "Other ways to help", "donate.4.li1": "Share our platform", "donate.4.li2": "Join as a mentor", "donate.4.li3": "Recommend partner companies"
+    "donate.title": "How to support us", "donate.desc": "Your donation helps expand access to inclusive job opportunities worldwide.", "donate.1.title": "Donate with card", "donate.1.desc": "Contribute securely with Visa, Mastercard, or Amex.", "donate.1.btn": "Donate with card", "donate.2.title": "Donate with PayPal", "donate.2.desc": "Use your PayPal account to support our global project.", "donate.2.btn": "Donate with PayPal", "donate.3.title": "Donate with crypto", "donate.3.desc": "We accept Bitcoin, Ethereum for anonymous donations.", "donate.3.btn": "View wallets", "donate.4.title": "Other ways to help", "donate.4.li1": "Share our platform", "donate.4.li2": "Join as a mentor", "donate.4.li3": "Recommend partner companies",
+    "gate.lang.eyebrow": "Language / Idioma", "gate.lang.title": "Choose your language / Elige tu idioma", "gate.lang.note": "You can change it anytime from the top bar.", "gate.btn.confirm": "Confirm",
+    "gate.user.eyebrow": "Welcome", "gate.user.title": "How will you use incluIA?", "gate.user.desc": "Select your user type to customize your experience.",
+    "gate.user.visitor": "Visitor (Just exploring)", "gate.user.company": "Company (Looking for corporate talent)", "gate.user.candidate": "Candidate (Looking for inclusive jobs)",
+    "gate.cand.eyebrow": "Candidate Profile", "gate.cand.title": "What condition do you identify with?", "gate.cand.desc": "This helps us adapt the environment and offers to your needs.",
+    "gate.cand.down": "Down Syndrome", "gate.cand.autism": "Autism", "gate.cand.adhd": "ADHD", "gate.cand.intellectual": "Intellectual disability", "gate.cand.other": "Prefer not to say / Other"
   },
   fr: {
     "nav.home": "Accueil", "nav.why": "Pourquoi incluIA?", "nav.mentoring": "Mentorat", "nav.donate": "Comment soutenir",
@@ -202,7 +212,12 @@ const translations = {
     "dash.comp.guide.title": "Générateur de guide d'adaptation", "dash.comp.guide.desc": "Simulation d'IA responsable pour suggérer des ajustements.", "dash.comp.guide.role": "Rôle à adapter", "dash.comp.guide.context": "Contexte", "dash.comp.guide.btn": "Générer le guide", "dash.comp.guide.output": "Les recommandations apparaîtront ici.",
     "dash.comp.esg.title": "Métriques d'impact social", "dash.comp.esg.desc": "Analytique en temps réel.", "dash.comp.esg.1": "Rétention", "dash.comp.esg.2": "Bien-être", "dash.comp.esg.3": "Formation",
     "ment.title": "Mentorat actif", "ment.desc": "Chat simulé pour le suivi.", "ment.list.title": "Mentors", "ment.list.1": "Carla M. - Bien-être", "ment.list.2": "Raul T. - Productivité", "ment.list.3": "Luz P. - Communication", "ment.chat.1": "Bonjour Alex, comment était votre énergie ?", "ment.chat.2": "Bien. La liste de tâches a aidé.", "ment.chat.3": "Parfait. N'oubliez pas les pauses.", "ment.chat.btn": "Envoyer",
-    "donate.title": "Comment nous soutenir", "donate.desc": "Votre don aide à développer l'accès aux opportunités mondiales.", "donate.1.title": "Don par carte", "donate.1.desc": "Contribuez en toute sécurité avec Visa ou Mastercard.", "donate.1.btn": "Don par carte", "donate.2.title": "Don PayPal", "donate.2.desc": "Utilisez PayPal pour soutenir notre projet.", "donate.2.btn": "Don PayPal", "donate.3.title": "Don en crypto", "donate.3.desc": "Nous acceptons Bitcoin, Ethereum.", "donate.3.btn": "Voir portefeuilles", "donate.4.title": "Autres façons d'aider", "donate.4.li1": "Partagez notre plateforme", "donate.4.li2": "Devenez mentor", "donate.4.li3": "Recommandez des entreprises"
+    "donate.title": "Comment nous soutenir", "donate.desc": "Votre don aide à développer l'accès aux opportunités mondiales.", "donate.1.title": "Don par carte", "donate.1.desc": "Contribuez en toute sécurité avec Visa ou Mastercard.", "donate.1.btn": "Don par carte", "donate.2.title": "Don PayPal", "donate.2.desc": "Utilisez PayPal pour soutenir notre projet.", "donate.2.btn": "Don PayPal", "donate.3.title": "Don en crypto", "donate.3.desc": "Nous acceptons Bitcoin, Ethereum.", "donate.3.btn": "Voir portefeuilles", "donate.4.title": "Autres façons d'aider", "donate.4.li1": "Partagez notre plateforme", "donate.4.li2": "Devenez mentor", "donate.4.li3": "Recommandez des entreprises",
+    "gate.lang.eyebrow": "Langue / Language", "gate.lang.title": "Choisissez votre langue / Choose your language", "gate.lang.note": "Vous pouvez la changer à tout moment depuis la barre supérieure.", "gate.btn.confirm": "Confirmer",
+    "gate.user.eyebrow": "Bienvenue", "gate.user.title": "Comment allez-vous utiliser incluIA ?", "gate.user.desc": "Sélectionnez votre type d'utilisateur pour personnaliser votre expérience.",
+    "gate.user.visitor": "Visiteur (Juste pour explorer)", "gate.user.company": "Entreprise (Recherche de talents)", "gate.user.candidate": "Candidat (Recherche d'emplois inclusifs)",
+    "gate.cand.eyebrow": "Profil du candidat", "gate.cand.title": "À quelle condition vous identifiez-vous ?", "gate.cand.desc": "Cela nous aide à adapter l'environnement et les offres à vos besoins.",
+    "gate.cand.down": "Trisomie 21", "gate.cand.autism": "Autisme", "gate.cand.adhd": "TDAH", "gate.cand.intellectual": "Déficience intellectuelle", "gate.cand.other": "Je préfère ne pas le dire / Autre"
   },
   pt: {
     "nav.home": "Início", "nav.why": "Por que incluIA?", "nav.mentoring": "Mentoria", "nav.donate": "Como nos apoiar",
@@ -267,7 +282,12 @@ const translations = {
     "dash.comp.guide.title": "Gerador de guia de adaptação de função", "dash.comp.guide.desc": "Simulação de IA responsável para sugerir ajustes.", "dash.comp.guide.role": "Função a adaptar", "dash.comp.guide.context": "Contexto", "dash.comp.guide.btn": "Gerar guia", "dash.comp.guide.output": "As recomendações aparecerão aqui.",
     "dash.comp.esg.title": "Métricas de impacto social", "dash.comp.esg.desc": "Análise em tempo real.", "dash.comp.esg.1": "Retenção", "dash.comp.esg.2": "Bem-estar", "dash.comp.esg.3": "Treinamento",
     "ment.title": "Mentoria ativa", "ment.desc": "Chat simulado para acompanhamento.", "ment.list.title": "Mentores", "ment.list.1": "Carla M. - Bem-estar", "ment.list.2": "Raul T. - Produtividade", "ment.list.3": "Luz P. - Comunicação", "ment.chat.1": "Olá Alex, como estava sua energia hoje?", "ment.chat.2": "Bem. Ter a lista de tarefas ajudou.", "ment.chat.3": "Perfeito. Lembre-se de fazer pausas curtas.", "ment.chat.btn": "Enviar",
-    "donate.title": "Como nos apoiar", "donate.desc": "Sua doação ajuda a expandir o acesso a oportunidades globais.", "donate.1.title": "Doar com cartão", "donate.1.desc": "Contribua com segurança via Visa ou Mastercard.", "donate.1.btn": "Doar com cartão", "donate.2.title": "Doar com PayPal", "donate.2.desc": "Use sua conta PayPal para apoiar.", "donate.2.btn": "Doar com PayPal", "donate.3.title": "Doar com criptomoeda", "donate.3.desc": "Aceitamos Bitcoin, Ethereum.", "donate.3.btn": "Ver carteiras", "donate.4.title": "Outras formas de ajudar", "donate.4.li1": "Compartilhe a plataforma", "donate.4.li2": "Torne-se mentor", "donate.4.li3": "Recomende empresas"
+    "donate.title": "Como nos apoiar", "donate.desc": "Sua doação ajuda a expandir o acesso a oportunidades globais.", "donate.1.title": "Doar com cartão", "donate.1.desc": "Contribua com segurança via Visa ou Mastercard.", "donate.1.btn": "Doar com cartão", "donate.2.title": "Doar com PayPal", "donate.2.desc": "Use sua conta PayPal para apoiar.", "donate.2.btn": "Doar com PayPal", "donate.3.title": "Doar com criptomoeda", "donate.3.desc": "Aceitamos Bitcoin, Ethereum.", "donate.3.btn": "Ver carteiras", "donate.4.title": "Outras formas de ajudar", "donate.4.li1": "Compartilhe a plataforma", "donate.4.li2": "Torne-se mentor", "donate.4.li3": "Recomende empresas",
+    "gate.lang.eyebrow": "Idioma / Language", "gate.lang.title": "Escolha seu idioma / Choose your language", "gate.lang.note": "Você pode alterar a qualquer momento na barra superior.", "gate.btn.confirm": "Confirmar",
+    "gate.user.eyebrow": "Bem-vindo", "gate.user.title": "Como você usará a incluIA?", "gate.user.desc": "Selecione seu tipo de usuário para personalizar sua experiência.",
+    "gate.user.visitor": "Visitante (Apenas explorando)", "gate.user.company": "Empresa (Buscando talentos corporativos)", "gate.user.candidate": "Candidato (Buscando empregos inclusivos)",
+    "gate.cand.eyebrow": "Perfil do Candidato", "gate.cand.title": "Com qual condição você se identifica?", "gate.cand.desc": "Isso nos ajuda a adaptar o ambiente e as ofertas às suas necessidades.",
+    "gate.cand.down": "Síndrome de Down", "gate.cand.autism": "Autismo", "gate.cand.adhd": "TDAH", "gate.cand.intellectual": "Deficiência intelectual", "gate.cand.other": "Prefiro não dizer / Outra"
   }
 };
 
@@ -397,16 +417,16 @@ function showLanguageGate() {
   let selectedLang = null;
   const gate = createGateDialog("language-gate", `
     <div class="language-gate-card card">
-      <p class="eyebrow">Idioma / Language</p>
-      <h2 id="language-gate-title">Elige tu idioma / Choose your language</h2>
+      <p class="eyebrow" data-i18n="gate.lang.eyebrow">Idioma / Language</p>
+      <h2 id="language-gate-title" data-i18n="gate.lang.title">Elige tu idioma / Choose your language</h2>
       <div class="language-gate-actions">
         <button type="button" class="btn btn-ghost" data-gate-lang="es">Español / Spanish</button>
         <button type="button" class="btn btn-ghost" data-gate-lang="en">English (US) / Inglés</button>
         <button type="button" class="btn btn-ghost" data-gate-lang="pt">Português / Portuguese</button>
         <button type="button" class="btn btn-ghost" data-gate-lang="fr">Français / French</button>
       </div>
-      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled>Confirmar</button>
-      <p class="language-gate-note">Puedes cambiarlo en cualquier momento desde la barra superior.</p>
+      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled data-i18n="gate.btn.confirm">Confirmar</button>
+      <p class="language-gate-note" data-i18n="gate.lang.note">Puedes cambiarlo en cualquier momento desde la barra superior.</p>
     </div>
   `);
 
@@ -415,6 +435,8 @@ function showLanguageGate() {
   gate.querySelectorAll("[data-gate-lang]").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedLang = btn.getAttribute("data-gate-lang");
+      currentLang = selectedLang;
+      applyTranslations();
       gate.querySelectorAll("[data-gate-lang]").forEach(b => b.classList.remove("is-selected"));
       btn.classList.add("is-selected");
       if (confirmBtn) confirmBtn.disabled = false;
@@ -431,21 +453,21 @@ function showLanguageGate() {
 }
 
 function showUserTypeGate() {
-  const isEs = currentLang === "es";
   let selectedUserType = null;
   const gate = createGateDialog("usertype-gate", `
     <div class="language-gate-card card">
-      <p class="eyebrow">${isEs ? 'Bienvenido' : 'Welcome'}</p>
-      <h2 id="usertype-gate-title">${isEs ? '¿Cómo usarás incluIA?' : 'How will you use incluIA?'}</h2>
-      <p>${isEs ? 'Selecciona tu tipo de usuario para personalizar tu experiencia.' : 'Select your user type to customize your experience.'}</p>
+      <p class="eyebrow" data-i18n="gate.user.eyebrow">Bienvenido</p>
+      <h2 id="usertype-gate-title" data-i18n="gate.user.title">¿Cómo usarás incluIA?</h2>
+      <p data-i18n="gate.user.desc">Selecciona tu tipo de usuario para personalizar tu experiencia.</p>
       <div class="language-gate-actions" style="flex-direction: column;">
-        <button type="button" class="btn btn-ghost" data-user-type="visitante">${isEs ? 'Visitante (Quiero explorar)' : 'Visitor (Just exploring)'}</button>
-        <button type="button" class="btn btn-ghost" data-user-type="empresa">${isEs ? 'Empresa (Busco talento corporativo)' : 'Company (Looking for corporate talent)'}</button>
-        <button type="button" class="btn btn-ghost" data-user-type="candidato">${isEs ? 'Candidato (Busco empleo inclusivo)' : 'Candidate (Looking for inclusive jobs)'}</button>
+        <button type="button" class="btn btn-ghost" data-user-type="visitante" data-i18n="gate.user.visitor">Visitante (Quiero explorar)</button>
+        <button type="button" class="btn btn-ghost" data-user-type="empresa" data-i18n="gate.user.company">Empresa (Busco talento corporativo)</button>
+        <button type="button" class="btn btn-ghost" data-user-type="candidato" data-i18n="gate.user.candidate">Candidato (Busco empleo inclusivo)</button>
       </div>
-      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled>${isEs ? 'Confirmar' : 'Confirm'}</button>
+      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled data-i18n="gate.btn.confirm">Confirmar</button>
     </div>
   `);
+  applyTranslations();
 
   const confirmBtn = gate.querySelector("[data-gate-confirm]");
 
@@ -471,23 +493,23 @@ function showUserTypeGate() {
 }
 
 function showCandidateTypeGate() {
-  const isEs = currentLang === "es";
   let selectedCandidateType = null;
   const gate = createGateDialog("candidatetype-gate", `
     <div class="language-gate-card card">
-      <p class="eyebrow">${isEs ? 'Perfil de Candidato' : 'Candidate Profile'}</p>
-      <h2 id="candidatetype-gate-title">${isEs ? '¿Con qué condición te identificas?' : 'What condition do you identify with?'}</h2>
-      <p>${isEs ? 'Esto nos ayuda a adaptar el entorno y las ofertas a tus necesidades.' : 'This helps us adapt the environment and offers to your needs.'}</p>
+      <p class="eyebrow" data-i18n="gate.cand.eyebrow">Perfil de Candidato</p>
+      <h2 id="candidatetype-gate-title" data-i18n="gate.cand.title">¿Con qué condición te identificas?</h2>
+      <p data-i18n="gate.cand.desc">Esto nos ayuda a adaptar el entorno y las ofertas a tus necesidades.</p>
       <div class="language-gate-actions" style="flex-direction: column;">
-        <button type="button" class="btn btn-ghost" data-candidate-type="down">${isEs ? 'Síndrome de Down' : 'Down Syndrome'}</button>
-        <button type="button" class="btn btn-ghost" data-candidate-type="autismo">${isEs ? 'Autismo' : 'Autism'}</button>
-        <button type="button" class="btn btn-ghost" data-candidate-type="tdah">${isEs ? 'TDAH' : 'ADHD'}</button>
-        <button type="button" class="btn btn-ghost" data-candidate-type="discapacidad_intelectual">${isEs ? 'Discapacidad intelectual' : 'Intellectual disability'}</button>
-        <button type="button" class="btn btn-outline" data-candidate-type="otro" style="margin-top: 8px;">${isEs ? 'Prefiero no decirlo / Otra' : 'Prefer not to say / Other'}</button>
+        <button type="button" class="btn btn-ghost" data-candidate-type="down" data-i18n="gate.cand.down">Síndrome de Down</button>
+        <button type="button" class="btn btn-ghost" data-candidate-type="autismo" data-i18n="gate.cand.autism">Autismo</button>
+        <button type="button" class="btn btn-ghost" data-candidate-type="tdah" data-i18n="gate.cand.adhd">TDAH</button>
+        <button type="button" class="btn btn-ghost" data-candidate-type="discapacidad_intelectual" data-i18n="gate.cand.intellectual">Discapacidad intelectual</button>
+        <button type="button" class="btn btn-outline" data-candidate-type="otro" style="margin-top: 8px;" data-i18n="gate.cand.other">Prefiero no decirlo / Otra</button>
       </div>
-      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled>${isEs ? 'Confirmar' : 'Confirm'}</button>
+      <button type="button" class="btn btn-primary btn-full" data-gate-confirm disabled data-i18n="gate.btn.confirm">Confirmar</button>
     </div>
   `);
+  applyTranslations();
 
   const confirmBtn = gate.querySelector("[data-gate-confirm]");
 

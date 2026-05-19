@@ -61,12 +61,26 @@ export function initTheme() {
   // Init from localStorage or system preference
   const policy = getThemePolicy();
   const saved = localStorage.getItem("app-theme");
+  
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  
   if (saved && (saved === "light" || policy.allowDark)) {
     applyTheme(saved);
   } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    applyTheme(policy.allowDark && prefersDark ? "dark" : "light");
+    applyTheme(policy.allowDark && mediaQuery.matches ? "dark" : "light");
   }
+
+  // Automatically update if browser preference changes
+  mediaQuery.addEventListener("change", (e) => {
+    const currentPolicy = getThemePolicy();
+    // Only auto-switch if the user hasn't explicitly set a preference that overrides it,
+    // or if we just want to follow the system. We'll follow the system if allowDark is true.
+    if (currentPolicy.allowDark) {
+      applyTheme(e.matches ? "dark" : "light");
+    } else {
+      applyTheme("light");
+    }
+  });
 
   // Init User Type Theme (Empresa, etc.)
   const userType = localStorage.getItem("app-user-type");

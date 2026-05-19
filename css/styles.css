@@ -135,51 +135,51 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  /* ── Backgrounds — never pure black ────────────────────── */
-  --color-bg:          #0f172a;   /* dark navy — replaces #000 */
-  --color-surface:     #1e293b;   /* card & panel surface */
-  --color-surface-alt: #263348;   /* slightly elevated surface */
+  /* ── Backgrounds — sober dark grays instead of navy ────────────────────── */
+  --color-bg:          #121212;   /* sober dark */
+  --color-surface:     #1E1E1E;   /* card & panel surface */
+  --color-surface-alt: #2C2C2C;   /* slightly elevated surface */
 
   /* ── Text — never pure white ────────────────────────── */
-  --color-ink:   #DDE2EB;   /* 11.2:1 on #1e293b — WCAG AAA ✓ */
-  --color-muted: #94A3B8;   /*  5.8:1 on #1e293b — WCAG AA  ✓ */
+  --color-ink:   #E0E0E0;   /* WCAG AAA ✓ */
+  --color-muted: #9E9E9E;   /* WCAG AA  ✓ */
 
   /* ── Borders — very subtle on dark ───────────────────── */
-  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
 
-  /* ── Brand accents — desaturated, calming in dark ─────────── */
-  --color-primary:      #48A9A6;   /* turquoise — calming */
-  --color-primary-dark: #62BDB9;   /* lighter for hover */
-  --color-accent:       #48A9A6;   /* same turquoise family */
-  --color-accent-2:     #8892B0;   /* desaturated steel blue */
+  /* ── Brand accents — sober, desaturated ─────────── */
+  --color-primary:      #5C8092;   /* sober muted blue-grey */
+  --color-primary-dark: #7097AA;   /* lighter for hover */
+  --color-accent:       #5C8092;   
+  --color-accent-2:     #7C888F;   
 
   /* ── Status — muted on dark ─────────────────────────── */
-  --color-success: #4ADE80;   /* soft green */
-  --color-warning: #FBBF24;   /* muted amber */
-  --color-error:   #F87171;   /* soft red, not aggressive */
+  --color-success: #509C75;   /* soft green */
+  --color-warning: #C79A3A;   /* muted amber */
+  --color-error:   #B85C5C;   /* soft red, not aggressive */
 
   /* ── Soft tint ───────────────────────────────────── */
-  --color-soft: rgba(72, 169, 166, 0.15);   /* transparent turquoise */
+  --color-soft: rgba(92, 128, 146, 0.15);   /* transparent primary */
 
   /* ── Component tokens ───────────────────────────────── */
-  --btn-primary-bg:     #1D4ED8;   /* medium blue — not electric */
-  --btn-primary-text:   #DDE2EB;
-  --btn-outline-border: #48A9A6;
-  --btn-outline-text:   #48A9A6;
-  --badge-bg:           rgba(72, 169, 166, 0.18);
-  --badge-text:         #62BDB9;
-  --btn-google-bg:      #1e293b;   /* elevated surface, not black */
-  --btn-google-text:    #DDE2EB;
-  --track-bg:           #334155;   /* progress / chart track */
+  --btn-primary-bg:     #42677A;   /* sober medium blue-grey */
+  --btn-primary-text:   #E0E0E0;
+  --btn-outline-border: #5C8092;
+  --btn-outline-text:   #5C8092;
+  --badge-bg:           rgba(92, 128, 146, 0.18);
+  --badge-text:         #8BB1C7;
+  --btn-google-bg:      #2A2A2A;   /* elevated surface */
+  --btn-google-text:    #E0E0E0;
+  --track-bg:           #333333;   /* progress / chart track */
 
   /* ── Glassmorphism navbar (dark) ───────────────────────── */
-  --nav-bg:     rgba(15, 23, 42, 0.88);
-  --nav-border: rgba(255, 255, 255, 0.06);
+  --nav-bg:     rgba(18, 18, 18, 0.9);
+  --nav-border: rgba(255, 255, 255, 0.08);
 
   /* ── Shadows — deeper but still soft ────────────────── */
-  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.35);
-  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.6);
   --shadow-soft: var(--shadow-lg);
   --shadow-card: var(--shadow-md);
 }
