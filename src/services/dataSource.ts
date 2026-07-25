@@ -12,6 +12,11 @@
  *   - The function isDemoMode() reads the active user's ID from localStorage
  *     and returns true if it matches the demo pattern.
  *
+ * CRITICAL: Demo data and real user data are STRICTLY ISOLATED. There is NO overlap.
+ *   - getCurrentUser() checks demo flag FIRST, then localStorage local user, then Supabase.
+ *   - localStorage keys for demo vs real are distinct: "astris_demo_user" vs "astris_local_user".
+ *   - logoutUser() clears ALL localStorage keys to prevent cross-contamination.
+ *
  * This file is the ONLY import point for pages. No page should import from
  * supabase.ts or demoData.ts directly (except for type re-exports).
  */
@@ -121,6 +126,8 @@ export async function loginUser(email: string, password: string): Promise<{ user
       throw new Error("Credenciales inválidas.");
     }
     window.localStorage.setItem("astris_demo_user", email);
+    // Ensure no local user data leaks into demo session
+    window.localStorage.removeItem("astris_local_user");
     return { user: { id: demoUser.id, email: demoUser.email } };
   }
   return supabaseLoginUser(email, password);
@@ -145,29 +152,56 @@ export async function registerUser(
 }
 
 /**
- * Logout: clear all local session data. For demo users, also clear
- * the demo flag. Delegate to Supabase for real users.
+ * Logout: clear ALL local session data to prevent cross-contamination.
+ * No session state persists between users.
  */
 export async function logoutUser(): Promise<void> {
-  const localUserJson = window.localStorage.getItem("astris_local_user");
   await supabaseLogoutUser();
-  // ensure local state is cleared regardless of backend
+  // --- COMPLETE STATE CLEANUP ---
+  // Remove demo session
   window.localStorage.removeItem("astris_demo_user");
-  if (!localUserJson) {
-    window.localStorage.removeItem("astris_local_user");
-  }
+  // Remove local registered user
+  window.localStorage.removeItem("astris_local_user");
+  // Remove quiz/data artifacts
   window.localStorage.removeItem("astris_quiz_completed");
   window.localStorage.removeItem("astris_quiz_answers");
   window.localStorage.removeItem("astris_theme");
   window.localStorage.removeItem("astris_font");
+  // Remove any checkin cache
+  ["demo-cand", "demo-comp", "demo-ment"].forEach((id) => {
+    window.localStorage.removeItem(`astris_checkins_${id}`);
+  });
 }
 
 /**
- * getCurrentUser: if demo mode, return the in-memory demo user profile.
- * Otherwise delegate to Supabase.
+ * getCurrentUser: STRICT isolation — three mutually exclusive paths:
+ * 1. If "astris_demo_user" exists → return demo user (never returns real user data)
+ * 2. If "astris_local_user" exists → return local registered user
+ * 3. Otherwise → delegate to Supabase
  */
 export async function getCurrentUser(): Promise<DemoUser | null> {
-  // Prefer localStorage local user (registered non-demo users)
+  // Path 1: Demo user (highest priority)
+  if (isDemoMode()) {
+    const demoEmail = getDemoUserEmail();
+    if (demoEmail && DEMO_USERS[demoEmail]) {
+      const u = DEMO_USERS[demoEmail];
+      return {
+        id: u.id,
+        email: u.email,
+        name: u.name,
+        role: u.role as "candidate" | "organization" | "mentor",
+        avatarUrl: u.avatarUrl || "",
+        vocation: u.vocation,
+        completedOnboarding: u.completedOnboarding,
+        profile: u.profile,
+      };
+    }
+    // Demo flag set but no matching user → clean up
+    window.localStorage.removeItem("astris_demo_user");
+    return null;
+  }
+
+  // Path 2: Local registered user (non-demo, stored in localStorage)
   const localUserJson = typeof window !== "undefined"
     ? window.localStorage.getItem("astris_local_user")
     : null;
@@ -178,32 +212,17 @@ export async function getCurrentUser(): Promise<DemoUser | null> {
         id: u.id,
         email: u.email,
         name: u.name,
-        role: u.role,
+        role: u.role as "candidate" | "organization" | "mentor",
         avatarUrl: u.avatarUrl || "",
         vocation: u.vocation || "",
         completedOnboarding: !!u.completedOnboarding,
       };
-    } catch { /* ignore */ }
-  }
-
-  if (isDemoMode()) {
-    const demoEmail = getDemoUserEmail();
-    if (demoEmail && DEMO_USERS[demoEmail]) {
-      const u = DEMO_USERS[demoEmail];
-      return {
-        id: u.id,
-        email: u.email,
-        name: u.name,
-        role: u.role,
-        avatarUrl: u.avatarUrl || "",
-        vocation: u.vocation,
-        completedOnboarding: u.completedOnboarding,
-        profile: u.profile,
-      };
+    } catch {
+      window.localStorage.removeItem("astris_local_user");
     }
-    return null;
   }
 
+  // Path 3: Real Supabase backend user
   return supabaseGetCurrentUser();
 }
 
@@ -289,13 +308,7 @@ export async function getCandidateQuizAnswers(userId: string): Promise<any | nul
       const stored = window.localStorage.getItem("astris_quiz_answers");
       if (stored) return JSON.parse(stored);
     } catch { /* ignore */ }
-    // Return default demo radar
-    return {
-      0: { 0: 0, 1: 0, 2: 2, 3: 0 },
-      1: { 0: 0, 1: 0, 2: 2, 3: 0 },
-      2: { 0: 0, 1: 0, 2: 0, 3: 0 },
-      3: { 0: [0, 1, 2, 3], 1: [0], 2: 0, 3: 2 },
-    };
+    return null;
   }
   return supabaseGetCandidateQuizAnswers(userId);
 }

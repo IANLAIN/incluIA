@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef, useMemo, KeyboardEvent } from "react";
-import { User, Briefcase, CheckCircle, HeartHandshake, Loader2, X, MessageSquare, Target, Eye, SlidersHorizontal, Sparkles } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { User, Briefcase, CheckCircle, HeartHandshake, Loader2, MessageSquare, Target, Eye, SlidersHorizontal, Sparkles } from "lucide-react";
 import { Lang, QuizAnswers } from "@/types";
 import { useT, computeRadar } from "@/i18n/useT";
 import { getCurrentUser, getCandidateDashboardStats } from "@/services/dataSource";
@@ -8,37 +8,7 @@ import { CANDIDATE_RADAR_FINAL, CANDIDATE_ADJUSTMENTS } from "@/services/demoDat
 import { RadarViz } from "@/components/common/RadarViz";
 import { QUIZ_AXES } from "@/i18n/content";
 import { getAffirmationKey, AFFIRMATION_AXIS_LABELS, AFFIRMATION_ICONS } from "@/lib/affirmations";
-
-// ── Skill with seniority level ──
-export type SkillLevel = "junior" | "semi_senior" | "senior";
-
-export interface SkillItem {
-  name: string;
-  level: SkillLevel;
-}
-
-const LEVEL_I18N_KEYS: Record<SkillLevel, { label: string; desc: string }> = {
-  junior: { label: "profile.skillJunior", desc: "profile.skillJuniorDesc" },
-  semi_senior: { label: "profile.skillSemiSenior", desc: "profile.skillSemiSeniorDesc" },
-  senior: { label: "profile.skillSenior", desc: "profile.skillSeniorDesc" },
-};
-
-const LEVEL_ORDER: SkillLevel[] = ["junior", "semi_senior", "senior"];
-
-// Level → border opacity class for subtle visual distinction
-const LEVEL_STYLE: Record<SkillLevel, string> = {
-  junior: "border-primary/30",
-  semi_senior: "border-primary/60",
-  senior: "border-primary",
-};
-
-const DEMO_SKILLS: SkillItem[] = [
-  { name: "Análisis de Datos", level: "senior" },
-  { name: "Python", level: "semi_senior" },
-  { name: "SQL", level: "semi_senior" },
-  { name: "Power BI", level: "junior" },
-  { name: "Excel Avanzado", level: "senior" },
-];
+import { OperativeStack } from "./operative-stack/OperativeStack";
 
 // ── Icons ──
 const ICON_MAP = { MessageSquare, Target, Eye, SlidersHorizontal, Sparkles } as const;
@@ -65,17 +35,10 @@ export function CandidateProfile({
   userId?: string;
 }) {
   const t = useT(lang);
-  const skillInputRef = useRef<HTMLInputElement>(null);
 
   const [isDemoUser, setIsDemo] = useState(false);
   const [stats, setStats] = useState<CandidateDashboardStats>({ vacancies: 0, matches: 0, accompanimentActive: false });
   const [statsLoading, setStatsLoading] = useState(true);
-
-  // Skill stack — structured { name, level }[]
-  const [skills, setSkills] = useState<SkillItem[]>([]);
-  const [skillInput, setSkillInput] = useState("");
-  // When user types a skill and presses Enter, this holds the name until level is chosen
-  const [pendingSkill, setPendingSkill] = useState<string | null>(null);
 
   useEffect(() => {
     getCurrentUser().then((u) => {
@@ -134,42 +97,6 @@ export function CandidateProfile({
     if (active.length === 0 && isDemoUser) return CANDIDATE_ADJUSTMENTS;
     return active.length > 0 ? active : [t("profile.flexible_hours"), t("profile.async_comm"), t("profile.quiet_environment")];
   }, [answers, lang, t, isDemoUser]);
-
-  // ── Skill handlers ──
-  const commitSkill = useCallback((level: SkillLevel) => {
-    if (!pendingSkill) return;
-    const trimmed = pendingSkill.trim();
-    if (trimmed && !skills.some((s) => s.name === trimmed)) {
-      setSkills((prev) => [...prev, { name: trimmed, level }]);
-    }
-    setPendingSkill(null);
-    setSkillInput("");
-    skillInputRef.current?.focus();
-  }, [pendingSkill, skills]);
-
-  const cancelPending = useCallback(() => {
-    setPendingSkill(null);
-    setSkillInput("");
-    skillInputRef.current?.focus();
-  }, []);
-
-  const removeSkill = useCallback((name: string) => {
-    setSkills((prev) => prev.filter((s) => s.name !== name));
-  }, []);
-
-  const handleSkillKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if ((e.key === "Enter" || e.key === ",") && skillInput.trim()) {
-      e.preventDefault();
-      // If name already exists, ignore
-      if (skills.some((s) => s.name === skillInput.trim())) {
-        setSkillInput("");
-        return;
-      }
-      setPendingSkill(skillInput.trim());
-    }
-  }, [skillInput, skills]);
-
-  const displayedSkills = skills.length > 0 ? skills : isDemoUser ? DEMO_SKILLS : [];
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-background">
@@ -262,87 +189,9 @@ export function CandidateProfile({
           </div>
         </div>
 
-        {/* ── Skill Stack with Seniority ── */}
+        {/* ── Operative Stack ── */}
         <div className="rounded-2xl border-2 border-border bg-card p-6 md:p-8 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-foreground">{t("profile.skillsStack")}</h2>
-            <span className="text-xs text-muted-foreground font-semibold">{displayedSkills.length} {t("profile.skillsTitle")}</span>
-          </div>
-
-          {/* Input */}
-          <div className="relative mb-4">
-            <input
-              ref={skillInputRef}
-              type="text"
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyDown={handleSkillKeyDown}
-              className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground text-sm focus:border-primary focus:outline-none transition-colors"
-              placeholder={t("profile.skillsPlaceholder")}
-              disabled={!!pendingSkill}
-            />
-          </div>
-          <p className="text-xs text-muted-foreground mb-4">{t("profile.skillsHint")}</p>
-
-          {/* Level selector — shown when skill name is pending */}
-          {pendingSkill && (
-            <div className="mb-5 p-4 rounded-xl border-2 border-primary/20 bg-primary/5">
-              <p className="text-xs font-bold text-foreground mb-3">
-                <span className="font-semibold text-primary">{pendingSkill}</span> — {t("profile.skillSelectLevel")}
-              </p>
-              <div className="flex gap-2.5">
-                {LEVEL_ORDER.map((lvl) => {
-                  const info = LEVEL_I18N_KEYS[lvl];
-                  const selected = false; // no pre-selection
-                  return (
-                    <button
-                      key={lvl}
-                      onClick={() => commitSkill(lvl)}
-                      className={`flex-1 px-3 py-2.5 rounded-xl border-2 text-xs font-bold cursor-pointer transition-all text-center ${
-                        selected
-                          ? "border-primary bg-primary/10 text-foreground"
-                          : "border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                      }`}
-                    >
-                      <div>{t(info.label)}</div>
-                      <div className="text-[10px] font-normal text-muted-foreground/70 mt-0.5">{t(info.desc)}</div>
-                    </button>
-                  );
-                })}
-                <button
-                  onClick={cancelPending}
-                  className="px-3 py-2 rounded-xl border-2 border-border bg-card text-muted-foreground hover:text-foreground cursor-pointer text-xs font-semibold"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Skills chips with level badge */}
-          {displayedSkills.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {displayedSkills.map((sk) => {
-                const info = LEVEL_I18N_KEYS[sk.level];
-                const borderStyle = LEVEL_STYLE[sk.level];
-                return (
-                  <span
-                    key={sk.name}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/5 text-primary border-2 ${borderStyle} cursor-default`}
-                  >
-                    <span>{sk.name}</span>
-                    <span className="text-[10px] font-bold text-muted-foreground/60 mx-0.5">•</span>
-                    <span className="text-[10px] font-bold text-muted-foreground/80">{t(info.label)}</span>
-                    <button onClick={() => removeSkill(sk.name)} className="p-0.5 rounded-full hover:bg-primary/20 cursor-pointer border-0 bg-transparent text-primary ml-0.5" aria-label={`Remove ${sk.name}`}>
-                      <X size={12} />
-                    </button>
-                  </span>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground/60 italic">{t("profile.skillsEmpty")}</p>
-          )}
+          <OperativeStack t={t} isDemo={isDemoUser} />
         </div>
       </div>
     </div>

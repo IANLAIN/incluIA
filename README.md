@@ -42,19 +42,19 @@ Astris es una plataforma web SPA que empareja talento diverso con **organizacion
 
 ## Stack Tecnológico
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
-| Framework | React | 18 |
-| Lenguaje | TypeScript | 6 (strict: true) |
-| Build | Vite | 6 |
-| Enrutamiento | React Router DOM | 7 (search params) |
-| Estilos | Tailwind CSS | 4 |
-| UI | Radix UI + Lucide Icons | latest |
-| i18n | i18next + react-i18next | latest |
-| Backend | Demo offline (sin backend) | — |
-| Gráficos | Recharts (RadarChart) | 3 |
-| Animaciones | Framer Motion | 12 |
-| Formularios | react-hook-form | 7 |
+| Capa | Tecnología |
+|------|-----------|
+| Framework | React |
+| Lenguaje | TypeScript (strict: true) |
+| Build | Vite |
+| Enrutamiento | React Router DOM (search params) |
+| Estilos | Tailwind CSS |
+| UI | Radix UI + Lucide Icons |
+| i18n | i18next + react-i18next |
+| Backend | Demo offline (sin backend) |
+| Gráficos | Recharts (RadarChart) |
+| Animaciones | Framer Motion |
+| Formularios | react-hook-form |
 
 Ver ARCHITECTURE.md para detalles técnicos completos.
 
@@ -116,23 +116,26 @@ La pantalla de inicio de sesión incluye botones de **acceso rápido** (Candidat
 ## Roles y Flujo
 
 ### Candidato
-1. Onboarding: Configura paleta de colores, modo oscuro y fuente
-2. Quiz de caracterización: 4 ejes × 4 preguntas sobre estilo de trabajo y necesidades
-3. Perfil: Visualiza tu radar de compatibilidad con ajustes recomendados
-4. Vacantes: Explora ofertas con porcentaje de match (organizaciones asociadas)
-5. Selección de mentor: Elige acompañamiento profesional
-6. Acompañamiento: Seguimiento pre y post-contratación
+1. Registro específico: Wizard de 4 pasos adaptado al perfil del candidato — datos básicos, preferencias de trabajo y entorno, ejes operativos y ajustes, habilidades técnicas
+2. Onboarding: Configura paleta de colores, modo oscuro y fuente
+3. Quiz de caracterización: 4 ejes × 4 preguntas sobre estilo de trabajo y necesidades
+4. Perfil: Visualiza tu radar de compatibilidad con ajustes recomendados y afirmaciones en primera persona
+5. Vacantes: Explora ofertas con porcentaje de match (organizaciones asociadas) y parámetros de entorno físico del puesto
+6. Selección de mentor: Elige acompañamiento profesional
+7. Acompañamiento: Seguimiento pre y post-contratación
 
 ### Organización
-1. Perfil organizacional: Define filosofía, ajustes y entorno laboral
-2. Publicar vacantes: Describe el rol, modalidad y ajustes ofrecidos
-3. Explorar candidatos: Visualiza perfiles con porcentajes de compatibilidad
-4. Selección y post-contratación: Proceso de acompañamiento
+1. Registro específico: Wizard de 3 pasos — datos de la organización, identidad (sector, tamaño, ubicación), cultura y nivel de adaptabilidad
+2. Perfil organizacional: Define filosofía, cultura y ajustes de accesibilidad. El entorno físico se configura por vacante, no a nivel organizacional
+3. Publicar vacantes: Wizard de 4 pasos con SplitScreen — define el rol, rutinas y funciones, alineación operativa en 4 ejes, y entorno físico parametrizado mediante chips seleccionables (acceso silla de ruedas, iluminación natural, bajo ruido, etc.)
+4. Explorar candidatos: Visualiza perfiles con porcentajes de compatibilidad
+5. Selección y post-contratación: Proceso de acompañamiento
 
 ### Mentor
-1. Dashboard: Visualiza procesos activos y candidatos asignados con reportes de actividad
-2. Check-ins: Realiza seguimiento estructurado
-3. Organizaciones: Gestiona relaciones con organizaciones asociadas
+1. Registro específico: Wizard de 3 pasos — datos básicos, especialidades y modalidad de acompañamiento, experiencia y enfoque de mentoría
+2. Dashboard: Visualiza procesos activos y candidatos asignados con reportes de actividad
+3. Check-ins: Realiza seguimiento estructurado
+4. Organizaciones: Gestiona relaciones con organizaciones asociadas
 
 ---
 

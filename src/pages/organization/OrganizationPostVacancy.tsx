@@ -9,6 +9,11 @@ import { CustomSlider } from "@/components/common/CustomSlider";
 import { RadarViz } from "@/components/common/RadarViz";
 
 type WizardStep = 1 | 2 | 3 | 4;
+type EnvChipKey =
+  | "wheelchair_access" | "natural_light" | "low_noise" | "quiet_zone"
+  | "ergonomic_furniture" | "air_conditioning" | "elevator_access"
+  | "accessible_bathroom" | "visual_signage" | "sensory_break_room"
+  | "height_adjustable_desk" | "service_animal_allowed";
 
 type Modality = "remote" | "hybrid" | "in_person";
 type Schedule = "fixed" | "flexible" | "by_objectives";
@@ -28,6 +33,21 @@ const SOCIAL_VALS: SocialLevel[] = ["low", "medium", "high"];
 
 const TASK_KEYS = ["opp.task_long_projects", "opp.task_short_iterative", "opp.task_immediate_support"] as const;
 const TASK_VALS: TaskType[] = ["long_projects", "short_iterative", "immediate_support"];
+
+const ENV_CHIPS: { key: EnvChipKey; tKey: string }[] = [
+  { key: "wheelchair_access", tKey: "opp.env.wheelchair_access" },
+  { key: "natural_light", tKey: "opp.env.natural_light" },
+  { key: "low_noise", tKey: "opp.env.low_noise" },
+  { key: "quiet_zone", tKey: "opp.env.quiet_zone" },
+  { key: "ergonomic_furniture", tKey: "opp.env.ergonomic_furniture" },
+  { key: "air_conditioning", tKey: "opp.env.air_conditioning" },
+  { key: "elevator_access", tKey: "opp.env.elevator_access" },
+  { key: "accessible_bathroom", tKey: "opp.env.accessible_bathroom" },
+  { key: "visual_signage", tKey: "opp.env.visual_signage" },
+  { key: "sensory_break_room", tKey: "opp.env.sensory_break_room" },
+  { key: "height_adjustable_desk", tKey: "opp.env.height_adjustable_desk" },
+  { key: "service_animal_allowed", tKey: "opp.env.service_animal_allowed" },
+];
 
 const AXIS_CONFIG = [
   { key: "axis1" as const, labelKey: "orgOnboarding.axis1Label" },
@@ -56,6 +76,7 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
   const [socialLevel, setSocialLevel] = useState<SocialLevel | null>(null);
   const [taskType, setTaskType] = useState<TaskType | null>(null);
   const [roleAxes, setRoleAxes] = useState({ axis1: 50, axis2: 50, axis3: 50, axis4: 50 });
+  const [envChips, setEnvChips] = useState<EnvChipKey[]>([]);
   const [published, setPublished] = useState(false);
 
   const radarData = RADAR_SHORT_KEYS.map((k, i) => ({
@@ -74,22 +95,19 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
 
   const addSkill = useCallback((name: string) => {
     const trimmed = name.trim();
-    if (trimmed && !skills.includes(trimmed)) {
-      setSkills((prev) => [...prev, trimmed]);
-    }
+    if (trimmed && !skills.includes(trimmed)) setSkills((prev) => [...prev, trimmed]);
     setSkillInput("");
   }, [skills]);
 
-  const removeSkill = useCallback((name: string) => {
-    setSkills((prev) => prev.filter((s) => s !== name));
-  }, []);
+  const removeSkill = useCallback((name: string) => setSkills((prev) => prev.filter((s) => s !== name)), []);
 
   const handleSkillKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addSkill(skillInput);
-    }
+    if (e.key === "Enter" || e.key === ",") { e.preventDefault(); addSkill(skillInput); }
   }, [addSkill, skillInput]);
+
+  const toggleEnvChip = useCallback((key: EnvChipKey) => {
+    setEnvChips((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
+  }, []);
 
   const canStep1 = roleTitle.trim() && modality && schedule;
   const canStep2 = socialLevel && taskType;
@@ -131,14 +149,8 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
       <div className="flex items-center gap-3 mb-8">
         <div className="flex gap-1.5 flex-1">
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <div
-              key={i}
-              className="h-2 rounded-full transition-all duration-500"
-              style={{
-                width: i === step - 1 ? "48px" : "24px",
-                backgroundColor: i <= step - 1 ? "var(--primary)" : "var(--muted)",
-                opacity: i <= step - 1 ? 1 : 0.4,
-              }}
+            <div key={i} className="h-2 rounded-full transition-all duration-500"
+              style={{ width: i === step - 1 ? "48px" : "24px", backgroundColor: i <= step - 1 ? "var(--primary)" : "var(--muted)", opacity: i <= step - 1 ? 1 : 0.4 }}
             />
           ))}
         </div>
@@ -148,10 +160,8 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
       </div>
 
       {step > 1 && (
-        <button
-          onClick={() => setStep((step - 1) as WizardStep)}
-          className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground mb-6 transition-colors cursor-pointer bg-transparent border-0"
-        >
+        <button onClick={() => setStep((step - 1) as WizardStep)}
+          className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground mb-6 transition-colors cursor-pointer bg-transparent border-0">
           <ArrowLeft size={16} /> {t("back")}
         </button>
       )}
@@ -161,84 +171,54 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
         <>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{t("opp.step1Title")}</h2>
           <p className="text-muted-foreground text-sm mb-8">{t("opp.step1Sub")}</p>
-
-          {/* Role title */}
           <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.roleTitle")}</label>
             <p className="text-xs text-muted-foreground mb-2">{t("opp.roleHint")}</p>
-            <input
-              type="text" value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)}
+            <input type="text" value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)}
               className="w-full px-4 py-3.5 rounded-xl border-2 border-border bg-input-background text-foreground text-base focus:border-primary focus:outline-none transition-colors"
-              placeholder={t("opp.rolePlaceholder")} autoFocus
-            />
+              placeholder={t("opp.rolePlaceholder")} autoFocus />
           </div>
-
-          {/* Modality */}
           <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.modalityLabel")}</label>
             <p className="text-xs text-muted-foreground mb-3">{t("opp.modalityHint")}</p>
             <div className="grid grid-cols-3 gap-3">
               {MODALITY_KEYS.map((mk, i) => (
-                <SelectableCard
-                  key={mk} selected={modality === MODALITY_VALS[i]}
-                  onClick={() => setModality(MODALITY_VALS[i])} className="p-4 flex-col text-center gap-2"
-                >
+                <SelectableCard key={mk} selected={modality === MODALITY_VALS[i]}
+                  onClick={() => setModality(MODALITY_VALS[i])} className="p-4 flex-col text-center gap-2">
                   <span className="font-semibold text-sm text-center block">{t(mk)}</span>
                 </SelectableCard>
               ))}
             </div>
           </div>
-
-          {/* Schedule */}
           <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.scheduleLabel")}</label>
             <p className="text-xs text-muted-foreground mb-3">{t("opp.scheduleHint")}</p>
             <div className="grid grid-cols-3 gap-3">
               {SCHEDULE_KEYS.map((sk, i) => (
-                <SelectableCard
-                  key={sk} selected={schedule === SCHEDULE_VALS[i]}
-                  onClick={() => setSchedule(SCHEDULE_VALS[i])} className="p-4 flex-col text-center gap-2"
-                >
+                <SelectableCard key={sk} selected={schedule === SCHEDULE_VALS[i]}
+                  onClick={() => setSchedule(SCHEDULE_VALS[i])} className="p-4 flex-col text-center gap-2">
                   <span className="font-semibold text-sm text-center block">{t(sk)}</span>
                 </SelectableCard>
               ))}
             </div>
           </div>
-
-          {/* Skills */}
           <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.skillsLabel")}</label>
             <p className="text-xs text-muted-foreground mb-3">{t("opp.skillsHint")}</p>
-            <div className="relative">
-              <input
-                ref={skillInputRef}
-                type="text" value={skillInput}
-                onChange={(e) => setSkillInput(e.target.value)}
-                onKeyDown={handleSkillKeyDown}
-                className="w-full px-4 py-3.5 rounded-xl border-2 border-border bg-input-background text-foreground text-base focus:border-primary focus:outline-none transition-colors"
-                placeholder={t("opp.skillsPlaceholder")}
-              />
-            </div>
-
+            <input ref={skillInputRef} type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)}
+              onKeyDown={handleSkillKeyDown}
+              className="w-full px-4 py-3.5 rounded-xl border-2 border-border bg-input-background text-foreground text-base focus:border-primary focus:outline-none transition-colors"
+              placeholder={t("opp.skillsPlaceholder")} />
             <div className="flex flex-wrap gap-2 mt-4">
               {skills.map((sk) => (
-                <span
-                  key={sk}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 cursor-default"
-                >
+                <span key={sk} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 cursor-default">
                   {sk}
-                  <button onClick={() => removeSkill(sk)} className="p-0.5 rounded-full hover:bg-primary/20 cursor-pointer border-0 bg-transparent text-primary">
-                    <X size={12} />
-                  </button>
+                  <button onClick={() => removeSkill(sk)} className="p-0.5 rounded-full hover:bg-primary/20 cursor-pointer border-0 bg-transparent text-primary"><X size={12} /></button>
                 </span>
               ))}
             </div>
-
-            {skills.length === 0 && (
-              <p className="text-xs text-muted-foreground/60 mt-3">{t("opp.noSkills")}</p>
-            )}
+            {skills.length === 0 && <p className="text-xs text-muted-foreground/60 mt-3">{t("opp.noSkills")}</p>}
           </div>
-
           <button onClick={() => setStep(2)} disabled={!canStep1}
             className="w-full py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 shadow-lg shadow-primary/20 transition-all cursor-pointer">
             {t("orgOnboarding.next")} <span className="ml-2">→</span>
@@ -246,40 +226,67 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
         </>
       )}
 
-      {/* STEP 2 */}
+      {/* STEP 2 — Routines + Physical Environment */}
       {step === 2 && (
         <>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{t("opp.step2Title")}</h2>
           <p className="text-muted-foreground text-sm mb-8">{t("opp.step2Sub")}</p>
 
-          <div className="mb-8">
+          {/* Social Level */}
+          <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.socialLevelLabel")}</label>
             <p className="text-xs text-muted-foreground mb-3">{t("opp.socialLevelHint")}</p>
             <div className="grid grid-cols-3 gap-3">
               {SOCIAL_KEYS.map((sk, i) => (
-                <SelectableCard
-                  key={sk} selected={socialLevel === SOCIAL_VALS[i]}
-                  onClick={() => setSocialLevel(SOCIAL_VALS[i])} className="p-4 flex-col text-center gap-2"
-                >
+                <SelectableCard key={sk} selected={socialLevel === SOCIAL_VALS[i]}
+                  onClick={() => setSocialLevel(SOCIAL_VALS[i])} className="p-4 flex-col text-center gap-2">
                   <span className="font-semibold text-sm text-center block">{t(sk)}</span>
                 </SelectableCard>
               ))}
             </div>
           </div>
 
-          <div className="mb-8">
+          {/* Task Type */}
+          <div className="mb-6">
             <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.taskTypeLabel")}</label>
             <p className="text-xs text-muted-foreground mb-3">{t("opp.taskTypeHint")}</p>
             <div className="grid grid-cols-1 gap-3">
               {TASK_KEYS.map((tk, i) => (
-                <SelectableCard
-                  key={tk} selected={taskType === TASK_VALS[i]}
-                  onClick={() => setTaskType(TASK_VALS[i])}
-                >
+                <SelectableCard key={tk} selected={taskType === TASK_VALS[i]} onClick={() => setTaskType(TASK_VALS[i])}>
                   <span className="font-semibold text-sm">{t(tk)}</span>
                 </SelectableCard>
               ))}
             </div>
+          </div>
+
+          {/* Physical Environment - Chips (migrated from Org Profile) */}
+          <div className="mb-8">
+            <label className="block text-sm font-bold text-foreground mb-1.5">{t("opp.environmentTitle")}</label>
+            <p className="text-xs text-muted-foreground mb-2">{t("opp.environmentHint")}</p>
+            <div className="flex flex-wrap gap-2">
+              {ENV_CHIPS.map((chip) => (
+                <SelectableChip
+                  key={chip.key}
+                  selected={envChips.includes(chip.key)}
+                  onClick={() => toggleEnvChip(chip.key)}
+                  label={t(chip.tKey)}
+                />
+              ))}
+            </div>
+            {envChips.length > 0 ? (
+              <div className="mt-3">
+                <p className="text-xs font-semibold text-muted-foreground mb-2">{t("opp.environmentChipsTitle")}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {envChips.map((ck) => (
+                    <span key={ck} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-primary/10 text-primary border border-primary/20">
+                      {t(ENV_CHIPS.find((e) => e.key === ck)!.tKey)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground/60 mt-2">{t("opp.environmentChipsEmpty")}</p>
+            )}
           </div>
 
           <button onClick={() => setStep(3)} disabled={!canStep2}
@@ -294,23 +301,17 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
         <>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{t("opp.step3Title")}</h2>
           <p className="text-muted-foreground text-sm mb-8">{t("opp.step3Sub")}</p>
-
           <div className="space-y-6">
             {AXIS_CONFIG.map((ax) => (
               <div key={ax.key}>
                 <span className="text-sm font-bold text-foreground">{t(ax.labelKey)}</span>
                 <div className="mt-2">
-                  <CustomSlider
-                    value={roleAxes[ax.key]}
-                    onChange={(v) => setAxis(ax.key, v)}
-                    labelLeft={t(`orgOnboarding.${ax.key}Left` as any)}
-                    labelRight={t(`orgOnboarding.${ax.key}Right` as any)}
-                  />
+                  <CustomSlider value={roleAxes[ax.key]} onChange={(v) => setAxis(ax.key, v)}
+                    labelLeft={t(`orgOnboarding.${ax.key}Left` as any)} labelRight={t(`orgOnboarding.${ax.key}Right` as any)} />
                 </div>
               </div>
             ))}
           </div>
-
           <button onClick={() => setStep(4)} disabled={!canStep3}
             className="w-full py-4 mt-8 rounded-2xl font-bold text-base bg-primary text-primary-foreground hover:opacity-90 shadow-lg shadow-primary/20 transition-all cursor-pointer">
             {t("orgOnboarding.next")} <span className="ml-2">→</span>
@@ -323,11 +324,8 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
         <>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{t("opp.step4Title")}</h2>
           <p className="text-muted-foreground text-sm mb-8">{t("opp.step4Sub")}</p>
-
-          {/* Quick preview of candidate view */}
           <div className="p-5 rounded-2xl border-2 border-border bg-card mb-6">
             <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">{t("opp.step4QuickRead")}</h3>
-
             <div className="space-y-3">
               <div>
                 <span className="text-[11px] font-bold text-muted-foreground uppercase block mb-1">{t("opp.previewModality")}</span>
@@ -337,27 +335,33 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
                   {socialLevel && <SelectableChip selected={true} onClick={() => {}} label={t(SOCIAL_KEYS[SOCIAL_VALS.indexOf(socialLevel)])} />}
                 </div>
               </div>
-
               <div>
                 <span className="text-[11px] font-bold text-muted-foreground uppercase block mb-1">{t("opp.previewTasks")}</span>
-                {taskType && (
-                  <SelectableChip selected={true} onClick={() => {}} label={t(TASK_KEYS[TASK_VALS.indexOf(taskType)])} />
-                )}
+                {taskType && <SelectableChip selected={true} onClick={() => {}} label={t(TASK_KEYS[TASK_VALS.indexOf(taskType)])} />}
               </div>
-
+              {/* Environment chips in preview */}
+              {envChips.length > 0 && (
+                <div>
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase block mb-1">{t("opp.environmentChipsTitle")}</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {envChips.map((ck) => (
+                      <span key={ck} className="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-secondary/80 text-secondary-foreground border border-border/50">
+                        {t(ENV_CHIPS.find((e) => e.key === ck)!.tKey)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div>
                 <span className="text-[11px] font-bold text-muted-foreground uppercase block mb-1">{t("opp.previewSkills")}</span>
                 <div className="flex flex-wrap gap-1.5">
                   {skills.length > 0 ? skills.map((s) => (
                     <span key={s} className="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-primary/10 text-primary border border-primary/20">{s}</span>
-                  )) : (
-                    <span className="text-xs text-muted-foreground/60 italic">{t("opp.previewNoSkills")}</span>
-                  )}
+                  )) : <span className="text-xs text-muted-foreground/60 italic">{t("opp.previewNoSkills")}</span>}
                 </div>
               </div>
             </div>
           </div>
-
           <button onClick={handlePublish}
             className="w-full py-5 rounded-2xl font-bold text-lg bg-primary text-primary-foreground hover:opacity-90 shadow-lg shadow-primary/25 transition-all cursor-pointer flex items-center justify-center gap-3">
             <Check size={20} /> {t("opp.step4Publish")}
@@ -371,64 +375,37 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
     <div className="p-8 md:p-10 flex flex-col items-center justify-center min-h-screen gap-8">
       {(step === 1 || step === 2) && (
         <div className="w-full flex flex-col justify-center items-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">
-            {t("opp.title")}
-          </span>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">{t("opp.title")}</span>
           <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-8 shadow-md shadow-primary/5 text-center">
-            {/* Role title */}
             <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3 leading-snug">
-              {roleTitle || (
-                <span className="text-muted-foreground/50 italic font-normal text-xl">
-                  {t("opp.titlePlaceholder") || "Título de la oportunidad"}
-                </span>
-              )}
+              {roleTitle || <span className="text-muted-foreground/50 italic font-normal text-xl">{t("opp.titlePlaceholder") || "Título"}</span>}
             </h3>
-
-            {/* Modality + Schedule badges */}
             <div className="flex items-center justify-center gap-2 flex-wrap mb-5">
               {modality ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-                  {t(MODALITY_KEYS[MODALITY_VALS.indexOf(modality)])}
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/50 text-muted-foreground/50 border border-border/30">
-                  {t("opp.modalityPlaceholder") || "Modalidad"}
-                </span>
-              )}
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">{t(MODALITY_KEYS[MODALITY_VALS.indexOf(modality)])}</span>
+              ) : <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/50 text-muted-foreground/50 border border-border/30">{t("opp.modalityPlaceholder") || "Modalidad"}</span>}
               {schedule ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground border border-border/60">
-                  {t(SCHEDULE_KEYS[SCHEDULE_VALS.indexOf(schedule)])}
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/50 text-muted-foreground/50 border border-border/30">
-                  {t("opp.schedulePlaceholder") || "Horario"}
-                </span>
-              )}
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground border border-border/60">{t(SCHEDULE_KEYS[SCHEDULE_VALS.indexOf(schedule)])}</span>
+              ) : <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-muted/50 text-muted-foreground/50 border border-border/30">{t("opp.schedulePlaceholder") || "Horario"}</span>}
             </div>
-
-            {/* Divider */}
             <hr className="border-border/40 my-5" />
-
-            {/* Skills section */}
+            {/* Environment chips preview */}
+            {envChips.length > 0 && (
+              <div className="text-left mb-4">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-2">{t("opp.environmentChipsTitle")}</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {envChips.map((ck) => (
+                    <span key={ck} className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold bg-secondary/80 text-secondary-foreground border border-border/50">{t(ENV_CHIPS.find((e) => e.key === ck)!.tKey)}</span>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="text-left">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-3">
-                {t("opp.previewSkills")}
-              </span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-3">{t("opp.previewSkills")}</span>
               <div className="flex flex-wrap gap-2 min-h-[32px]">
-                {skills.length > 0 ? (
-                  skills.map((s) => (
-                    <span
-                      key={s}
-                      className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-card text-foreground border border-border/50 shadow-sm"
-                    >
-                      {s}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-xs text-muted-foreground/40 italic">
-                    {t("opp.previewNoSkills")}
-                  </span>
-                )}
+                {skills.length > 0 ? skills.map((s) => (
+                  <span key={s} className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-card text-foreground border border-border/50 shadow-sm">{s}</span>
+                )) : <span className="text-xs text-muted-foreground/40 italic">{t("opp.previewNoSkills")}</span>}
               </div>
             </div>
           </div>
@@ -437,19 +414,11 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
 
       {step === 3 && (
         <div className="w-full flex flex-col items-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">
-            {t("opp.step3OrgLabel")} vs {t("opp.step3RoleLabel")}
-          </span>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">{t("opp.step3OrgLabel")} vs {t("opp.step3RoleLabel")}</span>
           <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-md shadow-primary/5">
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <span className="text-[11px] font-bold text-muted-foreground uppercase block mb-2 text-center">{t("opp.step3OrgLabel")}</span>
-                <RadarViz data={radarDataOrg} height={200} outerRadius={70} fontSize={9} />
-              </div>
-              <div>
-                <span className="text-[11px] font-bold text-primary uppercase block mb-2 text-center">{t("opp.step3RoleLabel")}</span>
-                <RadarViz data={radarData} height={200} outerRadius={70} fontSize={9} />
-              </div>
+              <div><span className="text-[11px] font-bold text-muted-foreground uppercase block mb-2 text-center">{t("opp.step3OrgLabel")}</span><RadarViz data={radarDataOrg} height={200} outerRadius={70} fontSize={9} /></div>
+              <div><span className="text-[11px] font-bold text-primary uppercase block mb-2 text-center">{t("opp.step3RoleLabel")}</span><RadarViz data={radarData} height={200} outerRadius={70} fontSize={9} /></div>
             </div>
             <hr className="border-border/40 my-4" />
             <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
@@ -466,61 +435,41 @@ export function OrganizationPostVacancy({ lang }: { lang: Lang }) {
 
       {step === 4 && (
         <div className="w-full flex flex-col items-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">
-            {t("opp.step4QuickRead")}
-          </span>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/70 mb-4">{t("opp.step4QuickRead")}</span>
           <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-md shadow-primary/5 space-y-5">
-            {/* Title + badges */}
             <div className="text-center pb-5 border-b border-border/40">
-              <h3 className="text-xl font-bold text-foreground leading-snug">
-                {roleTitle || (
-                  <span className="text-muted-foreground/50 italic font-normal text-lg">
-                    {t("opp.titlePlaceholder") || "Título de la oportunidad"}
-                  </span>
-                )}
-              </h3>
+              <h3 className="text-xl font-bold text-foreground leading-snug">{roleTitle || <span className="text-muted-foreground/50 italic font-normal text-lg">{t("opp.titlePlaceholder") || "Título"}</span>}</h3>
               <p className="text-xs text-muted-foreground/60 mt-2 font-medium">{envDesc()}</p>
               <div className="flex items-center justify-center gap-2 flex-wrap mt-3">
-                {modality && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-                    {t(MODALITY_KEYS[MODALITY_VALS.indexOf(modality)])}
-                  </span>
-                )}
-                {schedule && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground border border-border/60">
-                    {t(SCHEDULE_KEYS[SCHEDULE_VALS.indexOf(schedule)])}
-                  </span>
-                )}
+                {modality && <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">{t(MODALITY_KEYS[MODALITY_VALS.indexOf(modality)])}</span>}
+                {schedule && <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground border border-border/60">{t(SCHEDULE_KEYS[SCHEDULE_VALS.indexOf(schedule)])}</span>}
               </div>
             </div>
-
-            {/* Skills block */}
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-2.5">{t("opp.previewSkills")}</span>
               <div className="flex flex-wrap gap-1.5">
-                {skills.length > 0 ? (
-                  skills.map((s) => (
-                    <span key={s} className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold bg-card text-foreground border border-border/50 shadow-sm">
-                      {s}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-xs text-muted-foreground/40 italic">{t("opp.previewNoSkills")}</span>
-                )}
+                {skills.length > 0 ? skills.map((s) => (
+                  <span key={s} className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold bg-card text-foreground border border-border/50 shadow-sm">{s}</span>
+                )) : <span className="text-xs text-muted-foreground/40 italic">{t("opp.previewNoSkills")}</span>}
               </div>
             </div>
-
-            {/* Task type */}
             {taskType && (
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-2">{t("opp.previewTasks")}</span>
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary/80 text-secondary-foreground border border-border/50">
-                  {t(TASK_KEYS[TASK_VALS.indexOf(taskType)])}
-                </span>
+                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary/80 text-secondary-foreground border border-border/50">{t(TASK_KEYS[TASK_VALS.indexOf(taskType)])}</span>
               </div>
             )}
-
-            {/* Environment diamond */}
+            {/* Environment chips in final preview */}
+            {envChips.length > 0 && (
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-2">{t("opp.environmentChipsTitle")}</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {envChips.map((ck) => (
+                    <span key={ck} className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold bg-secondary/80 text-secondary-foreground border border-border/50">{t(ENV_CHIPS.find((e) => e.key === ck)!.tKey)}</span>
+                  ))}
+                </div>
+              </div>
+            )}
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 block mb-2">{t("opp.previewEnvironment")}</span>
               <RadarViz data={radarData} height={220} outerRadius={80} fontSize={10} />

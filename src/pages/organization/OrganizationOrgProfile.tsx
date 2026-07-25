@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Check, Building2, BookOpen, Volume2, HeartHandshake, ShieldCheck, Save, MapPin } from "lucide-react";
+import { ChevronDown, Check, Building2, BookOpen, HeartHandshake, ShieldCheck, Save, MapPin } from "lucide-react";
 import { Lang } from "@/types";
 import { useT, C } from "@/i18n/useT";
 import { DEMO_USERS } from "@/services/demoData";
@@ -7,18 +7,22 @@ import { DEMO_USERS } from "@/services/demoData";
 const SECTION_ICONS: Record<string, any> = {
   general: Building2,
   cultura: BookOpen,
-  entorno: Volume2,
   prestaciones: HeartHandshake,
   politicas: ShieldCheck,
 };
+
 
 export function OrganizationOrgProfile({ lang }: { lang: Lang }) {
   const t = useT(lang);
   const [open, setOpen] = useState<Record<string, boolean>>({ general: true });
   const toggle = (k: string) => setOpen((p) => ({ ...p, [k]: !p[k] }));
   
-  const sectionTitles = C(lang, "orgSections") as string[];
-  const sectionIds = C(lang, "orgSectionIds") as string[];
+  // Filter out the "entorno" section — physical environment belongs to vacancy, not organization
+  const sectionTitles = (C(lang, "orgSections") as string[]).filter((_, i) => {
+    const ids = C(lang, "orgSectionIds") as string[];
+    return ids[i] !== "entorno";
+  });
+  const sectionIds = (C(lang, "orgSectionIds") as string[]).filter((id) => id !== "entorno");
   const SECTIONS = sectionTitles.map((title, i) => ({ 
     id: sectionIds[i], 
     title,
@@ -37,9 +41,6 @@ export function OrganizationOrgProfile({ lang }: { lang: Lang }) {
     country: demoProfile?.country || "Estados Unidos",
     city: demoProfile?.city || "Austin, TX",
     philosophy: demoProfile?.philosophy || "",
-    noise: demoProfile?.noise || "Moderado (ambiente creativo controlado)",
-    light: demoProfile?.light || "Luz LED ajustable + luz natural",
-    layout: demoProfile?.layout || "Espacios abiertos con zonas de enfoque individual",
     accommodations: demoProfile?.accommodations || PRESTACIONES.slice(0, 3),
     policies: demoProfile?.policies || POLITICAS,
   });
@@ -171,29 +172,6 @@ export function OrganizationOrgProfile({ lang }: { lang: Lang }) {
                       className="w-full px-5 py-4 rounded-2xl border-2 border-border bg-background text-foreground text-sm font-medium outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all min-h-[140px] resize-y"
                       placeholder="Describe la filosofía y cultura de tu organización..."
                     />
-                  </div>
-                )}
-                
-                {s.id === "entorno" && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {[
-                      { label: "Nivel de ruido habitual", field: "noise", placeholder: "Ej. Bajo (oficina silenciosa)" },
-                      { label: "Tipo de iluminación", field: "light", placeholder: "Ej. Luz natural + LED" },
-                      { label: "Distribución de espacios", field: "layout", placeholder: "Ej. Individual" }
-                    ].map((f) => (
-                      <div key={f.field}>
-                        <label htmlFor={`org-${f.field}`} className="block text-sm font-bold text-foreground mb-2 ml-1">{f.label}</label>
-                        <input
-                          id={`org-${f.field}`}
-                          name={f.field}
-                          type="text"
-                          value={(formData as any)[f.field]}
-                          onChange={(e) => handleChange(f.field, e.target.value)}
-                          className="w-full px-5 py-3.5 rounded-2xl border-2 border-border bg-background text-foreground text-sm font-medium outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
-                          placeholder={f.placeholder}
-                        />
-                      </div>
-                    ))}
                   </div>
                 )}
                 

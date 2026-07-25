@@ -8,39 +8,42 @@ It uses React Router DOM v7 with search params for navigation, React.lazy() + Su
 
 ---
 
-## Current Technology Stack
+## Technology Stack
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Framework | React | 18 |
-| Language | TypeScript | 6 (strict: true) |
-| Build | Vite | 6 |
-| Routing | React Router DOM | 7 (search params) |
-| Styles | Tailwind CSS | 4 |
-| UI primitives | Radix UI | latest |
-| Icons | Lucide React | 0.487 |
-| i18n | i18next + react-i18next + LanguageDetector | latest |
-| Backend | Demo offline (no backend) | — |
-| Demo data | src/services/demoData.ts | complete |
-| Charts | Recharts | 3 |
-| Animations | Framer Motion (via motion package) | 12 |
-| Bundle Analysis | Vite rollupOptions.manualChunks | built-in |
+| Layer | Technology |
+|-------|-----------|
+| Framework | React 18 |
+| Language | TypeScript (strict: true) |
+| Build | Vite |
+| Routing | React Router DOM (search params) |
+| Styles | Tailwind CSS |
+| UI primitives | Radix UI |
+| Icons | Lucide React |
+| i18n | i18next + react-i18next + LanguageDetector |
+| Backend | Demo offline (no backend) |
+| Demo data | src/services/demoData.ts |
+| Charts | Recharts |
+| Animations | Framer Motion |
+| Bundle Analysis | Vite rollupOptions.manualChunks |
 
 ---
 
-## UI Architecture — New Patterns
+## UI Architecture
 
 ### Wizard Pattern (Step-by-Step)
 
-Multi-step flows (organization onboarding, opportunity publishing) use a **Wizard pattern** instead of scrollable single-page forms or infinite scroll. Each step renders one focused block of controls at a time. Navigation is sequential with a progress bar (dots + step counter) and a "Back" button.
+Multi-step flows (organization onboarding, opportunity publishing, user registration) use a **Wizard pattern**. Each step renders one focused block of controls at a time, with sequential navigation through a progress bar (dots + step counter) and a "Back" button.
 
-**Why this replaces infinite scroll:**
+**Why wizards are used instead of long single-page forms:**
 - Reduces cognitive load — users focus on one decision at a time
 - Prevents form abandonment — clear progress indication
 - Mobile-friendly — no long vertical pages
 - Enables live preview on the right panel (see Split-Screen below)
 
 **Files implementing the Wizard pattern:**
+- `src/pages/register/CandidateRegisterWizard.tsx` (4-step registration wizard)
+- `src/pages/register/OrganizationRegisterWizard.tsx` (3-step registration wizard)
+- `src/pages/register/MentorRegisterWizard.tsx` (3-step registration wizard)
 - `src/pages/organization/OrganizationOnboarding.tsx`
 - `src/pages/organization/OrganizationPostVacancy.tsx`
 - `src/pages/candidate/CandidateOnboarding.tsx` (onboarding wizard)
@@ -112,6 +115,7 @@ src/
                              #   SplitScreenLayout, SelectableCard, SelectableChip,
                              #   CustomSlider, CollaboratorCarousel, AnimatedBar, Overlay
     modals/                  # LanguageModal, LoginModal, RegisterModal, UpdatePasswordModal
+    register/                # Sub-steps for the registration flow (RoleSelectStep, CredentialsStep, GoogleAuthStep)
     ui/                      # Radix UI wrappers shadcn-style: button, dialog, card, form, etc.
 
   hooks/
@@ -144,12 +148,14 @@ src/
   pages/                    # Páginas organizadas por rol
     public/                 # LandingPage, AboutPage, SupportPage, PartnersPage
       PublicPageShell       # Shared layout for public pages
+    register/               # Per-role registration wizards: CandidateRegisterWizard (4 steps),
+                            #   OrganizationRegisterWizard (3 steps), MentorRegisterWizard (3 steps)
     candidate/              # CandidateOnboarding, CandidateQuiz, CandidateProfile,
                             #   CandidateVacancies, VacancyDetail, MentorSelect,
                             #   CandidateAccompaniment, CandidatePostHire
     organization/           # OrganizationOnboarding (wizard), OrganizationOrgProfile,
-                            #   OrganizationPostVacancy (wizard), OrganizationCandidates,
-                            #   OrganizationCandidateDetail, OrganizationPostHire
+                            #   OrganizationPostVacancy (wizard, includes physical environment chips),
+                            #   OrganizationCandidates, OrganizationCandidateDetail, OrganizationPostHire
     mentor/                 # MentorDashboard, MentorCheckins, MentorOrganizations
     shared/                 # NotFoundPage, SettingsPage
 

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { User, Building2, Users } from "lucide-react";
 import { Lang, Role } from "@/types";
 import { useT } from "@/i18n/useT";
 import { GoogleAuthStep } from "./register/GoogleAuthStep";
 import { RoleSelectStep } from "./register/RoleSelectStep";
-import { CredentialsStep } from "./register/CredentialsStep";
+import { CandidateRegisterWizard } from "@/pages/register/CandidateRegisterWizard";
+import { OrganizationRegisterWizard } from "@/pages/register/OrganizationRegisterWizard";
+import { MentorRegisterWizard } from "@/pages/register/MentorRegisterWizard";
 
-const ROLE_ICON = { candidate: User, organization: Building2, mentor: Users } as const;
+const ROLE_ICON_MAP = { candidate: "User", organization: "Building2", mentor: "Users" } as const;
 
 export function RegisterModal({
   lang,
@@ -29,48 +30,41 @@ export function RegisterModal({
 }) {
   const t = useT(lang);
 
-  const initialStep: "select_role" | "credentials" = googleAuthUser ? "credentials" : role ? "credentials" : "select_role";
-  const [step, setStep] = useState<"select_role" | "credentials">(initialStep);
+  const [step, setStep] = useState<"select_role" | "wizard">(
+    googleAuthUser ? "wizard" : role ? "wizard" : "select_role"
+  );
   const [selectedRole, setSelectedRole] = useState<Role | null>(googleAuthUser?.role ?? role ?? null);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [vocation, setVocation] = useState("");
-
-  const Icon = selectedRole ? ROLE_ICON[selectedRole] : User;
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !loading && email && password && selectedRole) {
-      onRegister(email, password, name, selectedRole, vocation);
-    }
-  };
 
   const handleRoleSelect = (r: Role) => {
     setSelectedRole(r);
-    setStep("credentials");
+    setStep("wizard");
   };
 
-  const handleBack = () => {
-    if (step === "credentials" && !role) {
-      setStep("select_role");
-      setSelectedRole(null);
-    } else {
-      onBack();
-    }
+  const handleWizardComplete = (data: any) => {
+    if (!selectedRole) return;
+    // Map wizard data to the generic register callback
+    onRegister(
+      data.email,
+      data.password,
+      data.name,
+      selectedRole,
+      data.sector || data.specialties?.join(", ") || data.workModality || ""
+    );
   };
 
+  // Google auth step (still uses credential step for Google)
   if (googleAuthUser && onCompleteGoogle && selectedRole) {
     return (
       <GoogleAuthStep
         selectedRole={selectedRole}
-        Icon={Icon}
+        Icon={() => null}
         t={t}
         onCompleteGoogle={onCompleteGoogle}
       />
     );
   }
 
+  // Role selection step
   if (step === "select_role") {
     return (
       <RoleSelectStep
@@ -81,24 +75,45 @@ export function RegisterModal({
     );
   }
 
-  return (
-    <CredentialsStep
-      handleBack={handleBack}
-      Icon={Icon}
-      t={t}
-      error={error}
-      name={name}
-      setName={setName}
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      vocation={vocation}
-      setVocation={setVocation}
-      handleKeyDown={handleKeyDown}
-      onRegister={onRegister}
-      selectedRole={selectedRole}
-      loading={loading}
-    />
-  );
+  // Per-role wizard
+  if (selectedRole === "candidate") {
+    return (
+      <CandidateRegisterWizard
+        lang={lang}
+        onComplete={handleWizardComplete}
+        onBack={() => {
+          if (role) onBack();
+          else { setStep("select_role"); setSelectedRole(null); }
+        }}
+      />
+    );
+  }
+
+  if (selectedRole === "organization") {
+    return (
+      <OrganizationRegisterWizard
+        lang={lang}
+        onComplete={handleWizardComplete}
+        onBack={() => {
+          if (role) onBack();
+          else { setStep("select_role"); setSelectedRole(null); }
+        }}
+      />
+    );
+  }
+
+  if (selectedRole === "mentor") {
+    return (
+      <MentorRegisterWizard
+        lang={lang}
+        onComplete={handleWizardComplete}
+        onBack={() => {
+          if (role) onBack();
+          else { setStep("select_role"); setSelectedRole(null); }
+        }}
+      />
+    );
+  }
+
+  return null;
 }

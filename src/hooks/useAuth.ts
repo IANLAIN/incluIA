@@ -138,7 +138,21 @@ export function useAuth(setScreen: (s: string) => void, setModalStep: (s: any) =
     // Demo mode: always try local demo accounts first
     if (email && password) {
       const handled = handleDemoLogin(email, password, setRole, setUserName, setUserVocation, setQuizCompleted, setLoggedIn, setModalStep, setScreen);
-      if (handled) return;
+      if (handled) {
+        // CRITICAL: set userId and load quiz answers for demo users (handleDemoLogin does NOT set userId)
+        const user = await getCurrentUser();
+        if (user) {
+          setUserId(user.id);
+          if (user.role === "candidate") {
+            const savedAnswers = await getCandidateQuizAnswers(user.id);
+            if (savedAnswers && Object.keys(savedAnswers).length > 0) {
+              setLoadedQuizAnswers(savedAnswers);
+              try { window.localStorage.setItem("astris_quiz_answers", JSON.stringify(savedAnswers)); } catch { /* ignore */ }
+            }
+          }
+        }
+        return;
+      }
     }
 
     if (!email || !password) {
@@ -186,15 +200,32 @@ export function useAuth(setScreen: (s: string) => void, setModalStep: (s: any) =
   };
 
   /** Demo quick-login: directly log in as a demo user by role */
-  const handleDemoQuickLogin = (demoEmail: string) => {
-    return handleDemoLogin(demoEmail, "Demo2026", setRole, setUserName, setUserVocation, setQuizCompleted, setLoggedIn, setModalStep, setScreen);
+  const handleDemoQuickLogin = async (demoEmail: string) => {
+    const handled = handleDemoLogin(demoEmail, "Demo2026", setRole, setUserName, setUserVocation, setQuizCompleted, setLoggedIn, setModalStep, setScreen);
+    if (handled) {
+      const user = await getCurrentUser();
+      if (user) {
+        setUserId(user.id);
+      }
+    }
+    return handled;
   };
 
   const handleLogout = async (setPublicView: (s: any) => void) => {
     try { await logoutUser(); } catch { /* ignore */ }
+    // Complete state reset — prevents cross-contamination between sessions
     setLoggedIn(false);
     setRole(null);
+    setPendingRole(null);
+    setUserName("");
+    setUserAvatar("");
+    setUserVocation("");
+    setUserId("");
     setQuizCompleted(false);
+    setLoadedQuizAnswers({});
+    setAuthError(null);
+    setAuthMessage(null);
+    setGoogleAuthUser(null);
     setScreen("home");
     setPublicView("landing");
     setModalStep("none");
