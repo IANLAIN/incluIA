@@ -30,48 +30,6 @@ export const DEMO_USERS: Record<string, {
       neurotype: "TDAH"
     }
   },
-  "empresa@astris.org": {
-    email: "empresa@astris.org",
-    password: "Demo2026",
-    id: "demo-comp",
-    role: "organization",
-    name: "Vibra Latina",
-    avatarUrl: "",
-    vocation: "",
-    completedOnboarding: true,
-    profile: {
-      organization_name: "Vibra Latina",
-      industry: "Audiovisual / Producción",
-      organization_size: "10-50 empleados",
-      country: "Estados Unidos",
-      city: "Houston, TX",
-      philosophy: "Somos una corporación comprometida con la producción audiovisual y la distribución de contenido. En Vibra Latina tenemos un propósito claro: promover el cambio social y la inserción laboral a través del poder de las historias. Con sede en Houston, Texas, y una sólida presencia en Latinoamérica, nos especializamos en desarrollar obras que abordan temas fundamentales enfocados en la responsabilidad social corporativa, la educación, innovaciones y STEM. Nuestra misión es mostrar historias inspiradoras de comunidades, líderes y personalidades, especialmente dentro de la comunidad hispana bilingüe.",
-      noise: "Moderado (ambiente creativo controlado)",
-      light: "Luz LED ajustable + luz natural",
-      layout: "Espacios abiertos con zonas de enfoque individual",
-      accommodations: [
-        "Audífonos con cancelación de ruido",
-        "Horario flexible",
-        "Trabajo remoto o híbrido",
-        "Comunicación asíncrona",
-        "Salas de descanso sensorial"
-      ],
-      policies: [
-        "Flexibilidad de horario",
-        "Pausas activas programadas",
-        "Reuniones con agenda previa"
-      ],
-      work_environment: {
-        noise: "Moderado (ambiente creativo controlado)",
-        light: "Luz LED ajustable + luz natural",
-        layout: "Espacios abiertos con zonas de enfoque individual",
-        policies: ["Flexibilidad de horario", "Pausas activas programadas", "Reuniones con agenda previa"],
-        organization_size: "10-50 empleados",
-        country: "Estados Unidos",
-        city: "Houston, TX"
-      }
-    }
-  },
   "organizacion@astris.org": {
     email: "organizacion@astris.org",
     password: "Demo2026",

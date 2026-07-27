@@ -57,8 +57,10 @@ export function handleDemoRegister(
 
   if (selectedRole === "candidate") {
     setScreen("onboarding");
+  } else if (selectedRole === "organization") {
+    setScreen("org-onboarding");
   } else {
-    setScreen(selectedRole === "organization" ? "org-profile" : "dashboard");
+    setScreen("dashboard");
   }
 
   return true;
@@ -92,13 +94,6 @@ export function handleDemoLogin(
       vocation: "Ingeniero de Sistemas y Computación",
       screen: "profile",
       quizDone: true,
-    },
-    "empresa@astris.org": {
-      role: "organization",
-      name: "Vibra Latina",
-      vocation: "",
-      screen: "candidates",
-      quizDone: false,
     },
     "organizacion@astris.org": {
       role: "organization",

@@ -8,8 +8,6 @@ import { CANDIDATE_RADAR_FINAL, CANDIDATE_ADJUSTMENTS } from "@/services/demoDat
 import { RadarViz } from "@/components/common/RadarViz";
 import { QUIZ_AXES } from "@/i18n/content";
 import { getAffirmationKey, AFFIRMATION_AXIS_LABELS, AFFIRMATION_ICONS } from "@/lib/affirmations";
-import { OperativeStack } from "./operative-stack/OperativeStack";
-
 // ── Icons ──
 const ICON_MAP = { MessageSquare, Target, Eye, SlidersHorizontal, Sparkles } as const;
 type IconName = keyof typeof ICON_MAP;
@@ -189,10 +187,6 @@ export function CandidateProfile({
           </div>
         </div>
 
-        {/* ── Operative Stack ── */}
-        <div className="rounded-2xl border-2 border-border bg-card p-6 md:p-8 shadow-sm">
-          <OperativeStack t={t} isDemo={isDemoUser} />
-        </div>
       </div>
     </div>
   );

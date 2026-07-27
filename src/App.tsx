@@ -100,81 +100,95 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-background text-foreground" style={{ fontFamily, ...(rootStyle as React.CSSProperties) }}>
-      {modalStep === "language" && <LanguageModal onSelect={handleLangSelect} />}
-      {modalStep === "register" && (
-        <RegisterModal lang={lang} role={pendingRole} onRegister={handleRegister} onBack={() => setModalStep("none")} error={authError} loading={authLoading} googleAuthUser={googleAuthUser} onCompleteGoogle={handleCompleteGoogleRegistration} />
-      )}
-      {modalStep === "login" && (
-        <LoginModal lang={lang} onLogin={handleLogin} onBack={() => setModalStep("none")} onRegister={() => setModalStep("register")} onDemoQuickLogin={handleDemoQuickLogin} error={authError} loading={authLoading} />
-      )}
-      {requirePasswordUpdate && <UpdatePasswordModal lang={lang} onComplete={() => setRequirePasswordUpdate(false)} />}
+      {/* ── Public pages — ALWAYS rendered behind modals when not logged in ── */}
+      <Suspense fallback={<SuspenseFallback />}>
+        {!loggedIn && isPublicLogin && currentView === "about" && <P.AboutPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
+        {!loggedIn && isPublicLogin && currentView === "support" && <P.SupportPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
+        {!loggedIn && isPublicLogin && currentView === "partners" && <P.PartnersPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
+        {!loggedIn && isPublicLogin && currentView === "landing" && <P.LandingPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
+        {!loggedIn && !isPublicLogin && <P.NotFoundPage lang={lang} onGoHome={() => setPublicView("landing")} />}
 
-      {modalStep === "none" && (
-        <Suspense fallback={<SuspenseFallback />}>
-          {!loggedIn && isPublicLogin && currentView === "about" && <P.AboutPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
-          {!loggedIn && isPublicLogin && currentView === "support" && <P.SupportPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
-          {!loggedIn && isPublicLogin && currentView === "partners" && <P.PartnersPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
-          {!loggedIn && isPublicLogin && currentView === "landing" && <P.LandingPage lang={lang} onOpenAuth={openAuth} onLang={() => setModalStep("language")} onNavigate={setPublicView} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} />}
-          {!loggedIn && !isPublicLogin && <P.NotFoundPage lang={lang} onGoHome={() => setPublicView("landing")} />}
+        {loggedIn && role && (
+          <div>
+            <NavBar lang={lang} role={role} screen={screen} onNav={handleNav} onLang={() => setModalStep("language")} onLogout={() => handleLogout(setPublicView)} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} userName={userName} userAvatar={userAvatar} />
+            <main id="main-content" tabIndex={-1} style={rootStyle as React.CSSProperties}>
+              {role === "candidate" && screen === "onboarding" && <P.CandidateOnboarding lang={lang} palette={palette} darkMode={darkMode} font={font} onPalette={setPalette} onDark={setDarkMode} onFont={setFont} onContinue={() => { setQuizAxis(0); setScreen("quiz"); }} />}
+              {role === "candidate" && screen === "quiz" && (
+                <P.CandidateQuiz lang={lang} axisIndex={quizAxis} answers={quizAnswers} onAnswer={handleAnswer}
+                  onPrev={() => quizAxis > 0 ? setQuizAxis((a) => a - 1) : setScreen("onboarding")}
+                  onNext={async () => {
+                    if (quizAxis < QUIZ_AXES.length - 1) { setQuizAxis((a) => a + 1); }
+                    else {
+                      const user = await getCurrentUser();
+                      if (user?.id) await saveCandidateProfile(user.id, quizAnswers, palette, font);
+                      window.localStorage.setItem("astris_quiz_completed", "true");
+                      setQuizCompleted(true);
+                      setScreen("profile");
+                    }
+                  }} />
+              )}
 
-          {loggedIn && role && (
-            <div>
-              <NavBar lang={lang} role={role} screen={screen} onNav={handleNav} onLang={() => setModalStep("language")} onLogout={() => handleLogout(setPublicView)} darkMode={darkMode} onDarkToggle={() => setDarkMode((d) => !d)} font={font} onFontToggle={() => setFont(cycleFont(font))} userName={userName} userAvatar={userAvatar} />
-              <main id="main-content" tabIndex={-1} style={rootStyle as React.CSSProperties}>
-                {role === "candidate" && screen === "onboarding" && <P.CandidateOnboarding lang={lang} palette={palette} darkMode={darkMode} font={font} onPalette={setPalette} onDark={setDarkMode} onFont={setFont} onContinue={() => { setQuizAxis(0); setScreen("quiz"); }} />}
-                {role === "candidate" && screen === "quiz" && (
-                  <P.CandidateQuiz lang={lang} axisIndex={quizAxis} answers={quizAnswers} onAnswer={handleAnswer}
-                    onPrev={() => quizAxis > 0 ? setQuizAxis((a) => a - 1) : setScreen("onboarding")}
-                    onNext={async () => {
-                      if (quizAxis < QUIZ_AXES.length - 1) { setQuizAxis((a) => a + 1); }
-                      else {
-                        const user = await getCurrentUser();
-                        if (user?.id) await saveCandidateProfile(user.id, quizAnswers, palette, font);
-                        window.localStorage.setItem("astris_quiz_completed", "true");
-                        setQuizCompleted(true);
-                        setScreen("profile");
-                      }
-                    }} />
+              {role === "candidate" && !quizCompleted && !["onboarding", "quiz"].includes(screen) && <QuizBlocker onStart={() => setScreen("onboarding")} />}
+
+              {(!quizCompleted && role === "candidate") ? null : (
+                <>
+                  {role === "candidate" && screen === "profile" && <P.CandidateProfile lang={lang} answers={quizAnswers} vocation={userVocation} userName={userName} userAvatar={userAvatar} userId={userId} />}
+                  {role === "candidate" && screen === "vacancies" && <P.CandidateVacancies lang={lang} onSelect={(id: string) => { setSelectedVacancy(id); setScreen("vacancy-detail"); }} />}
+                  {role === "candidate" && screen === "vacancy-detail" && <P.VacancyDetail lang={lang} vacancyId={selectedVacancy} onBack={() => handleBackTo("vacancies")} onStart={() => setScreen("mentor-select")} />}
+                  {role === "candidate" && screen === "mentor-select" && <P.MentorSelect lang={lang} onSelect={() => setScreen("accompaniment")} />}
+                  {role === "candidate" && screen === "accompaniment" && <P.CandidateAccompaniment lang={lang} />}
+                  {role === "candidate" && ["post-hire", "tracking"].includes(screen) && <P.CandidatePostHire lang={lang} />}
+                {role === "organization" && screen === "org-onboarding" && (
+                  <P.OrganizationOnboarding
+                    lang={lang}
+                    onComplete={() => setScreen("org-profile")}
+                  />
                 )}
+                {role === "organization" && screen === "org-profile" && <P.OrganizationOrgProfile lang={lang} />}
+                {role === "organization" && screen === "post-vacancy" && <P.OrganizationPostVacancy lang={lang} />}
+                {role === "organization" && screen === "candidates" && <P.OrganizationCandidates lang={lang} onSelect={(id: string) => { setSelectedCandidate(id); setScreen("candidate-detail"); }} />}
+                {role === "organization" && screen === "candidate-detail" && <P.OrganizationCandidateDetail lang={lang} candidateId={selectedCandidate} onBack={() => handleBackTo("candidates")} onStart={() => setScreen("org-post-hire")} />}
+                {role === "organization" && ["org-post-hire", "post-hire"].includes(screen) && <P.OrganizationPostHire lang={lang} />}
+                  {role === "mentor" && screen === "dashboard" && <P.MentorDashboard lang={lang} />}
+                  {role === "mentor" && screen === "checkins" && <P.MentorCheckins lang={lang} />}
+                  {role === "mentor" && screen === "organizations" && <P.MentorOrganizations lang={lang} />}
+                  {role === "mentor" && !MENTOR_SCREENS.includes(screen as any) && <P.MentorDashboard lang={lang} />}
+                  {screen === "settings" && <P.SettingsPage lang={lang} palette={palette} darkMode={darkMode} font={font} onPalette={setPalette} onDark={setDarkMode} onFont={setFont} onLogout={() => handleLogout(setPublicView)} />}
+                  {screen !== "settings" &&
+                    !(role === "candidate" && CANDIDATE_SCREENS.includes(screen as any)) &&
+                    !(role === "organization" && ORGANIZATION_SCREENS.includes(screen as any)) &&
+                    !(role === "mentor" && MENTOR_SCREENS.includes(screen as any)) && (
+                      <P.NotFoundPage lang={lang} onGoHome={() => handleNav("home")} />
+                    )}
+                </>
+              )}
+            </main>
+          </div>
+        )}
+      </Suspense>
 
-                {role === "candidate" && !quizCompleted && !["onboarding", "quiz"].includes(screen) && <QuizBlocker onStart={() => setScreen("onboarding")} />}
-
-                {(!quizCompleted && role === "candidate") ? null : (
-                  <>
-                    {role === "candidate" && screen === "profile" && <P.CandidateProfile lang={lang} answers={quizAnswers} vocation={userVocation} userName={userName} userAvatar={userAvatar} userId={userId} />}
-                    {role === "candidate" && screen === "vacancies" && <P.CandidateVacancies lang={lang} onSelect={(id: string) => { setSelectedVacancy(id); setScreen("vacancy-detail"); }} />}
-                    {role === "candidate" && screen === "vacancy-detail" && <P.VacancyDetail lang={lang} vacancyId={selectedVacancy} onBack={() => handleBackTo("vacancies")} onStart={() => setScreen("mentor-select")} />}
-                    {role === "candidate" && screen === "mentor-select" && <P.MentorSelect lang={lang} onSelect={() => setScreen("accompaniment")} />}
-                    {role === "candidate" && screen === "accompaniment" && <P.CandidateAccompaniment lang={lang} />}
-                    {role === "candidate" && ["post-hire", "tracking"].includes(screen) && <P.CandidatePostHire lang={lang} />}
-                  {role === "organization" && screen === "org-onboarding" && (
-                    <P.OrganizationOnboarding
-                      lang={lang}
-                      onComplete={() => setScreen("org-profile")}
-                    />
-                  )}
-                  {role === "organization" && screen === "org-profile" && <P.OrganizationOrgProfile lang={lang} />}
-                  {role === "organization" && screen === "post-vacancy" && <P.OrganizationPostVacancy lang={lang} />}
-                  {role === "organization" && screen === "candidates" && <P.OrganizationCandidates lang={lang} onSelect={(id: string) => { setSelectedCandidate(id); setScreen("candidate-detail"); }} />}
-                  {role === "organization" && screen === "candidate-detail" && <P.OrganizationCandidateDetail lang={lang} candidateId={selectedCandidate} onBack={() => handleBackTo("candidates")} onStart={() => setScreen("org-post-hire")} />}
-                  {role === "organization" && ["org-post-hire", "post-hire"].includes(screen) && <P.OrganizationPostHire lang={lang} />}
-                    {role === "mentor" && screen === "dashboard" && <P.MentorDashboard lang={lang} />}
-                    {role === "mentor" && screen === "checkins" && <P.MentorCheckins lang={lang} />}
-                    {role === "mentor" && screen === "organizations" && <P.MentorOrganizations lang={lang} />}
-                    {role === "mentor" && !MENTOR_SCREENS.includes(screen as any) && <P.MentorDashboard lang={lang} />}
-                    {screen === "settings" && <P.SettingsPage lang={lang} palette={palette} darkMode={darkMode} font={font} onPalette={setPalette} onDark={setDarkMode} onFont={setFont} onLogout={() => handleLogout(setPublicView)} />}
-                    {screen !== "settings" &&
-                      !(role === "candidate" && CANDIDATE_SCREENS.includes(screen as any)) &&
-                      !(role === "organization" && ORGANIZATION_SCREENS.includes(screen as any)) &&
-                      !(role === "mentor" && MENTOR_SCREENS.includes(screen as any)) && (
-                        <P.NotFoundPage lang={lang} onGoHome={() => handleNav("home")} />
-                      )}
-                  </>
-                )}
-              </main>
-            </div>
-          )}
-        </Suspense>
+      {/* ── Modals — RENDER ON TOP with backdrop blur ── */}
+      {modalStep !== "none" && (
+        <div
+          className="fixed inset-0 z-[200] overflow-y-auto"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget && modalStep !== "language") {
+              setModalStep("none");
+            }
+          }}
+        >
+          <div className="min-h-full flex items-center justify-center p-3 sm:p-6">
+            {modalStep === "language" && <LanguageModal onSelect={handleLangSelect} />}
+            {modalStep === "register" && (
+              <RegisterModal lang={lang} role={pendingRole} onRegister={handleRegister} onBack={() => setModalStep("none")} error={authError} loading={authLoading} googleAuthUser={googleAuthUser} onCompleteGoogle={handleCompleteGoogleRegistration} />
+            )}
+            {modalStep === "login" && (
+              <LoginModal lang={lang} onLogin={handleLogin} onBack={() => setModalStep("none")} onRegister={() => setModalStep("register")} onDemoQuickLogin={handleDemoQuickLogin} error={authError} loading={authLoading} />
+            )}
+            {requirePasswordUpdate && <UpdatePasswordModal lang={lang} onComplete={() => setRequirePasswordUpdate(false)} />}
+          </div>
+        </div>
       )}
     </div>
   );

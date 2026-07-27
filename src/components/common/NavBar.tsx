@@ -35,7 +35,7 @@ export function NavBar({ lang, role, screen, onNav, onLang, onLogout, darkMode, 
     { id: "organizations", label: t("nav.companies"), Icon: Building2 },
   ];
   const navItems = role === "candidate" ? CANDIDATE_NAV : role === "organization" ? ORGANIZATION_NAV : MENTOR_NAV;
-  const ROLE_LABELS: Record<Role, string> = { candidate: t("role.candidate"), company: t("role.company"), mentor: t("role.mentor") };
+  const ROLE_LABELS: Record<Role, string> = { candidate: t("role.candidate"), organization: t("role.company"), mentor: t("role.mentor") };
 
   const darkLabel = darkMode
     ? (t("settings.light"))

@@ -66,7 +66,6 @@ const DEMO_IDS = ["demo-cand", "demo-comp", "demo-ment"];
 const DEMO_EMAILS = [
   "candidato@astris.org",
   "organizacion@astris.org",
-  "empresa@astris.org",
   "mentor@astris.org",
 ];
 
@@ -289,13 +288,20 @@ export async function saveCandidateProfile(
   theme: string,
   font: string
 ): Promise<void> {
-  if (isDemoUserId(userId)) {
-    // Demo: persist to localStorage only
+  if (isDemoUserId(userId) || userId.startsWith("user-")) {
+    // Demo or local registered user: persist to localStorage
     try {
       window.localStorage.setItem("astris_quiz_answers", JSON.stringify(quizAnswers));
       window.localStorage.setItem("astris_theme", theme);
       window.localStorage.setItem("astris_font", font);
       window.localStorage.setItem("astris_quiz_completed", "true");
+      // Update local user as completed onboarding
+      const localUserJson = window.localStorage.getItem("astris_local_user");
+      if (localUserJson) {
+        const u = JSON.parse(localUserJson);
+        u.completedOnboarding = true;
+        window.localStorage.setItem("astris_local_user", JSON.stringify(u));
+      }
     } catch { /* ignore */ }
     return;
   }
@@ -355,9 +361,7 @@ export async function getMatchesForOrganization(companyId: string): Promise<any[
 
 export async function getOrganizationProfile(userId: string): Promise<any | null> {
   if (isDemoUserId(userId)) {
-    return DEMO_USERS["organizacion@astris.org"]?.profile ||
-           DEMO_USERS["empresa@astris.org"]?.profile ||
-           null;
+    return DEMO_USERS["organizacion@astris.org"]?.profile || null;
   }
   return supabaseGetOrganizationProfile(userId);
 }

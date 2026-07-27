@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
-import { ChevronLeft, AlertCircle, Check, Plus, X, Pencil, Trash2 } from "lucide-react";
-import { Overlay } from "@/components/common/Overlay";
+import { ChevronLeft, AlertCircle, Check, Plus, Pencil, Trash2 } from "lucide-react";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { signInWithGoogle } from "@/services/dataSource";
 import { Role } from "@/types";
@@ -85,8 +84,7 @@ export function CredentialsStep({
   const options: string[] = t("register.vocationOptions", { returnObjects: true }) as string[] || [];
 
   return (
-    <Overlay>
-      <div className="w-full max-w-md rounded-2xl mx-auto bg-card border border-border flex flex-col" style={{ maxHeight: "85vh" }}>
+    <div className="w-full max-w-md rounded-2xl mx-auto bg-card border border-border flex flex-col anim-modal" style={{ maxHeight: "85vh" }}>
         {/* Header */}
         <div className="px-5 md:px-8 py-4 border-b border-border shrink-0">
           <button
@@ -310,6 +308,5 @@ export function CredentialsStep({
           )}
         </div>
       </div>
-    </Overlay>
   );
 }

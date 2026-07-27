@@ -1,44 +1,19 @@
-import { useState, useCallback } from "react";
-import { ArrowLeft, Check, Building2, Users, Globe, MapPin } from "lucide-react";
+import { useState, useCallback, KeyboardEvent } from "react";
+import { ChevronLeft, Building2, Globe } from "lucide-react";
 import { Lang } from "@/types";
 import { useT, C } from "@/i18n/useT";
-import { SelectableCard } from "@/components/common/SelectableCard";
-import { SelectableChip } from "@/components/common/SelectableChip";
-import { Overlay } from "@/components/common/Overlay";
-import { CustomSlider } from "@/components/common/CustomSlider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-type WizardStep = 1 | 2 | 3;
-
-const TOTAL_STEPS = 3;
-
-const SIZE_OPTIONS = [
-  { key: "1_20", tKey: "orgOnboarding.size_1_20" },
-  { key: "21_100", tKey: "orgOnboarding.size_21_100" },
-  { key: "101_500", tKey: "orgOnboarding.size_101_500" },
-  { key: "500plus", tKey: "orgOnboarding.size_500plus" },
-];
-
-const CULTURE_VALUES = [
-  "register.org.culture.innovacion",
-  "register.org.culture.tradicion",
-  "register.org.culture.colaborativo",
-  "register.org.culture.autonomo",
-  "register.org.culture.inclusivo",
-  "register.org.culture.resultados",
-] as const;
+import { PasswordInput } from "@/components/ui/PasswordInput";
 
 interface OrganizationRegisterData {
   name: string;
   email: string;
   password: string;
+  orgName: string;
   sector: string;
-  size: string;
-  country: string;
-  city: string;
-  cultureValues: string[];
-  adaptabilityAxis: number;
 }
+
+const STEPS = ["name", "email", "password", "org", "sector"] as const;
+type Step = (typeof STEPS)[number];
 
 export function OrganizationRegisterWizard({
   lang,
@@ -50,179 +25,129 @@ export function OrganizationRegisterWizard({
   onBack: () => void;
 }) {
   const t = useT(lang);
+  const [stepIdx, setStepIdx] = useState(0);
+  const step = STEPS[stepIdx];
+  const totalSteps = STEPS.length;
 
-  const [step, setStep] = useState<WizardStep>(1);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [orgName, setOrgName] = useState("");
   const [sector, setSector] = useState("");
-  const [size, setSize] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [cultureValues, setCultureValues] = useState<string[]>([]);
-  const [adaptabilityAxis, setAdaptabilityAxis] = useState(50);
+
+  const goNext = () => { if (stepIdx < totalSteps - 1) setStepIdx((i) => i + 1); };
+  const goPrev = () => { if (stepIdx > 0) setStepIdx((i) => i - 1); else onBack(); };
+
+  const canContinue = () => {
+    if (step === "name") return name.trim().length > 0;
+    if (step === "email") return email.includes("@") && email.trim().length > 0;
+    if (step === "password") return password.length >= 6;
+    if (step === "org") return orgName.trim().length > 0;
+    if (step === "sector") return sector.trim().length > 0;
+    return false;
+  };
+
+  const progressPct = ((stepIdx + 1) / totalSteps) * 100;
+  const inputClass = "w-full px-5 py-4 rounded-2xl border-2 border-border bg-input-background text-foreground text-base focus:border-primary focus:outline-none transition-colors shadow-sm";
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter" && canContinue() && stepIdx < totalSteps - 1) goNext();
+  };
 
   const sectors = C(lang, "orgOnboarding.sectors") as string[];
 
-  const toggleCulture = useCallback((key: string) => {
-    setCultureValues((prev) => prev.includes(key) ? prev.filter((a) => a !== key) : [...prev, key]);
-  }, []);
-
-  const canStep1 = name.trim() && email.trim() && password.length >= 6;
-  const canStep2 = sector && size && country.trim() && city.trim();
-
-  const handleFinish = useCallback(() => {
-    onComplete({ name, email, password, sector, size, country, city, cultureValues, adaptabilityAxis });
-  }, [name, email, password, sector, size, country, city, cultureValues, adaptabilityAxis, onComplete]);
-
   return (
-    <Overlay>
-      <div className="w-full max-w-lg rounded-2xl mx-auto bg-card border border-border max-h-[90vh] overflow-y-auto">
-        <div className="px-6 md:px-8 py-6">
-          {/* Progress */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex gap-1.5 flex-1">
-              {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-                <div key={i} className="h-2 rounded-full transition-all duration-500"
-                  style={{ width: i === step - 1 ? "48px" : "24px", backgroundColor: i <= step - 1 ? "var(--primary)" : "var(--muted)", opacity: i <= step - 1 ? 1 : 0.4 }}
-                />
+    <div className="w-full max-w-lg rounded-3xl bg-card border border-border shadow-2xl overflow-hidden anim-modal">
+      <div className="h-1.5 w-full bg-muted/40">
+        <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${progressPct}%` }} />
+      </div>
+      <div className="px-7 md:px-9 py-8">
+        <div className="flex items-center justify-between mb-7">
+          <button onClick={goPrev} className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer bg-transparent border-0 p-1 transition-colors">
+            <ChevronLeft size={16} /> {t("back")}
+          </button>
+          <span className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">{stepIdx + 1}/{totalSteps}</span>
+        </div>
+
+        {step === "name" && (
+          <div className="anim-slide-up">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"><Building2 size={24} className="text-primary" /></div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">{t("register.nameStep")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-7">{t("register.organization.step1Sub")}</p>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={handleKeyDown} className={inputClass} autoFocus placeholder={t("register.name")} />
+            <button onClick={goNext} disabled={!canContinue()} className="w-full mt-6 py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-all cursor-pointer shadow-lg shadow-primary/20">{t("continue")}</button>
+          </div>
+        )}
+
+        {step === "email" && (
+          <div className="anim-slide-up">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"><Building2 size={24} className="text-primary" /></div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">{t("register.emailStep")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-7">{t("register.emailStep")}</p>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleKeyDown} className={inputClass} autoFocus placeholder="nombre@correo.com" />
+            <button onClick={goNext} disabled={!canContinue()} className="w-full mt-6 py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-all cursor-pointer shadow-lg shadow-primary/20">{t("continue")}</button>
+          </div>
+        )}
+
+        {step === "password" && (
+          <div className="anim-slide-up">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"><Building2 size={24} className="text-primary" /></div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">{t("register.passwordStep")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-7">{t("register.passwordHint")}</p>
+            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown} className={inputClass} placeholder="••••••••" />
+            <button onClick={goNext} disabled={!canContinue()} className="w-full mt-6 py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-all cursor-pointer shadow-lg shadow-primary/20">{t("continue")}</button>
+          </div>
+        )}
+
+        {step === "org" && (
+          <div className="anim-slide-up">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"><Building2 size={24} className="text-primary" /></div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">{t("register.org.orgNameLabel")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-7">{t("register.org.orgNameHint")}</p>
+            <input type="text" value={orgName} onChange={(e) => setOrgName(e.target.value)} onKeyDown={handleKeyDown} className={inputClass} autoFocus placeholder={t("orgOnboarding.namePlaceholder")} />
+            <button onClick={goNext} disabled={!canContinue()}
+              className="w-full mt-6 py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-all cursor-pointer shadow-lg shadow-primary/20">{t("continue")}</button>
+          </div>
+        )}
+
+        {step === "sector" && (
+          <div className="anim-slide-up">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5"><Globe size={24} className="text-primary" /></div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">{t("register.org.sectorStep")}</h2>
+            <p className="text-sm text-muted-foreground text-center mb-7">{t("register.org.sectorHint")}</p>
+            <div className="grid grid-cols-2 gap-2 max-h-52 overflow-y-auto custom-scrollbar">
+              {sectors.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSector(s)}
+                  className={`flex items-center gap-2 px-4 py-3.5 rounded-2xl border-2 cursor-pointer text-left transition-all text-sm font-semibold ${
+                    sector === s
+                      ? "border-primary bg-primary/10 text-foreground"
+                      : "border-border bg-background text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center shrink-0 transition-colors ${
+                    sector === s ? "bg-primary border-primary" : "border-muted-foreground/50"
+                  }`}>
+                    {sector === s && (
+                      <svg className="w-3 h-3 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                    )}
+                  </div>
+                  {s}
+                </button>
               ))}
             </div>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider shrink-0">
-              {t("orgOnboarding.step")} {step} {t("orgOnboarding.of")} {TOTAL_STEPS}
-            </span>
-          </div>
-
-          {step > 1 && (
-            <button onClick={() => setStep((step - 1) as WizardStep)}
-              className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground mb-4 transition-colors cursor-pointer bg-transparent border-0">
-              <ArrowLeft size={16} /> {t("back")}
+            <button
+              onClick={() => onComplete({ name: name.trim(), email: email.trim(), password, orgName: orgName.trim(), sector: sector.trim() })}
+              disabled={!canContinue()}
+              className="w-full mt-6 py-4 rounded-2xl font-bold text-base bg-primary text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-all cursor-pointer shadow-lg shadow-primary/20">
+              {t("register.submit")}
             </button>
-          )}
-
-          {/* STEP 1 — Basic info */}
-          {step === 1 && (
-            <div className="space-y-5">
-              <h2 className="text-xl font-bold text-foreground">{t("register.organization.step1Title")}</h2>
-              <p className="text-sm text-muted-foreground">{t("register.organization.step1Sub")}</p>
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-1.5">{t("register.org.nameLabel")}</label>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground focus:border-primary focus:outline-none"
-                  placeholder={t("orgOnboarding.namePlaceholder")} autoFocus />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-1.5">{t("register.email")}</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground focus:border-primary focus:outline-none"
-                  placeholder={t("register.email")} />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-1.5">{t("register.password")}</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground focus:border-primary focus:outline-none"
-                  placeholder="••••••••" />
-                <p className="text-xs text-muted-foreground mt-1">{t("register.passwordHint")}</p>
-              </div>
-              <button onClick={() => setStep(2)} disabled={!canStep1}
-                className="w-full py-3.5 rounded-xl font-bold text-sm bg-primary text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 cursor-pointer">
-                {t("continue")} <span className="ml-2">→</span>
-              </button>
-            </div>
-          )}
-
-          {/* STEP 2 — Organization identity */}
-          {step === 2 && (
-            <div className="space-y-5">
-              <h2 className="text-xl font-bold text-foreground">{t("register.organization.step2Title")}</h2>
-              <p className="text-sm text-muted-foreground">{t("register.organization.step2Sub")}</p>
-
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-1.5">{t("orgOnboarding.sectorLabel")}</label>
-                <p className="text-xs text-muted-foreground mb-2">{t("orgOnboarding.sectorHint")}</p>
-                <Select value={sector} onValueChange={(val) => setSector(val)}>
-                  <SelectTrigger className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground h-auto text-base">
-                    <SelectValue placeholder={t("orgOnboarding.sectorPlaceholder")} />
-                  </SelectTrigger>
-                  <SelectContent>{sectors.map((s: string) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}</SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-2">{t("orgOnboarding.sizeLabel")}</label>
-                <p className="text-xs text-muted-foreground mb-2">{t("orgOnboarding.sizeHint")}</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {SIZE_OPTIONS.map((opt) => (
-                    <SelectableCard key={opt.key} selected={size === opt.key} onClick={() => setSize(opt.key)} className="p-4">
-                      <span className="font-semibold text-sm">{t(opt.tKey)}</span>
-                    </SelectableCard>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-bold text-foreground mb-1.5">{t("orgOnboarding.countryLabel")}</label>
-                  <div className="relative">
-                    <Globe size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input type="text" value={country} onChange={(e) => setCountry(e.target.value)}
-                      className="w-full pl-9 pr-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground focus:border-primary focus:outline-none"
-                      placeholder={t("orgOnboarding.countryPlaceholder")} />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-foreground mb-1.5">{t("orgOnboarding.cityLabel")}</label>
-                  <input type="text" value={city} onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-border bg-input-background text-foreground focus:border-primary focus:outline-none"
-                    placeholder={t("orgOnboarding.cityPlaceholder")} />
-                </div>
-              </div>
-
-              <button onClick={() => setStep(3)} disabled={!canStep2}
-                className="w-full py-3.5 rounded-xl font-bold text-sm bg-primary text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 cursor-pointer">
-                {t("continue")} <span className="ml-2">→</span>
-              </button>
-            </div>
-          )}
-
-          {/* STEP 3 — Culture + Adaptability */}
-          {step === 3 && (
-            <div className="space-y-6">
-              <h2 className="text-xl font-bold text-foreground">{t("register.organization.step3Title")}</h2>
-              <p className="text-sm text-muted-foreground">{t("register.organization.step3Sub")}</p>
-
-              <div>
-                <label className="block text-sm font-bold text-foreground mb-2">{t("register.org.cultureLabel")}</label>
-                <p className="text-xs text-muted-foreground mb-3">{t("register.org.cultureHint")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {CULTURE_VALUES.map((cv) => (
-                    <SelectableChip key={cv} selected={cultureValues.includes(cv)} onClick={() => toggleCulture(cv)} label={t(cv)} />
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <span className="text-sm font-bold text-foreground">{t("register.org.adaptabilityLabel")}</span>
-                <p className="text-xs text-muted-foreground mb-2">{t("register.org.adaptabilityHint")}</p>
-                <CustomSlider value={adaptabilityAxis} onChange={setAdaptabilityAxis}
-                  labelLeft={t("register.org.adaptabilityLeft")} labelRight={t("register.org.adaptabilityRight")} />
-              </div>
-
-              {/* Summary */}
-              <div className="p-4 rounded-xl border-2 border-border bg-background space-y-2">
-                <div className="flex items-center gap-2 text-sm"><Building2 size={14} className="text-primary" /> <span className="font-semibold">{name || "—"}</span></div>
-                <div className="flex items-center gap-2 text-sm"><Users size={14} className="text-primary" /> <span className="font-semibold">{sector || "—"}</span> · {size ? t(SIZE_OPTIONS.find((o) => o.key === size)!.tKey) : "—"}</div>
-                <div className="flex items-center gap-2 text-sm"><MapPin size={14} className="text-primary" /> {country && city ? `${country}, ${city}` : "—"}</div>
-              </div>
-
-              <button onClick={handleFinish}
-                className="w-full py-3.5 rounded-xl font-bold text-sm bg-primary text-primary-foreground hover:opacity-90 cursor-pointer flex items-center justify-center gap-2">
-                <Check size={16} /> {t("register.submit")}
-              </button>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </Overlay>
+    </div>
   );
 }

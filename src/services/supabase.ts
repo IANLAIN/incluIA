@@ -14,7 +14,7 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 const PLACEHOLDER = "https://XXXXXXXXXXXX.supabase.co";
 
 export const USE_REAL_BACKEND = !!SUPABASE_URL && !!SUPABASE_KEY && SUPABASE_URL !== PLACEHOLDER;
@@ -24,7 +24,7 @@ function getClient(): SupabaseClient {
   if (!_supabase) {
     if (!USE_REAL_BACKEND) {
       throw new Error(
-        "Supabase no está configurado. Define VITE_SUPABASE_URL y VITE_SUPABASE_PUBLISHABLE_KEY en .env " +
+        "Supabase no está configurado. Define VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en .env " +
         "o inicia sesión con un usuario demo (candidato@astris.org, organizacion@astris.org, mentor@astris.org)."
       );
     }

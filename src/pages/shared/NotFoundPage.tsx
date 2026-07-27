@@ -3,6 +3,7 @@ import { Lang } from "@/types";
 import { useT } from "@/i18n/useT";
 
 export function NotFoundPage({ lang, onGoHome }: { lang: Lang; onGoHome: () => void }) {
+  const t = useT(lang);
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] p-8 text-center">
       <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6">

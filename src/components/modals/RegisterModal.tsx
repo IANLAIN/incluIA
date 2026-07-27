@@ -42,14 +42,28 @@ export function RegisterModal({
 
   const handleWizardComplete = (data: any) => {
     if (!selectedRole) return;
-    // Map wizard data to the generic register callback
-    onRegister(
-      data.email,
-      data.password,
-      data.name,
-      selectedRole,
-      data.sector || data.specialties?.join(", ") || data.workModality || ""
-    );
+    // Each wizard returns its own data shape:
+    // candidate: { name, email, password, vocation, stackData }
+    // organization: { name, email, password, orgName, sector }
+    // mentor: { name, email, password, specialties }
+    let vocation = "";
+    if (selectedRole === "candidate") {
+      // Serialize stack data alongside vocation for persistence
+      vocation = data.vocation || "";
+      // Save stack data to localStorage immediately
+      if (data.stackData) {
+        try {
+          window.localStorage.setItem("astris_candidate_stack", JSON.stringify(data.stackData));
+        } catch { /* ignore */ }
+      }
+    } else if (data.orgName) {
+      vocation = data.sector
+        ? JSON.stringify({ orgName: data.orgName, sector: data.sector })
+        : data.orgName;
+    } else if (data.specialties) {
+      vocation = data.specialties;
+    }
+    onRegister(data.email, data.password, data.name, selectedRole, vocation);
   };
 
   // Google auth step (still uses credential step for Google)
